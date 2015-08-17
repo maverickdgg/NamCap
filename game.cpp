@@ -6,13 +6,14 @@
 #include "Framework\console.h"
 #include <iostream>
 #include <iomanip>
+
 double	g_dElapsedTime;
 double	g_dDeltaTime;
 bool	g_abKeyPressed[K_COUNT];
 COORD	g_cCharLocation;
 COORD	g_cConsoleSize;
 extern COORD   g_cMonster1;
-extern bool    reverse;
+extern bool    breverse;
 const unsigned char gc_ucFPS = 15;				// FPS of this game
 const unsigned int gc_uFrameTime = 1000 / gc_ucFPS;	
 extern short sPacMap[21][38];
