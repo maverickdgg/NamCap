@@ -13,7 +13,7 @@ COORD	g_cCharLocation;
 COORD	g_cConsoleSize;
 extern COORD   g_cMonster1;
 extern bool    reverse;
-const unsigned char gc_ucFPS = 5;				// FPS of this game
+const unsigned char gc_ucFPS = 15;				// FPS of this game
 const unsigned int gc_uFrameTime = 1000 / gc_ucFPS;	
 
 //--------------------------------------------------------------
