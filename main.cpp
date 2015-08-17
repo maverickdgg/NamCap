@@ -35,7 +35,6 @@ int main( void )
 void mainLoop( void )
 {
     g_Timer.startTimer();   // Start timer to calculate how long it takes to render this frame
-    system("mode 150");
     while (!g_bQuitGame)      // run this loop until user wants to quit 
 	{        
         getInput();                         // get keyboard input
