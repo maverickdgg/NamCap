@@ -15,6 +15,7 @@ extern COORD   g_cMonster1;
 extern bool    reverse;
 const unsigned char gc_ucFPS = 15;				// FPS of this game
 const unsigned int gc_uFrameTime = 1000 / gc_ucFPS;	
+extern short sPacMap[21][38];
 
 //--------------------------------------------------------------
 // Purpose	: Initialisation function
@@ -127,26 +128,14 @@ void render( void )
     cls();
 
     //render the game
-
-    //render test screen code (not efficient at all)
-    const WORD colors[] =   {
-	                        0x7B, 0x2B, 0x3C, 0x4D, 0x5E, 0x6F,
-	                        0xA1, 0xB2, 0xC3, 0xD4, 0xE5, 0xF6
-	                        };
-	
-	/*for (int i = 0; i < 12; ++i)
-	{
-		gotoXY(3*i,i+1);
-		colour(colors[i]); 
-		std::cout << "DANIEL";
-	}*/
+    insertmap(sPacMap);
 
     // render time taken to calculate this frame
-    gotoXY(35, 3);
+    gotoXY(70, 0);
     colour(0x1A);
     std::cout << 1.0 / g_dDeltaTime << "fps" << std::endl;
   
-    gotoXY(35, 2);
+    gotoXY(0, 0);
     colour(0x59);
     std::cout << g_dElapsedTime << "secs" << std::endl;
 
