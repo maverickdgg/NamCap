@@ -38,14 +38,14 @@ void init()
     // Set precision for floating point output
     elapsedTime = 0.0;
     readfile(sPacMap);
-    charLocation.X = console.getConsoleSize().X / 2;
-    charLocation.Y = console.getConsoleSize().Y / 2;
+    charLocation.X = 38;
+    charLocation.Y = 20;
 
-	charLocation2.X = 10;
-    charLocation2.Y = 10;
+	charLocation2.X = 39;
+    charLocation2.Y = 13;
 
     monster1.X=39;
-    monster1.Y=14;
+    monster1.Y=13;
     srand(time(NULL));
     g_idirection=rand()%4;
     
@@ -128,22 +128,22 @@ void moveCharacter()
 {
     
     // Updating the location of the character based on the key press
-    if (keyPressed[K_UP] && charLocation.Y > 0)
+    if (keyPressed[K_UP] && charLocation.Y > 0 && wall_up(charLocation)==false)
     {
         //Beep(1440, 30);
         charLocation.Y--;
     }
-    if (keyPressed[K_LEFT] && charLocation.X > 0)
+    if (keyPressed[K_LEFT] && charLocation.X > 0 && wall_left(charLocation)==false)
     {
         //Beep(1440, 30);
         charLocation.X--;
     }
-    if (keyPressed[K_DOWN] && charLocation.Y < console.getConsoleSize().Y - 1)
+    if (keyPressed[K_DOWN] && charLocation.Y < console.getConsoleSize().Y - 1 && wall_down(charLocation)==false)
     {
         //Beep(1440, 30);
         charLocation.Y++;
     }
-    if (keyPressed[K_RIGHT] && charLocation.X < console.getConsoleSize().X - 1)
+    if (keyPressed[K_RIGHT] && charLocation.X < console.getConsoleSize().X - 1 && wall_right(charLocation)==false)
     {
         //Beep(1440, 30);
         charLocation.X++;
@@ -164,7 +164,7 @@ void moveCharacter()
 	{
 		g_iauto = 1;
 	}
-	if (g_iauto == 1 && charLocation2.Y > 0)
+	if (g_iauto == 1 && charLocation2.Y > 0 && wall_up(charLocation2)==false)
     {
         Beep(1440, 30);
         charLocation2.Y--;
@@ -175,7 +175,7 @@ void moveCharacter()
 	{
 		g_iauto = 2;
 	}
-	if (g_iauto == 2 && charLocation2.X > 0)
+	if (g_iauto == 2 && charLocation2.X > 0 && wall_left(charLocation2)==false)
     {
         Beep(1440, 30);
         charLocation2.X--; 
@@ -187,7 +187,7 @@ void moveCharacter()
 		g_iauto = 3;
 	}
 
-    if (g_iauto == 3 && charLocation2.Y < console.getConsoleSize().X - 1)
+    if (g_iauto == 3 && charLocation2.Y < console.getConsoleSize().X - 1 && wall_down(charLocation2)==false)
     {
         Beep(1440, 30);
         charLocation2.Y++; 
@@ -198,7 +198,7 @@ void moveCharacter()
 		g_iauto = 4;
 	}
 
-    if (g_iauto == 4 && charLocation2.X < console.getConsoleSize().X  - 1)
+    if (g_iauto == 4 && charLocation2.X < console.getConsoleSize().X  - 1 && wall_right(charLocation2)==false)
     {
         Beep(1440, 30);
         charLocation2.X++; 
