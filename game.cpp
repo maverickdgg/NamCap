@@ -31,6 +31,8 @@ void init()
     charLocation.Y = console.getConsoleSize().Y / 2;
     // sets the width, height and the font name to use in the console
     console.setConsoleFont(0, 35, L"Consolas");
+
+	readfile(sPacMap);
 }
 
 // Do your clean up of memory here
@@ -135,8 +137,9 @@ void renderMap()
 {
     // Set up sample colours, and output shadings
     colour(0x0F);
+	readfile(sPacMap);
     insertmap(sPacMap);
-    printscore();
+    //printscore();
 }
 
 void renderCharacter()
