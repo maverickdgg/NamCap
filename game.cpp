@@ -2,153 +2,170 @@
 //
 //
 #include "game.h"
-#include "ai.h"
 #include "Framework\console.h"
+#include "GameUI.h"
 #include <iostream>
 #include <iomanip>
+#include <sstream>
 
-double	g_dElapsedTime;
-double	g_dDeltaTime;
-bool	g_abKeyPressed[K_COUNT];
-COORD	g_cCharLocation;
-COORD	g_cConsoleSize;
-extern COORD   g_cMonster1;
-extern bool    breverse;
-const unsigned char gc_ucFPS = 15;				// FPS of this game
-const unsigned int gc_uFrameTime = 1000 / gc_ucFPS;	
+// Console object
+Console console(79, 28, "NamCap");
+
+double elapsedTime;
+double deltaTime;
+bool keyPressed[K_COUNTbv];
 extern short sPacMap[21][38];
 
-//--------------------------------------------------------------
-// Purpose	: Initialisation function
-// Input	: Void
-// Output	: void
-//--------------------------------------------------------------
-void init( void )
+
+// Game specific variables here
+COORD charLocation;
+
+// Initialize variables, allocate memory, load data from file, etc. 
+// This is called once before entering into your main loop
+void init()
 {
     // Set precision for floating point output
-    std::cout << std::fixed << std::setprecision(3);
+    elapsedTime = 0.0;
 
-	// set the name of your console window
-    SetConsoleTitle(L"SP1 Framework");
-
-    // Sets the console size, this is the biggest so far.
-    setConsoleSize(79, 28);
-
-    // Get console width and height
-    CONSOLE_SCREEN_BUFFER_INFO csbi; /* to get buffer info */     
-
-    /* get the number of character cells in the current buffer */ 
-    GetConsoleScreenBufferInfo( GetStdHandle( STD_OUTPUT_HANDLE ), &csbi );
-    g_cConsoleSize.X = csbi.srWindow.Right + 1;
-    g_cConsoleSize.Y = csbi.srWindow.Bottom + 1;
-
-    // set the character to be in the center of the screen.
-    g_cCharLocation.X = g_cConsoleSize.X / 2;
-    g_cCharLocation.Y = g_cConsoleSize.Y / 2;
-
-    g_cMonster1.X=2;
-    g_cMonster1.Y=3;
-
-    g_dElapsedTime = 0.0;
+    charLocation.X = console.getConsoleSize().X / 2;
+    charLocation.Y = console.getConsoleSize().Y / 2;
+    // sets the width, height and the font name to use in the console
+    console.setConsoleFont(0, 35, L"Consolas");
 }
 
-//--------------------------------------------------------------
-// Purpose	: Reset before exiting the program
-// Input	: Void
-// Output	: void
-//--------------------------------------------------------------
-void shutdown( void )
+// Do your clean up of memory here
+// This is called once just before the game exits
+void shutdown()
 {
     // Reset to white text on black background
 	colour(FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
-}
 
-//--------------------------------------------------------------
-// Purpose	: Getting all the key press states
-// Input	: Void
-// Output	: void
-//--------------------------------------------------------------
-void getInput( void )
+    console.clearBuffer();
+}
+/*
+	This function checks if any key had been pressed since the last time we checked
+	If a key is pressed, the value for that particular key will be true
+	
+	Add more keys to the enum in game.h if you need to detect more keys
+	To get other VK key defines, right click on the VK define (e.g. VK_UP) and choose "Go To Definition" 
+	For Alphanumeric keys, the values are their ascii values (uppercase).
+*/
+void getInput()
 {    
-    g_abKeyPressed[K_UP] = isKeyPressed(VK_UP);
-    g_abKeyPressed[K_DOWN] = isKeyPressed(VK_DOWN);
-    g_abKeyPressed[K_LEFT] = isKeyPressed(VK_LEFT);
-    g_abKeyPressed[K_RIGHT] = isKeyPressed(VK_RIGHT);
-    g_abKeyPressed[K_ESCAPE] = isKeyPressed(VK_ESCAPE);
+    keyPressed[K_UP] = isKeyPressed(VK_UP);
+    keyPressed[K_DOWN] = isKeyPressed(VK_DOWN);
+    keyPressed[K_LEFT] = isKeyPressed(VK_LEFT);
+    keyPressed[K_RIGHT] = isKeyPressed(VK_RIGHT);
+    keyPressed[K_ESCAPE] = isKeyPressed(VK_ESCAPE);
 }
 
-//--------------------------------------------------------------
-// Purpose	: Update function
-// Input	: dt = deltatime
-// Output	: void
-//--------------------------------------------------------------
+/*
+	This is the update function
+	double dt - This is the amount of time in seconds since the previous call was made
+
+	Game logic should be done here.
+	Such as collision checks, determining the position of your game characters, status updates, etc
+	If there are any calls to write to the console here, then you are doing it wrong.
+
+    If your game has multiple states, you should determine the current state, and call the relevant function here.
+*/
 void update(double dt)
 {
     // get the delta time
-    g_dElapsedTime += dt;
-    g_dDeltaTime = dt;
+    elapsedTime += dt;
+    deltaTime = dt;
 
-    // Updating the location of the character based on the key press
-	// providing a beep sound whenver we shift the character
-    if (g_abKeyPressed[K_UP] && g_cCharLocation.Y > 0)
-    {
-        Beep(1440, 30);
-        g_cCharLocation.Y--; 
-    }
-    if (g_abKeyPressed[K_LEFT] && g_cCharLocation.X > 0)
-    {
-        Beep(1440, 30);
-        g_cCharLocation.X--; 
-    }
-    if (g_abKeyPressed[K_DOWN] && g_cCharLocation.Y < g_cConsoleSize.Y - 1)
-    {
-        Beep(1440, 30);
-        g_cCharLocation.Y++; 
-    }
-    if (g_abKeyPressed[K_RIGHT] && g_cCharLocation.X < g_cConsoleSize.X - 1)
-    {
-        Beep(1440, 30);
-        g_cCharLocation.X++; 
-    }
-
-    // quits the game if player hits the escape key
-    if (g_abKeyPressed[K_ESCAPE])
-        g_bQuitGame = true;    
+    processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
+    moveCharacter();    // moves the character, collision detection, physics, etc
+    // sound can be played here too.
 }
 
-
-//--------------------------------------------------------------
-// Purpose	: Render function is to update the console screen
-// Input	: void
-// Output	: void
-//--------------------------------------------------------------
-void render( void )
+/*
+    This is the render loop
+    At this point, you should know exactly what to draw onto the screen.
+    Just draw it!
+    To get an idea of the values for colours, look at console.h and the URL listed there
+*/
+void render()
 {
-    // clear previous screen
-    colour(0x0F);
-    cls();
-
-    //render the game
-    insertmap(sPacMap);
-
-    // render time taken to calculate this frame
-    gotoXY(70, 0);
-    colour(0x1A);
-    std::cout << 1.0 / g_dDeltaTime << "fps" << std::endl;
-  
-    gotoXY(0, 0);
-    colour(0x59);
-    std::cout << g_dElapsedTime << "secs" << std::endl;
-
-    // render character
-    gotoXY(g_cCharLocation);
-    colour(0x0C);
-    std::cout << (char)1;
-
-    gotoXY(g_cMonster1);
-    colour(0x0B);
-    std::cout << (char)1;
-
+    clearScreen();      // clears the current screen and draw from scratch 
+    renderMap();        // renders the map to the buffer first
+    renderCharacter();  // renders the character into the buffer
+    renderFramerate();  // renders debug information, frame rate, elapsed time, etc
+    renderToScreen();   // dump the contents of the buffer to the screen, one frame worth of game
 }
 
+void moveCharacter()
+{
+    // Updating the location of the character based on the key press
+    if (keyPressed[K_UP] && charLocation.Y > 0)
+    {
+        //Beep(1440, 30);
+        charLocation.Y--;
+    }
+    if (keyPressed[K_LEFT] && charLocation.X > 0)
+    {
+        //Beep(1440, 30);
+        charLocation.X--;
+    }
+    if (keyPressed[K_DOWN] && charLocation.Y < console.getConsoleSize().Y - 1)
+    {
+        //Beep(1440, 30);
+        charLocation.Y++;
+    }
+    if (keyPressed[K_RIGHT] && charLocation.X < console.getConsoleSize().X - 1)
+    {
+        //Beep(1440, 30);
+        charLocation.X++;
+    }
+}
+void processUserInput()
+{
+    // quits the game if player hits the escape key
+    if (keyPressed[K_ESCAPE])
+        g_bQuitGame = true;
+}
+
+void clearScreen()
+{
+    // Clears the buffer with this colour attribute
+    console.clearBuffer(0x00);
+}
+void renderMap()
+{
+    // Set up sample colours, and output shadings
+    colour(0x0F);
+    insertmap(sPacMap);
+    printscore();
+}
+
+void renderCharacter()
+{
+    // Draw the location of the character
+    console.writeToBuffer(charLocation, 148, 0x0C);
+}
+
+void renderFramerate()
+{
+    COORD c;
+    // displays the framerate
+    std::ostringstream ss;
+    ss << std::fixed << std::setprecision(3);
+    ss << 1.0 / deltaTime << "fps";
+    c.X = 35;
+    c.Y = 0;
+    console.writeToBuffer(c, ss.str());
+
+    // displays the elapsed time
+    ss.str("");
+    ss << elapsedTime << "secs";
+    c.X = 35;
+    c.Y = 1;
+    console.writeToBuffer(c, ss.str(), 0x59);
+}
+void renderToScreen()
+{
+    // Writes the buffer to the console, hence you will see what you have written
+    console.flushBufferToConsole();
+}
 

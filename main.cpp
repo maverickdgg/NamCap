@@ -2,7 +2,6 @@
 
 #include "Framework\timer.h"
 #include "game.h"
-#include "ai.h"
 #include "GameUI.h"
 
 CStopWatch g_Timer;							// Timer function to keep track of time and the frame rate
@@ -63,7 +62,6 @@ void mainLoop( void )
 	{        
         getInput();                         // get keyboard input
         update(g_Timer.getElapsedTime());   // update the game
-        monster1();
         render();                           // render the graphics output to screen
 		printscore();
         g_Timer.waitUntil(gc_uFrameTime);   // Frame rate limiter. Limits each frame to a specified time in ms.      

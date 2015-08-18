@@ -1,20 +1,22 @@
 #include "gameUI.h"
 #include "Framework/console.h"
+#include "game.h"
 
 const short g_csRows=21;
 const short g_csCol=38;
+const int csOffsetX=20;
+const int csOffsetY=5;
 const unsigned char wall=178;
+extern Console console;
 void insertmap(short sMap[g_csRows][g_csCol])
 {
-    const int csOffsetX=20;
-    const int csOffsetY=5;
+    
     for(int i=csOffsetX;i<g_csCol+csOffsetX;++i){
-        for(int j=csOffsetY;j<g_csRows+csOffsetY;++j){
-            gotoXY(i,j);
+        for(int j=csOffsetY;j<g_csRows+csOffsetY;++j){ 
             if(sMap[j-csOffsetY][i-csOffsetX]==1){
-                cout<<wall;
+                console.writeToBuffer(i,j,wall,0x0F);
             }
-        }
+        }  
     }
 }
 
