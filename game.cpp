@@ -1,24 +1,35 @@
 // This is the main file for the game logic and function
 //
 //
+// This is the main file for the game logic and function
+//
+//
 #include "game.h"
 #include "Framework\console.h"
 #include "GameUI.h"
-#include <iostream>
-#include <iomanip>
-#include <sstream>
+#include"ai.h"
+
 
 // Console object
-Console console(79, 28, "NamCap");
+Console console(82, 35, "NamCap");
 
 double elapsedTime;
 double deltaTime;
 bool keyPressed[K_COUNTbv];
 extern short sPacMap[21][38];
-
+const int ciOffsetX=20;
+const int ciOffsetY=5;
+int		g_iChangeMod = 1;
+int		g_iChangeCol = 1;
+int		g_iauto = 2;
+bool	g_bOrigin = false;
+COORD monster1;
+int g_cdirection;
 
 // Game specific variables here
+
 COORD charLocation;
+COORD charLocation2;
 
 // Initialize variables, allocate memory, load data from file, etc. 
 // This is called once before entering into your main loop
@@ -26,13 +37,20 @@ void init()
 {
     // Set precision for floating point output
     elapsedTime = 0.0;
-
+    readfile(sPacMap);
     charLocation.X = console.getConsoleSize().X / 2;
     charLocation.Y = console.getConsoleSize().Y / 2;
-    // sets the width, height and the font name to use in the console
-    console.setConsoleFont(0, 35, L"Consolas");
 
-	readfile(sPacMap);
+	charLocation2.X = 10;
+    charLocation2.Y = 10;
+
+    monster1.X=39;
+    monster1.Y=14;
+    srand(time(NULL));
+    g_cdirection=rand()%4;
+    
+    // sets the width, height and the font name to use in the console
+    console.setConsoleFont(0, 40, L"derp");
 }
 
 // Do your clean up of memory here
@@ -59,6 +77,14 @@ void getInput()
     keyPressed[K_LEFT] = isKeyPressed(VK_LEFT);
     keyPressed[K_RIGHT] = isKeyPressed(VK_RIGHT);
     keyPressed[K_ESCAPE] = isKeyPressed(VK_ESCAPE);
+    keyPressed[K_M] = isKeyPressed(0x4D);
+	keyPressed[K_N] = isKeyPressed(0x4E);
+
+	keyPressed[K_W] = isKeyPressed(0x57);
+    keyPressed[K_S] = isKeyPressed(0x53);
+    keyPressed[K_A] = isKeyPressed(0x41);
+    keyPressed[K_D] = isKeyPressed(0x44);
+    keyPressed[K_ESCAPE] = isKeyPressed(VK_ESCAPE);
 }
 
 /*
@@ -78,7 +104,8 @@ void update(double dt)
     deltaTime = dt;
 
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
-    moveCharacter();    // moves the character, collision detection, physics, etc
+    moveCharacter();// moves the character, collision detection, physics, etc
+    //monster(monster1,rand()%4); 
     // sound can be played here too.
 }
 
@@ -99,6 +126,7 @@ void render()
 
 void moveCharacter()
 {
+    
     // Updating the location of the character based on the key press
     if (keyPressed[K_UP] && charLocation.Y > 0)
     {
@@ -120,6 +148,150 @@ void moveCharacter()
         //Beep(1440, 30);
         charLocation.X++;
     }
+    
+	if(keyPressed[K_M])
+	{
+		g_iChangeMod += 1;
+	}
+	if(keyPressed[K_N])
+	{
+		g_iChangeCol += 1;
+	}
+
+
+
+	if (keyPressed[K_W])
+	{
+		g_iauto = 1;
+	}
+	if (g_iauto == 1 && charLocation2.Y > 0)
+    {
+        Beep(1440, 30);
+        charLocation2.Y--;
+
+    }
+
+	if (keyPressed[K_A])
+	{
+		g_iauto = 2;
+	}
+	if (g_iauto == 2 && charLocation2.X > 0)
+    {
+        Beep(1440, 30);
+        charLocation2.X--; 
+
+    }
+
+	if (keyPressed[K_S])
+	{
+		g_iauto = 3;
+	}
+
+    if (g_iauto == 3 && charLocation2.Y < console.getConsoleSize().X - 1)
+    {
+        Beep(1440, 30);
+        charLocation2.Y++; 
+    }
+
+	if (keyPressed[K_D])
+	{
+		g_iauto = 4;
+	}
+
+    if (g_iauto == 4 && charLocation2.X < console.getConsoleSize().X  - 1)
+    {
+        Beep(1440, 30);
+        charLocation2.X++; 
+    }
+    // ghost 1
+    //std::default_random_engine generator;
+    //std::uniform_int_distribution<int> distribution(0,4);
+    bool bcollision =false;
+    if(bcollision==false){
+            if(g_cdirection==0)
+            {
+                if(sPacMap[monster1.Y-ciOffsetY][monster1.X-1-ciOffsetX] == 1){
+                    bcollision=true;
+                    g_cdirection=rand()%4;
+                }
+                else if(sPacMap[monster1.Y-ciOffsetY][monster1.X-1-ciOffsetX] == 4){
+                    bcollision=true;
+                    g_cdirection=rand()%4;
+                    monster1.X--;
+                }
+                else{ 
+                monster1.X--;
+                }
+            }
+            if(g_cdirection==1)
+            {
+                if(sPacMap[monster1.Y-ciOffsetY][monster1.X+1-ciOffsetX] == 1){
+                    bcollision=true;
+                    g_cdirection=rand()%4;
+                }
+                else if(sPacMap[monster1.Y-ciOffsetY][monster1.X+1-ciOffsetX] == 4){
+                    bcollision=true;
+                    g_cdirection=rand()%4;
+                    monster1.X++;
+                }
+                else{
+                monster1.X++;
+                }
+            }
+            if(g_cdirection==2)
+            {
+               if(sPacMap[monster1.Y+1-ciOffsetY][monster1.X-ciOffsetX] == 1){
+                    bcollision=true;
+                    g_cdirection=rand()%4;
+                }
+               else if(sPacMap[monster1.Y+1-ciOffsetY][monster1.X-ciOffsetX] == 4){
+                    bcollision=true;
+                    g_cdirection=rand()%4;
+                    monster1.X++;
+                }
+                else{
+                monster1.Y++;
+                }
+            }
+            if(g_cdirection==3)
+            {
+                if(sPacMap[monster1.Y-1-ciOffsetY][monster1.X-ciOffsetX] == 1){
+                    bcollision=true;
+                    g_cdirection=rand()%4;
+                }
+                else if(sPacMap[monster1.Y-1-ciOffsetY][monster1.X-ciOffsetX] == 4){
+                    bcollision=true;
+                    g_cdirection=rand()%4;
+                    monster1.Y--;
+                }
+                else{
+                monster1.Y--;
+                }
+            }
+        
+    }
+}
+
+void eneXp1(COORD &ene , COORD &p1)
+{
+	SHORT x = 38;
+	SHORT y = 20;
+	SHORT * k = &x;
+	SHORT * t = &y;
+
+	if(ene.Y == p1.Y && ene.X == p1.X)
+	{
+		g_bOrigin = true;
+		if(g_bOrigin == true)
+		{
+			p1.X = *k;
+			p1.Y = *t;
+		}
+	}
+	else if(ene.Y != p1.Y || ene.X != p1.X)
+	{
+		g_bOrigin = false;
+	}
 }
 void processUserInput()
 {
@@ -137,15 +309,26 @@ void renderMap()
 {
     // Set up sample colours, and output shadings
     colour(0x0F);
-	readfile(sPacMap);
     insertmap(sPacMap);
+    
     //printscore();
 }
 
 void renderCharacter()
 {
     // Draw the location of the character
-    console.writeToBuffer(charLocation, 148, 0x0C);
+    console.writeToBuffer(charLocation, (char)g_iChangeMod, 0x0C+g_iChangeCol);
+    console.writeToBuffer(monster1,232,0x0B);
+    if(g_iChangeMod > 6)
+	{
+		g_iChangeMod = 1;
+	}
+	if(g_iChangeCol > 6)
+	{
+		g_iChangeCol = 1;
+	}
+	eneXp1(charLocation2,charLocation);
+	console.writeToBuffer(charLocation2, 148, 0x0C);
 }
 
 void renderFramerate()

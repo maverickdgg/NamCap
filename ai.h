@@ -1,9 +1,10 @@
 #ifndef _AI_H
 #define _AI_H
 
-#include"Framework/console.h"
+#include "Framework/console.h"
+#include<time.h>
+#include"GameUI.h"
 
-
-void monster1   (void);
+void monster(COORD ai,int idirection);
 
 #endif
