@@ -6,5 +6,9 @@
 #include"GameUI.h"
 
 void monster(COORD ai,int idirection);
+bool wall_left(COORD location);
+bool wall_right(COORD location);
+bool wall_up(COORD location);
+bool wall_down(COORD location);
 
 #endif

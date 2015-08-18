@@ -24,7 +24,7 @@ int		g_iChangeCol = 1;
 int		g_iauto = 2;
 bool	g_bOrigin = false;
 COORD monster1;
-int g_cdirection;
+int g_idirection;
 
 // Game specific variables here
 
@@ -47,7 +47,7 @@ void init()
     monster1.X=39;
     monster1.Y=14;
     srand(time(NULL));
-    g_cdirection=rand()%4;
+    g_idirection=rand()%4;
     
     // sets the width, height and the font name to use in the console
     console.setConsoleFont(0, 40, L"derp");
@@ -207,68 +207,52 @@ void moveCharacter()
     //std::default_random_engine generator;
     //std::uniform_int_distribution<int> distribution(0,4);
     bool bcollision =false;
+   /* if(wall_up(monster1)==true||wall_down(monster1)==true||wall_left(monster1)==true||wall_right(monster1)==true){
+        bcollision=true;
+    }*/
     if(bcollision==false){
-            if(g_cdirection==0)
+            if(g_idirection==0)
             {
-                if(sPacMap[monster1.Y-ciOffsetY][monster1.X-1-ciOffsetX] == 1){
+                if(wall_left(monster1) == true){
                     bcollision=true;
-                    g_cdirection=rand()%4;
-                }
-                else if(sPacMap[monster1.Y-ciOffsetY][monster1.X-1-ciOffsetX] == 4){
-                    bcollision=true;
-                    g_cdirection=rand()%4;
-                    monster1.X--;
                 }
                 else{ 
                 monster1.X--;
                 }
             }
-            if(g_cdirection==1)
+            if(g_idirection==1)
             {
-                if(sPacMap[monster1.Y-ciOffsetY][monster1.X+1-ciOffsetX] == 1){
+                if(wall_right(monster1)==true){
                     bcollision=true;
-                    g_cdirection=rand()%4;
-                }
-                else if(sPacMap[monster1.Y-ciOffsetY][monster1.X+1-ciOffsetX] == 4){
-                    bcollision=true;
-                    g_cdirection=rand()%4;
-                    monster1.X++;
                 }
                 else{
                 monster1.X++;
                 }
             }
-            if(g_cdirection==2)
+            if(g_idirection==2)
             {
-               if(sPacMap[monster1.Y+1-ciOffsetY][monster1.X-ciOffsetX] == 1){
+               if(wall_down(monster1)==true){
                     bcollision=true;
-                    g_cdirection=rand()%4;
-                }
-               else if(sPacMap[monster1.Y+1-ciOffsetY][monster1.X-ciOffsetX] == 4){
-                    bcollision=true;
-                    g_cdirection=rand()%4;
-                    monster1.X++;
                 }
                 else{
                 monster1.Y++;
                 }
             }
-            if(g_cdirection==3)
+            if(g_idirection==3)
             {
-                if(sPacMap[monster1.Y-1-ciOffsetY][monster1.X-ciOffsetX] == 1){
+                if(wall_up(monster1)==true){
                     bcollision=true;
-                    g_cdirection=rand()%4;
-                }
-                else if(sPacMap[monster1.Y-1-ciOffsetY][monster1.X-ciOffsetX] == 4){
-                    bcollision=true;
-                    g_cdirection=rand()%4;
-                    monster1.Y--;
                 }
                 else{
                 monster1.Y--;
                 }
             }
-        
+            if(wall_up(monster1)==false && wall_down(monster1)==false && wall_left(monster1)==false && wall_right(monster1)==false){
+                bcollision=true;
+            }
+    }
+    if(bcollision==true){
+        g_idirection=rand()%4;
     }
 }
 

@@ -6,8 +6,6 @@ extern Console console;
     const int ciOffsetX=20;
     const int ciOffsetY=5;
 
-  
-
 void monster(COORD monster1, int idirection){
     bool bcollision =false;
     switch(idirection){
@@ -79,4 +77,40 @@ void monster(COORD monster1, int idirection){
                 }
             }       
     }*/
+}
+
+bool wall_left(COORD location){
+    if(sPacMap[location.Y-ciOffsetY][location.X-1-ciOffsetX] == 1){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+bool wall_right(COORD location){
+    if(sPacMap[location.Y-ciOffsetY][location.X+1-ciOffsetX] == 1){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+bool wall_up(COORD location){
+    if(sPacMap[location.Y-1-ciOffsetY][location.X-ciOffsetX] == 1){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+bool wall_down(COORD location){
+    if(sPacMap[location.Y+1-ciOffsetY][location.X-ciOffsetX] == 1){
+        return true;
+    }
+    else{
+        return false;
+    }
 }
