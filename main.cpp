@@ -14,6 +14,7 @@ short sPacMap[21][38];
 extern COORD monster1;
 //main loop declaration
 void mainLoop( void );
+stage state=stage1;
 
 
 // TODO:
@@ -38,11 +39,11 @@ void mainLoop( void )
 {
     g_Timer.startTimer();   // Start timer to calculate how long it takes to render this frame
     system ("mode 80,30");
-    while (!g_bQuitGame)      // run this loop until user wants to quit 
+    while (state==stage1)      // run this loop until user wants to quit 
 	{        
         getInput();                         // get keyboard input
         update(g_Timer.getElapsedTime());   // update the game
         render();                           // render the graphics output to screen
         g_Timer.waitUntil(gc_uFrameTime);   // Frame rate limiter. Limits each frame to a specified time in ms.      
-	}    
+	}  
 }

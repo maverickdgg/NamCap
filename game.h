@@ -25,6 +25,15 @@ enum Keys
     K_COUNTbv
 };
 
+enum stage
+{
+	menu,
+	stage1,
+	stage2,
+	end
+};
+
+
 void init();                // initialize your variables, allocate memory, etc
 void getInput();            // get input from player
 void update(double dt);     // update the game and the state of the game

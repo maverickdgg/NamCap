@@ -30,6 +30,7 @@ COORD ghost3;
 int g_idirection;
 int g_idirection2;
 int g_idirection3;
+extern stage state;
 
 // Game specific variables here
 
@@ -237,8 +238,7 @@ void eneXp1(COORD &ene , COORD &p1)
 		g_bOrigin = true;
 		if(g_bOrigin == true)
 		{
-			p1.X = *k;
-			p1.Y = *t;
+			state=stage2;
 		}
 	}
 	else if(ene.Y != p1.Y || ene.X != p1.X)
