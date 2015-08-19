@@ -251,6 +251,18 @@ void moveCharacter()
             if(wall_up(monster1)==false && wall_down(monster1)==false && wall_left(monster1)==false && wall_right(monster1)==false){
                 bcollision=true;
             }
+            if(wall_up(monster1)==false && wall_down(monster1)==false && wall_left(monster1)==false ){
+                bcollision=true;
+            }
+            if(wall_up(monster1)==false && wall_down(monster1)==false && wall_right(monster1)==false){
+                bcollision=true;
+            }
+            if(wall_up(monster1)==false && wall_left(monster1)==false && wall_right(monster1)==false){
+                bcollision=true;
+            }
+            if(wall_down(monster1)==false && wall_left(monster1)==false && wall_right(monster1)==false){
+                bcollision=true;
+            }
     }
     if(bcollision==true){
         g_idirection=rand()%4;
