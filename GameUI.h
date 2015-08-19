@@ -11,7 +11,7 @@ using std::string;
 using std::getline;
 using std::ifstream;
 
-short readfile(short sMapInUse[][38]);
+short readfile(short sMapInUse[][38],string txt);
 void insertmap(short sMap[21][38]);
 //void insertmap1(short** sMap);
 #endif

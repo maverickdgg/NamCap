@@ -31,14 +31,15 @@ int g_idirection;
 
 COORD charLocation;
 COORD charLocation2;
-
+string map1="map.txt";
+string map2="map2.txt";
 // Initialize variables, allocate memory, load data from file, etc. 
 // This is called once before entering into your main loop
 void init()
 {
     // Set precision for floating point output
     elapsedTime = 0.0;
-    readfile(sPacMap);
+    readfile(sPacMap,map2);
     charLocation.X = 38;
     charLocation.Y = 20;
 
@@ -204,13 +205,9 @@ void moveCharacter()
         Beep(1440, 30);
         charLocation2.X++; 
     }
+    //monster(monster1,g_idirection);
     // ghost 1
-    //std::default_random_engine generator;
-    //std::uniform_int_distribution<int> distribution(0,4);
     bool bcollision =false;
-   /* if(wall_up(monster1)==true||wall_down(monster1)==true||wall_left(monster1)==true||wall_right(monster1)==true){
-        bcollision=true;
-    }*/
     if(bcollision==false){
             if(g_idirection==0)
             {

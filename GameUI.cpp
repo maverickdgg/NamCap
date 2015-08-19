@@ -10,11 +10,12 @@ const unsigned char wall=178;
 unsigned char coin=48;
 extern Console console;
 
-short readfile(short sMapInUse[][38])
+
+short readfile(short sMapInUse[][38],string txt)
 {
 	ifstream inData;
 	string data;
-	inData.open ("map.txt"); // associate & open files
+	inData.open (txt); // associate & open files
 	while (!inData.eof()) 
 	{
 		for(short i=0;i<g_csRows;++i)

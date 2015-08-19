@@ -6,77 +6,68 @@ extern Console console;
     const int ciOffsetX=20;
     const int ciOffsetY=5;
 
-void monster(COORD monster1, int idirection){
-    bool bcollision =false;
-    switch(idirection){
-        case 0:
-            if(sPacMap[monster1.Y-ciOffsetY][monster1.X-1-ciOffsetX] == 1){
-                    bcollision=true;
-                }
-                else{ 
-                monster1.X--;
-                }
-        case 1:
-            if(sPacMap[monster1.Y-ciOffsetY][monster1.X+1-ciOffsetX] == 1){
-                    bcollision=true;
-                }
-                else{
-                monster1.X++;
-                }
-        case 2:
-            if(sPacMap[monster1.Y+1-ciOffsetY][monster1.X-ciOffsetX] == 1){
-                    bcollision=true;
-                }
-                else{
-                monster1.Y++;
-                }
-        case 3:
-            if(sPacMap[monster1.Y-1-ciOffsetY][monster1.X-ciOffsetX] == 1){
-                    bcollision=true;
-                }
-                else{
-                monster1.Y--;
-                }
 
-    }
-    /*if(bcollision==false){
-            if(cdirection==0)
+void monster(COORD monster1,int g_idirection){
+    bool bcollision =false;
+   /* if(wall_up(monster1)==true||wall_down(monster1)==true||wall_left(monster1)==true||wall_right(monster1)==true){
+        bcollision=true;
+    }*/
+    if(bcollision==false){
+            if(g_idirection==0)
             {
-                if(sPacMap[monster1.Y-ciOffsetY][monster1.X-1-ciOffsetX] == 1){
+                if(wall_left(monster1) == true){
                     bcollision=true;
                 }
                 else{ 
                 monster1.X--;
                 }
             }
-            if(cdirection==1)
+            if(g_idirection==1)
             {
-                if(sPacMap[monster1.Y-ciOffsetY][monster1.X+1-ciOffsetX] == 1){
+                if(wall_right(monster1)==true){
                     bcollision=true;
                 }
                 else{
                 monster1.X++;
                 }
             }
-            if(cdirection==2)
+            if(g_idirection==2)
             {
-               if(sPacMap[monster1.Y+1-ciOffsetY][monster1.X-ciOffsetX] == 1){
+               if(wall_down(monster1)==true){
                     bcollision=true;
                 }
                 else{
                 monster1.Y++;
                 }
             }
-            if(cdirection==3)
+            if(g_idirection==3)
             {
-                if(sPacMap[monster1.Y-1-ciOffsetY][monster1.X-ciOffsetX] == 1){
+                if(wall_up(monster1)==true){
                     bcollision=true;
                 }
                 else{
                 monster1.Y--;
                 }
-            }       
-    }*/
+            }
+            if(wall_up(monster1)==false && wall_down(monster1)==false && wall_left(monster1)==false && wall_right(monster1)==false){
+                bcollision=true;
+            }
+            if(wall_up(monster1)==false && wall_down(monster1)==false && wall_left(monster1)==false ){
+                bcollision=true;
+            }
+            if(wall_up(monster1)==false && wall_down(monster1)==false && wall_right(monster1)==false){
+                bcollision=true;
+            }
+            if(wall_up(monster1)==false && wall_left(monster1)==false && wall_right(monster1)==false){
+                bcollision=true;
+            }
+            if(wall_down(monster1)==false && wall_left(monster1)==false && wall_right(monster1)==false){
+                bcollision=true;
+            }
+    }
+    if(bcollision==true){
+        g_idirection=rand()%4;
+    }
 }
 
 bool wall_left(COORD location){
