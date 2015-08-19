@@ -7,6 +7,7 @@ const short g_csCol=38;
 const int csOffsetX=20;
 const int csOffsetY=5;
 const unsigned char wall=178;
+unsigned char coin=48;
 extern Console console;
 
 short readfile(short sMapInUse[][38])
@@ -41,6 +42,9 @@ void insertmap(short sMap[g_csRows][g_csCol])
         for(int j=csOffsetY;j<g_csRows+csOffsetY;++j){ 
             if(sMap[j-csOffsetY][i-csOffsetX]==1){
                 console.writeToBuffer(i,j,wall,0x0F);
+            }
+			if(sMap[j-csOffsetY][i-csOffsetX]==0){
+                console.writeToBuffer(i,j,coin,0x0E);
             }
         }  
     }

@@ -23,6 +23,7 @@ int		g_iChangeMod = 1;
 int		g_iChangeCol = 1;
 int		g_iauto = 2;
 bool	g_bOrigin = false;
+bool	g_bCoin = false;
 COORD monster1;
 int g_idirection;
 
@@ -277,6 +278,25 @@ void eneXp1(COORD &ene , COORD &p1)
 		g_bOrigin = false;
 	}
 }
+
+extern short sPacMap[21][38];
+extern Console console;
+extern unsigned char coin;
+int i = 0;
+
+bool p1Xcoin(COORD location)
+{
+	if(sPacMap[location.Y-ciOffsetY][location.X-ciOffsetX] == 0)
+	{
+		sPacMap[location.Y-ciOffsetY][location.X-ciOffsetX] = ' ';		
+        return true;
+    }
+	else
+	{
+        return false;
+    }
+}
+
 void processUserInput()
 {
     // quits the game if player hits the escape key
@@ -312,6 +332,8 @@ void renderCharacter()
 		g_iChangeCol = 1;
 	}
 	eneXp1(charLocation2,charLocation);
+	eneXp1(monster1,charLocation);
+	p1Xcoin(charLocation);
 	console.writeToBuffer(charLocation2, 148, 0x0C);
 }
 
