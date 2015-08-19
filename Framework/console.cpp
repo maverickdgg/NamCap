@@ -207,7 +207,31 @@ void Console::writeToBuffer(COORD c,unsigned char ch, WORD attribute)
 {
     writeToBuffer(c.X, c.Y, ch, attribute);
 }
+void Console::writeToBuffer(SHORT x, SHORT y, int num, WORD attribute)
+{
+	//Find numlength of number
+	char ones;
+	char tens;
+	char hundreds;
+	ones=num%10+'0';
+	tens=(num%100)/10+'0';
+	hundreds=num/100+'0';
+	char number[4];
+	number[0]=hundreds;
+	number[1]=tens;
+	number[2]=ones;
+	number[3]='\0';
 
+    size_t index = max(x + consoleSize.X * y, 0);
+    size_t length = strlen(number);
+    // if the length of the string exceeds the buffer size, we chop it off at the end
+    length = min(screenDataBufferSize - index - 1, length);
+    for (size_t i = 0; i < length; ++i)
+    {
+        screenDataBuffer[index+i].Char.AsciiChar = number[i];
+        screenDataBuffer[index+i].Attributes = attribute;
+    }
+}
 void Console::writeToConsole(const CHAR_INFO* lpBuffer)
 {
     COORD c = {0,0};
@@ -215,3 +239,5 @@ void Console::writeToConsole(const CHAR_INFO* lpBuffer)
     // WriteConsoleOutputA for ASCII text
     WriteConsoleOutputA(hScreenBuffer, lpBuffer, consoleSize, c, &WriteRegion);
 }
+
+

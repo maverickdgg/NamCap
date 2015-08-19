@@ -251,12 +251,14 @@ extern short sPacMap[21][38];
 extern Console console;
 extern unsigned char coin;
 int i = 0;
+int score = 0;
 
 bool p1Xcoin(COORD location)
 {
 	if(sPacMap[location.Y-ciOffsetY][location.X-ciOffsetX] == 0)
 	{
-		sPacMap[location.Y-ciOffsetY][location.X-ciOffsetX] = ' ';		
+		sPacMap[location.Y-ciOffsetY][location.X-ciOffsetX] = ' ';	
+		score++;
         return true;
     }
 	else

@@ -9,6 +9,7 @@ const int csOffsetY=5;
 const unsigned char wall=178;
 unsigned char coin=48;
 extern Console console;
+extern int score;
 
 
 short readfile(short sMapInUse[][38],string txt)
@@ -36,6 +37,7 @@ void insertmap(short sMap[g_csRows][g_csCol])
 {
 	console.writeToBuffer(0,2,"Player1",0x1B);
 	console.writeToBuffer(0,3,"Score: ",0x1B);
+	console.writeToBuffer(8,3,score,0x1B);
 	console.writeToBuffer(70,2,"Player2",0x46);
 	console.writeToBuffer(70,3,"Score: ",0x46);
 
