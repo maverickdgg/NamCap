@@ -3,15 +3,16 @@
 
 extern short sPacMap[21][38];
 extern Console console;
-    const int ciOffsetX=20;
-    const int ciOffsetY=5;
+const int ciOffsetX=20;
+const int ciOffsetY=5;
 
+int reroll(int& x){
+    x=rand()%4;
+    return x;
+}
 
-void monster(COORD monster1,int g_idirection){
+void monster(COORD& monster1,int& g_idirection){
     bool bcollision =false;
-   /* if(wall_up(monster1)==true||wall_down(monster1)==true||wall_left(monster1)==true||wall_right(monster1)==true){
-        bcollision=true;
-    }*/
     if(bcollision==false){
             if(g_idirection==0)
             {
@@ -66,9 +67,11 @@ void monster(COORD monster1,int g_idirection){
             }
     }
     if(bcollision==true){
-        g_idirection=rand()%4;
+        reroll(g_idirection);
     }
 }
+
+
 
 bool wall_left(COORD location){
     if(sPacMap[location.Y-ciOffsetY][location.X-1-ciOffsetX] == 1){

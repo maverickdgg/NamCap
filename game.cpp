@@ -24,8 +24,12 @@ int		g_iChangeCol = 1;
 int		g_iauto = 2;
 bool	g_bOrigin = false;
 bool	g_bCoin = false;
-COORD monster1;
+COORD ghost1;
+COORD ghost2;
+COORD ghost3;
 int g_idirection;
+int g_idirection2;
+int g_idirection3;
 
 // Game specific variables here
 
@@ -46,10 +50,19 @@ void init()
 	charLocation2.X = 39;
     charLocation2.Y = 13;
 
-    monster1.X=39;
-    monster1.Y=13;
+    ghost1.X=39;
+    ghost1.Y=13;
+
+    ghost2.X=2+ciOffsetX;
+    ghost2.Y=2+ciOffsetY;
+
+    ghost3.X=36+ciOffsetX;
+    ghost3.Y=19+ciOffsetY;
+
     srand(time(NULL));
     g_idirection=rand()%4;
+    g_idirection2=rand()%4;
+    g_idirection3=rand()%4;
     
     // sets the width, height and the font name to use in the console
     console.setConsoleFont(0, 40, L"derp");
@@ -205,65 +218,11 @@ void moveCharacter()
         Beep(1440, 30);
         charLocation2.X++; 
     }
-    //monster(monster1,g_idirection);
-    // ghost 1
-    bool bcollision =false;
-    if(bcollision==false){
-            if(g_idirection==0)
-            {
-                if(wall_left(monster1) == true){
-                    bcollision=true;
-                }
-                else{ 
-                monster1.X--;
-                }
-            }
-            if(g_idirection==1)
-            {
-                if(wall_right(monster1)==true){
-                    bcollision=true;
-                }
-                else{
-                monster1.X++;
-                }
-            }
-            if(g_idirection==2)
-            {
-               if(wall_down(monster1)==true){
-                    bcollision=true;
-                }
-                else{
-                monster1.Y++;
-                }
-            }
-            if(g_idirection==3)
-            {
-                if(wall_up(monster1)==true){
-                    bcollision=true;
-                }
-                else{
-                monster1.Y--;
-                }
-            }
-            if(wall_up(monster1)==false && wall_down(monster1)==false && wall_left(monster1)==false && wall_right(monster1)==false){
-                bcollision=true;
-            }
-            if(wall_up(monster1)==false && wall_down(monster1)==false && wall_left(monster1)==false ){
-                bcollision=true;
-            }
-            if(wall_up(monster1)==false && wall_down(monster1)==false && wall_right(monster1)==false){
-                bcollision=true;
-            }
-            if(wall_up(monster1)==false && wall_left(monster1)==false && wall_right(monster1)==false){
-                bcollision=true;
-            }
-            if(wall_down(monster1)==false && wall_left(monster1)==false && wall_right(monster1)==false){
-                bcollision=true;
-            }
-    }
-    if(bcollision==true){
-        g_idirection=rand()%4;
-    }
+    monster(ghost1,g_idirection);
+    monster(ghost2,g_idirection2);
+    monster(ghost3,g_idirection3);
+
+
 }
 
 void eneXp1(COORD &ene , COORD &p1)
@@ -331,7 +290,9 @@ void renderCharacter()
 {
     // Draw the location of the character
     console.writeToBuffer(charLocation, (char)g_iChangeMod, 0x0C+g_iChangeCol);
-    console.writeToBuffer(monster1,232,0x0B);
+    console.writeToBuffer(ghost1,232,0x0B);
+    console.writeToBuffer(ghost2,232,0x0B);
+    console.writeToBuffer(ghost3,232,0x0B);
     if(g_iChangeMod > 6)
 	{
 		g_iChangeMod = 1;
@@ -341,7 +302,9 @@ void renderCharacter()
 		g_iChangeCol = 1;
 	}
 	eneXp1(charLocation2,charLocation);
-	eneXp1(monster1,charLocation);
+	eneXp1(ghost1,charLocation);
+    eneXp1(ghost2,charLocation);
+    eneXp1(ghost3,charLocation);
 	p1Xcoin(charLocation);
 	console.writeToBuffer(charLocation2, 148, 0x0C);
 }
