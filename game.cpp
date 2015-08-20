@@ -165,9 +165,18 @@ void update(double dt)
 
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
     moveCharacter();// moves the character, collision detection, physics, etc
-    //monster(monster1,rand()%4); 
     // sound can be played here too.
 }
+
+void update2(double dt)
+{
+    // get the delta time
+    elapsedTime += dt;
+    deltaTime = dt;
+
+    // sound can be played here too.
+}
+
 
 /*
     This is the render loop

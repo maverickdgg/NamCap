@@ -28,8 +28,9 @@ stage state=stage1;
 // main function - starting function
 int main( void )
 {
-	init();      // initialize your variables
+	
     if(stage1){
+        init();      // initialize your variables
         mainLoop();  // main loop
     }
     if(stage2){
@@ -65,7 +66,7 @@ void mainLoop( void )
 
 void stage_2(){
             init2();
-        while (stage2){
+        while (state==stage2){
             getInput();
             update(g_Timer.getElapsedTime());   // update the game
             render2();                           // render the graphics output to screen
@@ -75,9 +76,11 @@ void stage_2(){
 }
 
 void state_end(){
+        console.clearBuffer(0x00);
         init3();
-            while(end){    
-            clearScreen();
-            render_end();
+            while(state==end){  
+            update2(g_Timer.getElapsedTime());   // update the game
+            render_end();                           // render the graphics output to screen
+            g_Timer.waitUntil(gc_uFrameTime);
         }
 }

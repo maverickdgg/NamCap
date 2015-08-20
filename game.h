@@ -41,6 +41,7 @@ void init2();
 void init3(); 
 void getInput();            // get input from player
 void update(double dt);     // update the game and the state of the game
+void update2(double dt);
 void render();              // renders the current state of the game to the console
 void render2();
 void render_end();
