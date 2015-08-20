@@ -8,7 +8,7 @@
 #include "Framework\console.h"
 #include "GameUI.h"
 #include"ai.h"
-
+#include "map.h"
 
 // Console object
 Console console(82, 35, "NamCap");
@@ -17,6 +17,7 @@ double elapsedTime;
 double deltaTime;
 bool keyPressed[K_COUNTbv];
 extern short sPacMap[21][38];
+short sMap2[21][38];
 const int ciOffsetX=20;
 const int ciOffsetY=5;
 int		g_iChangeMod = 1;
@@ -31,13 +32,20 @@ int g_idirection;
 int g_idirection2;
 int g_idirection3;
 extern stage state;
+extern short sPacMap[21][38];
+extern Console console;
+extern unsigned char coin;
+int i = 0;
+int score = 0;
+int score2=0;
+
 
 // Game specific variables here
 
 COORD charLocation;
 COORD charLocation2;
-string map1="map.txt";
-string map2="map2.txt";
+char map1[]="map.txt";
+char map2[]="map2.txt";
 // Initialize variables, allocate memory, load data from file, etc. 
 // This is called once before entering into your main loop
 void init()
@@ -45,6 +53,7 @@ void init()
     // Set precision for floating point output
     elapsedTime = 0.0;
     readfile(sPacMap,map2);
+
     charLocation.X = 38;
     charLocation.Y = 20;
 
@@ -67,6 +76,41 @@ void init()
     
     // sets the width, height and the font name to use in the console
     console.setConsoleFont(0, 40, L"derp");
+}
+void init2()
+{
+    // Set precision for floating point output
+    elapsedTime = 0.0;
+    readfile(sPacMap,map1);
+
+    charLocation.X = 38;
+    charLocation.Y = 20;
+
+	charLocation2.X = 39;
+    charLocation2.Y = 13;
+
+    ghost1.X=39;
+    ghost1.Y=13;
+
+    ghost2.X=2+ciOffsetX;
+    ghost2.Y=2+ciOffsetY;
+
+    ghost3.X=36+ciOffsetX;
+    ghost3.Y=19+ciOffsetY;
+
+    srand(time(NULL));
+    g_idirection=rand()%4;
+    g_idirection2=rand()%4;
+    g_idirection3=rand()%4;
+    
+    // sets the width, height and the font name to use in the console
+    console.setConsoleFont(0, 40, L"derp");
+}
+
+void init3(){
+   elapsedTime = 0.0;
+
+   console.setConsoleFont(0, 40, L"derp");
 }
 
 // Do your clean up of memory here
@@ -140,84 +184,177 @@ void render()
     renderToScreen();   // dump the contents of the buffer to the screen, one frame worth of game
 }
 
+void render2()
+{
+    clearScreen();      // clears the current screen and draw from scratch 
+    renderMap2();        // renders the map to the buffer first
+    renderCharacter();  // renders the character into the buffer
+    renderFramerate();  // renders debug information, frame rate, elapsed time, etc
+    renderToScreen();   // dump the contents of the buffer to the screen, one frame worth of game
+}
+
+void render_end(){
+    clearScreen();
+    renderMap3();        
+    renderFramerate();  
+    renderToScreen();   
+}
 void moveCharacter()
 {
-    
+    if(state==stage1){
     // Updating the location of the character based on the key press
-    if (keyPressed[K_UP] && charLocation.Y > 0 && wall_up(charLocation)==false)
-    {
-        //Beep(1440, 30);
-        charLocation.Y--;
-    }
-    if (keyPressed[K_LEFT] && charLocation.X > 0 && wall_left(charLocation)==false)
-    {
-        //Beep(1440, 30);
-        charLocation.X--;
-    }
-    if (keyPressed[K_DOWN] && charLocation.Y < console.getConsoleSize().Y - 1 && wall_down(charLocation)==false)
-    {
-        //Beep(1440, 30);
-        charLocation.Y++;
-    }
-    if (keyPressed[K_RIGHT] && charLocation.X < console.getConsoleSize().X - 1 && wall_right(charLocation)==false)
-    {
-        //Beep(1440, 30);
-        charLocation.X++;
-    }
+        if (keyPressed[K_UP] && charLocation.Y > 0 && wall_up(charLocation)==false)
+        {
+            //Beep(1440, 30);
+            charLocation.Y--;
+        }
+        if (keyPressed[K_LEFT] && charLocation.X > 0 && wall_left(charLocation)==false)
+        {
+            //Beep(1440, 30);
+            charLocation.X--;
+        }
+        if (keyPressed[K_DOWN] && charLocation.Y < console.getConsoleSize().Y - 1 && wall_down(charLocation)==false)
+        {
+            //Beep(1440, 30);
+            charLocation.Y++;
+        }
+        if (keyPressed[K_RIGHT] && charLocation.X < console.getConsoleSize().X - 1 && wall_right(charLocation)==false)
+        {
+            //Beep(1440, 30);
+            charLocation.X++;
+        }
     
-	if(keyPressed[K_M])
-	{
-		g_iChangeMod += 1;
-	}
-	if(keyPressed[K_N])
-	{
-		g_iChangeCol += 1;
-	}
+	    if(keyPressed[K_M])
+	    {
+		    g_iChangeMod += 1;
+	    }
+	    if(keyPressed[K_N])
+	    {
+		    g_iChangeCol += 1;
+	    }
 
 
 
-	if (keyPressed[K_W])
-	{
-		g_iauto = 1;
-	}
-	if (g_iauto == 1 && charLocation2.Y > 0 && wall_up(charLocation2)==false)
-    {
-        Beep(1440, 30);
-        charLocation2.Y--;
+	    if (keyPressed[K_W])
+	    {
+		    g_iauto = 1;
+	    }
+	    if (g_iauto == 1 && charLocation2.Y > 0 && wall_up(charLocation2)==false)
+        {
+            Beep(1440, 30);
+            charLocation2.Y--;
 
+        }
+
+	    if (keyPressed[K_A])
+	    {
+		    g_iauto = 2;
+	    }
+	    if (g_iauto == 2 && charLocation2.X > 0 && wall_left(charLocation2)==false)
+        {
+            Beep(1440, 30);
+            charLocation2.X--; 
+
+        }
+
+	    if (keyPressed[K_S])
+	    {
+		    g_iauto = 3;
+	    }
+
+        if (g_iauto == 3 && charLocation2.Y < console.getConsoleSize().X - 1 && wall_down(charLocation2)==false)
+        {
+            Beep(1440, 30);
+            charLocation2.Y++; 
+        }
+
+	    if (keyPressed[K_D])
+	    {
+		    g_iauto = 4;
+	    }
+
+        if (g_iauto == 4 && charLocation2.X < console.getConsoleSize().X  - 1 && wall_right(charLocation2)==false)
+        {
+            Beep(1440, 30);
+            charLocation2.X++; 
+        }
     }
+    if(state==stage2){
+        if (keyPressed[K_W] && charLocation.Y > 0 && wall_up(charLocation)==false)
+        {
+            //Beep(1440, 30);
+            charLocation.Y--;
+        }
+        if (keyPressed[K_A] && charLocation.X > 0 && wall_left(charLocation)==false)
+        {
+            //Beep(1440, 30);
+            charLocation.X--;
+        }
+        if (keyPressed[K_S] && charLocation.Y < console.getConsoleSize().Y - 1 && wall_down(charLocation)==false)
+        {
+            //Beep(1440, 30);
+            charLocation.Y++;
+        }
+        if (keyPressed[K_D] && charLocation.X < console.getConsoleSize().X - 1 && wall_right(charLocation)==false)
+        {
+            //Beep(1440, 30);
+            charLocation.X++;
+        }
+    
+	    if(keyPressed[K_M])
+	    {
+		    g_iChangeMod += 1;
+	    }
+	    if(keyPressed[K_N])
+	    {
+		    g_iChangeCol += 1;
+	    }
 
-	if (keyPressed[K_A])
-	{
-		g_iauto = 2;
-	}
-	if (g_iauto == 2 && charLocation2.X > 0 && wall_left(charLocation2)==false)
-    {
-        Beep(1440, 30);
-        charLocation2.X--; 
 
-    }
 
-	if (keyPressed[K_S])
-	{
-		g_iauto = 3;
-	}
+	    if (keyPressed[K_UP])
+	    {
+		    g_iauto = 1;
+	    }
+	    if (g_iauto == 1 && charLocation2.Y > 0 && wall_up(charLocation2)==false)
+        {
+            Beep(1440, 30);
+            charLocation2.Y--;
 
-    if (g_iauto == 3 && charLocation2.Y < console.getConsoleSize().X - 1 && wall_down(charLocation2)==false)
-    {
-        Beep(1440, 30);
-        charLocation2.Y++; 
-    }
+        }
 
-	if (keyPressed[K_D])
-	{
-		g_iauto = 4;
-	}
+	    if (keyPressed[K_LEFT])
+	    {
+		    g_iauto = 2;
+	    }
+	    if (g_iauto == 2 && charLocation2.X > 0 && wall_left(charLocation2)==false)
+        {
+            Beep(1440, 30);
+            charLocation2.X--; 
 
-    if (g_iauto == 4 && charLocation2.X < console.getConsoleSize().X  - 1 && wall_right(charLocation2)==false)
-    {
-        Beep(1440, 30);
-        charLocation2.X++; 
+        }
+
+	    if (keyPressed[K_DOWN])
+	    {
+		    g_iauto = 3;
+	    }
+
+        if (g_iauto == 3 && charLocation2.Y < console.getConsoleSize().X - 1 && wall_down(charLocation2)==false)
+        {
+            Beep(1440, 30);
+            charLocation2.Y++; 
+        }
+
+	    if (keyPressed[K_RIGHT])
+	    {
+		    g_iauto = 4;
+	    }
+
+        if (g_iauto == 4 && charLocation2.X < console.getConsoleSize().X  - 1 && wall_right(charLocation2)==false)
+        {
+            Beep(1440, 30);
+            charLocation2.X++; 
+        }
     }
     monster(ghost1,g_idirection);
     monster(ghost2,g_idirection2);
@@ -238,7 +375,12 @@ void eneXp1(COORD &ene , COORD &p1)
 		g_bOrigin = true;
 		if(g_bOrigin == true)
 		{
-			state=stage2;
+            if(state==stage1){
+			    state=stage2;
+            }
+            else if(state==stage2){
+                state=end;
+            }
 		}
 	}
 	else if(ene.Y != p1.Y || ene.X != p1.X)
@@ -247,18 +389,18 @@ void eneXp1(COORD &ene , COORD &p1)
 	}
 }
 
-extern short sPacMap[21][38];
-extern Console console;
-extern unsigned char coin;
-int i = 0;
-int score = 0;
 
 bool p1Xcoin(COORD location)
 {
 	if(sPacMap[location.Y-ciOffsetY][location.X-ciOffsetX] == 0)
 	{
-		sPacMap[location.Y-ciOffsetY][location.X-ciOffsetX] = ' ';	
-		score++;
+		sPacMap[location.Y-ciOffsetY][location.X-ciOffsetX] = ' ';
+        if(state==stage1){
+		    score++;
+        }
+        if(state==stage2){
+            score2++;
+        }
         return true;
     }
 	else
@@ -284,8 +426,22 @@ void renderMap()
     // Set up sample colours, and output shadings
     colour(0x0F);
     insertmap(sPacMap);
-    
-    //printscore();
+}
+
+void renderMap2()
+{
+    // Set up sample colours, and output shadings
+    colour(0x0F);
+    insertmap(sPacMap);
+}
+
+void renderMap3(){
+       if(score>score2){
+            console.writeToBuffer(30,30,"Player one wins",0x0B);
+        }
+        else{
+            console.writeToBuffer(30,30,"Player two wins",0x0B);
+        }
 }
 
 void renderCharacter()

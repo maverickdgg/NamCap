@@ -81,6 +81,7 @@
     <ClCompile Include="game.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="GameUI.cpp" />
+    <ClCompile Include="map.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ai.h" />
@@ -88,6 +89,7 @@
     <ClInclude Include="Framework\timer.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="GameUI.h" />
+    <ClInclude Include="map.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="map.txt" />
