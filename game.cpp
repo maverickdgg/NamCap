@@ -8,7 +8,9 @@
 #include "Framework\console.h"
 #include "GameUI.h"
 #include"ai.h"
+
 #include "map.h"
+
 
 // Console object
 Console console(82, 35, "NamCap");
@@ -446,10 +448,10 @@ void renderMap2()
 
 void renderMap3(){
        if(score>score2){
-            console.writeToBuffer(30,30,"Player one wins",0x0B);
+            console.writeToBuffer(30,15,"Player one wins",0x0F);
         }
         else{
-            console.writeToBuffer(30,30,"Player two wins",0x0B);
+            console.writeToBuffer(30,15,"Player two wins",0x0F);
         }
 }
 

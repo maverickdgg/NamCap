@@ -16,7 +16,7 @@ extern COORD monster1;
 extern int score;
 extern int score2;
 extern Console console;
-void mainLoop( void );
+void stage_1( void );
 void stage_2();
 void state_end();
 stage state=stage1;
@@ -28,15 +28,14 @@ stage state=stage1;
 // main function - starting function
 int main( void )
 {
-	
-    if(stage1){
-        init();      // initialize your variables
-        mainLoop();  // main loop
+	init();      // initialize your variables
+    if(state==stage1){
+        stage_1();
     }
-    if(stage2){
+    if(state==stage2){
         stage_2();
     }
-    if(end){
+    if(state==end){
         state_end();
     }
     shutdown();  // do clean up, if any. free memory.
@@ -49,12 +48,12 @@ int main( void )
 // Input	: void
 // Output	: void
 //--------------------------------------------------------------
-void mainLoop( void )
+void stage_1( void )
 {
     g_Timer.startTimer();   // Start timer to calculate how long it takes to render this frame
     system ("mode 80,30");
     while (state==stage1)      // run this loop until user wants to quit 
-	{        
+	{       
         getInput();                         // get keyboard input
         update(g_Timer.getElapsedTime());   // update the game
         render();                           // render the graphics output to screen
@@ -76,9 +75,9 @@ void stage_2(){
 }
 
 void state_end(){
-        console.clearBuffer(0x00);
         init3();
             while(state==end){  
+            getInput();
             update2(g_Timer.getElapsedTime());   // update the game
             render_end();                           // render the graphics output to screen
             g_Timer.waitUntil(gc_uFrameTime);
