@@ -21,7 +21,7 @@ void stage_1( void );
 void stage_transition();
 void stage_2();
 void state_end();
-stage state=PVP_stage2;
+stage state=menu;
 
 
 // TODO:
