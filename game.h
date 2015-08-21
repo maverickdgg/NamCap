@@ -38,6 +38,7 @@ enum stage
 
 void eneXp1(COORD &ene , COORD &p1);
 bool p1Xcoin(COORD location);
+void teleport(COORD& a, COORD b, COORD c);
 void init();                // initialize your variables, allocate memory, etc
 void init2(); 
 void init3(); 

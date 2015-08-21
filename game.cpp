@@ -46,6 +46,8 @@ int score2=0;
 
 COORD charLocation;
 COORD charLocation2;
+COORD tp1;
+COORD tp2;
 char map1[]="map.txt";
 char map2[]="map2.txt";
 // Initialize variables, allocate memory, load data from file, etc. 
@@ -75,7 +77,8 @@ void init()
     g_idirection=rand()%4;
     g_idirection2=rand()%4;
     g_idirection3=rand()%4;
-    
+
+
     // sets the width, height and the font name to use in the console
     console.setConsoleFont(0, 40, L"derp");
 }
@@ -104,6 +107,11 @@ void init2()
     g_idirection=rand()%4;
     g_idirection2=rand()%4;
     g_idirection3=rand()%4;
+
+    tp1.X=0+ciOffsetX;
+    tp1.Y=9+ciOffsetY;
+    tp2.X=37+ciOffsetX;
+    tp2.Y=9+ciOffsetY;
     
     // sets the width, height and the font name to use in the console
     console.setConsoleFont(0, 40, L"derp");
@@ -168,6 +176,7 @@ void update(double dt)
 
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
     moveCharacter();// moves the character, collision detection, physics, etc
+
     // sound can be played here too.
 }
 
@@ -397,6 +406,8 @@ void moveCharacter()
             Beep(1440, 30);
             charLocation2.X++; 
         }
+        
+        
     }
     monster(ghost1,g_idirection);
     monster(ghost2,g_idirection2);
@@ -451,6 +462,18 @@ bool p1Xcoin(COORD location)
     }
 }
 
+void teleport(COORD& a,COORD b, COORD c){
+    
+    if (a.X == b.X && a.Y==b.Y){
+        a.X = c.X-1;
+        a.Y = c.Y;
+    }
+    if (a.X == c.X && a.Y==c.Y){
+        a.X = b.X+1;
+        a.Y = b.Y;
+    }
+}
+
 void processUserInput()
 {
     // quits the game if player hits the escape key
@@ -475,6 +498,7 @@ void renderMap2()
     // Set up sample colours, and output shadings
     colour(0x0F);
     insertmap(sPacMap);
+
 }
 
 void renderTransition()
@@ -511,6 +535,7 @@ void renderCharacter()
     eneXp1(ghost2,charLocation);
     eneXp1(ghost3,charLocation);
 	p1Xcoin(charLocation);
+    teleport(charLocation,tp1,tp2);
 	console.writeToBuffer(charLocation2, 148, 0x0C);
 }
 
