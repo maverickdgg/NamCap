@@ -21,6 +21,7 @@ enum Keys
 	K_D,
 	K_M,
 	K_N,
+	K_ENTER,
     K_ESCAPE,
     K_COUNTbv
 };
@@ -28,8 +29,9 @@ enum Keys
 enum stage
 {
 	menu,
-	stage1,
-	stage2,
+	PVP_stage1,
+	transition,
+	PVP_stage2,
 	end,
     statecount
 };
@@ -43,8 +45,10 @@ void getInput();            // get input from player
 void update(double dt);     // update the game and the state of the game
 void update2(double dt);
 void render();              // renders the current state of the game to the console
+void render_transition();
 void render2();
 void render_end();
+void renderMainMenu();
 void shutdown();            // do clean up, free memory
 
 void moveCharacter();       // moves the character, collision detection, physics, etc

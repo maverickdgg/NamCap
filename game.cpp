@@ -146,6 +146,7 @@ void getInput()
     keyPressed[K_S] = isKeyPressed(0x53);
     keyPressed[K_A] = isKeyPressed(0x41);
     keyPressed[K_D] = isKeyPressed(0x44);
+	keyPressed[K_ENTER]=isKeyPressed(0x0D);
     keyPressed[K_ESCAPE] = isKeyPressed(VK_ESCAPE);
 }
 
@@ -186,6 +187,15 @@ void update2(double dt)
     Just draw it!
     To get an idea of the values for colours, look at console.h and the URL listed there
 */
+
+void renderMainMenu()
+{
+	clearScreen();     
+	console.writeToBuffer(10,10,"Press up to play",0x0F);
+    renderFramerate();  
+    renderToScreen();  
+}
+
 void render()
 {
     clearScreen();      // clears the current screen and draw from scratch 
@@ -204,6 +214,14 @@ void render2()
     renderToScreen();   // dump the contents of the buffer to the screen, one frame worth of game
 }
 
+void render_transition()
+{
+	clearScreen();
+	console.writeToBuffer(25,15,"Player 2 Ready? Press Enter!",0x0F);       
+    renderFramerate();  
+    renderToScreen();   
+}
+
 void render_end(){
     clearScreen();
     renderMap3();        
@@ -212,7 +230,20 @@ void render_end(){
 }
 void moveCharacter()
 {
-    if(state==stage1){
+		if(state == menu)
+	{
+		if (keyPressed[K_UP])
+	    {
+		    state = PVP_stage1;
+	    }
+	}
+	if(state==transition){
+		if(keyPressed[K_ENTER]){
+			state=PVP_stage2;
+		}
+	}
+
+    if(state==PVP_stage1){
     // Updating the location of the character based on the key press
         if (keyPressed[K_UP] && charLocation.Y > 0 && wall_up(charLocation)==false)
         {
@@ -290,7 +321,7 @@ void moveCharacter()
             charLocation2.X++; 
         }
     }
-    if(state==stage2){
+    if(state==PVP_stage2){
         if (keyPressed[K_W] && charLocation.Y > 0 && wall_up(charLocation)==false)
         {
             //Beep(1440, 30);
@@ -386,10 +417,10 @@ void eneXp1(COORD &ene , COORD &p1)
 		g_bOrigin = true;
 		if(g_bOrigin == true)
 		{
-            if(state==stage1){
-			    state=stage2;
+            if(state==PVP_stage1){
+			    state=transition;
             }
-            else if(state==stage2){
+            else if(state==PVP_stage2){
                 state=end;
             }
 		}
@@ -406,10 +437,10 @@ bool p1Xcoin(COORD location)
 	if(sPacMap[location.Y-ciOffsetY][location.X-ciOffsetX] == 0)
 	{
 		sPacMap[location.Y-ciOffsetY][location.X-ciOffsetX] = ' ';
-        if(state==stage1){
+        if(state==PVP_stage1){
 		    score++;
         }
-        if(state==stage2){
+        if(state==PVP_stage2){
             score2++;
         }
         return true;
@@ -444,6 +475,11 @@ void renderMap2()
     // Set up sample colours, and output shadings
     colour(0x0F);
     insertmap(sPacMap);
+}
+
+void renderTransition()
+{
+	colour(0x0F);
 }
 
 void renderMap3(){

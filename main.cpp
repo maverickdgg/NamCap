@@ -16,10 +16,12 @@ extern COORD monster1;
 extern int score;
 extern int score2;
 extern Console console;
+void mainMenu();
 void stage_1( void );
+void stage_transition();
 void stage_2();
 void state_end();
-stage state=stage1;
+stage state=menu;
 
 
 // TODO:
@@ -28,11 +30,17 @@ stage state=stage1;
 // main function - starting function
 int main( void )
 {
+	if(state==menu){
+		mainMenu();
+	}
 	init();      // initialize your variables
-    if(state==stage1){
+    if(state==PVP_stage1){
         stage_1();
     }
-    if(state==stage2){
+	if(state==transition){
+		stage_transition();
+	}
+    if(state==PVP_stage2){
         stage_2();
     }
     if(state==end){
@@ -48,11 +56,27 @@ int main( void )
 // Input	: void
 // Output	: void
 //--------------------------------------------------------------
+void mainMenu()
+{
+    g_Timer.startTimer();   // Start timer to calculate how long it takes to render this frame
+    system ("mode 80,30");
+    while (state==menu)      // run this loop until user wants to quit 
+	{       
+		init3();
+        getInput();                         // get keyboard input
+        update(g_Timer.getElapsedTime());   // update the game
+		renderMainMenu();                    // render the graphics output to screen
+        g_Timer.waitUntil(gc_uFrameTime);   // Frame rate limiter. Limits each frame to a specified time in ms.      
+	} 
+        shutdown();  // do clean up, if any. free memory.
+
+}
+
 void stage_1( void )
 {
     g_Timer.startTimer();   // Start timer to calculate how long it takes to render this frame
     system ("mode 80,30");
-    while (state==stage1)      // run this loop until user wants to quit 
+    while (state==PVP_stage1)      // run this loop until user wants to quit 
 	{       
         getInput();                         // get keyboard input
         update(g_Timer.getElapsedTime());   // update the game
@@ -63,9 +87,21 @@ void stage_1( void )
 
 }
 
+void stage_transition(){
+        g_Timer.startTimer();   // Start timer to calculate how long it takes to render this frame
+		system ("mode 80,30");
+            while(state==transition){ 
+			init3();
+            getInput();
+            update(g_Timer.getElapsedTime());   // update the game
+            render_transition();                           // render the graphics output to screen
+            g_Timer.waitUntil(gc_uFrameTime);
+        }
+}
+
 void stage_2(){
             init2();
-        while (state==stage2){
+        while (state==PVP_stage2){
             getInput();
             update(g_Timer.getElapsedTime());   // update the game
             render2();                           // render the graphics output to screen
