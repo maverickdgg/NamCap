@@ -30,21 +30,12 @@ stage state=menu;
 // main function - starting function
 int main( void )
 {
-	if(state==menu){
-		mainMenu();
-	}
-	init();      // initialize your variables
-    if(state==PVP_stage1){
-        stage_1();
-    }
-	if(state==transition){
-		stage_transition();
-	}
-    if(state==PVP_stage2){
-        stage_2();
-    }
-    if(state==end){
-        state_end();
+    switch(state){
+    case menu:mainMenu();
+    case PVP_stage1:stage_1();
+    case transition: stage_transition();
+    case PVP_stage2:stage_2();
+    case end:state_end();
     }
     shutdown();  // do clean up, if any. free memory.
 	return 0;
@@ -60,12 +51,13 @@ void mainMenu()
 {
     g_Timer.startTimer();   // Start timer to calculate how long it takes to render this frame
     system ("mode 80,30");
+    init(state);   
     while (state==menu)      // run this loop until user wants to quit 
-	{       
-		init3();
+	{    
+
         getInput();                         // get keyboard input
         update(g_Timer.getElapsedTime());   // update the game
-		renderMainMenu();                    // render the graphics output to screen
+		render(state);                   // render the graphics output to screen
         g_Timer.waitUntil(gc_uFrameTime);   // Frame rate limiter. Limits each frame to a specified time in ms.      
 	} 
         shutdown();  // do clean up, if any. free memory.
@@ -76,11 +68,12 @@ void stage_1( void )
 {
     g_Timer.startTimer();   // Start timer to calculate how long it takes to render this frame
     system ("mode 80,30");
+    init(state); 
     while (state==PVP_stage1)      // run this loop until user wants to quit 
 	{       
         getInput();                         // get keyboard input
         update(g_Timer.getElapsedTime());   // update the game
-        render();                           // render the graphics output to screen
+        render(state);                      // render the graphics output to screen
         g_Timer.waitUntil(gc_uFrameTime);   // Frame rate limiter. Limits each frame to a specified time in ms.      
 	} 
         shutdown();  // do clean up, if any. free memory.
@@ -89,33 +82,33 @@ void stage_1( void )
 
 void stage_transition(){
         g_Timer.startTimer();   // Start timer to calculate how long it takes to render this frame
+        init(state); 
 		system ("mode 80,30");
             while(state==transition){ 
-			init3();
             getInput();
             update(g_Timer.getElapsedTime());   // update the game
-            render_transition();                           // render the graphics output to screen
+            render(state);                            // render the graphics output to screen
             g_Timer.waitUntil(gc_uFrameTime);
         }
 }
 
 void stage_2(){
-            init2();
+        init(state); 
         while (state==PVP_stage2){
             getInput();
             update(g_Timer.getElapsedTime());   // update the game
-            render2();                           // render the graphics output to screen
+            render(state);                           // render the graphics output to screen
             g_Timer.waitUntil(gc_uFrameTime);
         }
             shutdown();  // do clean up, if any. free memory.
 }
 
 void state_end(){
-        init3();
+        init(state); 
             while(state==end){  
             getInput();
             update2(g_Timer.getElapsedTime());   // update the game
-            render_end();                           // render the graphics output to screen
+            render(state);                          // render the graphics output to screen
             g_Timer.waitUntil(gc_uFrameTime);
         }
 }

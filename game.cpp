@@ -8,6 +8,7 @@
 #include "Framework\console.h"
 #include "GameUI.h"
 #include"ai.h"
+#include <iostream>
 
 #include "map.h"
 
@@ -41,7 +42,6 @@ int i = 0;
 int score = 0;
 int score2=0;
 
-
 // Game specific variables here
 
 COORD charLocation;
@@ -52,77 +52,78 @@ char map1[]="map.txt";
 char map2[]="map2.txt";
 // Initialize variables, allocate memory, load data from file, etc. 
 // This is called once before entering into your main loop
-void init()
+void init(stage state)
 {
     // Set precision for floating point output
-    elapsedTime = 0.0;
-    readfile(sPacMap,map2);
+    charLocation.X=1;
+    charLocation.Y=1;
+    switch(state){
+    case menu:
+        elapsedTime = 0.0;
+        break;
+    case PVP_stage1:
+        elapsedTime = 0.0;
+        readfile(sPacMap,map2);
 
-    charLocation.X = 38;
-    charLocation.Y = 20;
+        charLocation.X = 38;
+        charLocation.Y = 20;
 
-	charLocation2.X = 39;
-    charLocation2.Y = 13;
+	    charLocation2.X = 39;
+        charLocation2.Y = 13;
 
-    ghost1.X=39;
-    ghost1.Y=13;
+        ghost1.X=39;
+        ghost1.Y=13;
 
-    ghost2.X=2+ciOffsetX;
-    ghost2.Y=2+ciOffsetY;
+        ghost2.X=2+ciOffsetX;
+        ghost2.Y=2+ciOffsetY;
 
-    ghost3.X=36+ciOffsetX;
-    ghost3.Y=19+ciOffsetY;
+        ghost3.X=36+ciOffsetX;
+        ghost3.Y=19+ciOffsetY;
 
-    srand(time(NULL));
-    g_idirection=rand()%4;
-    g_idirection2=rand()%4;
-    g_idirection3=rand()%4;
+        srand(time(NULL));
+        g_idirection=rand()%4;
+        g_idirection2=rand()%4;
+        g_idirection3=rand()%4;
+        break;
+    case transition:    
+        elapsedTime = 0.0;
+        break;
+    case PVP_stage2:    
+        elapsedTime = 0.0;
+        readfile(sPacMap,map1);
 
+        charLocation.X = 38;
+        charLocation.Y = 20;
 
+	    charLocation2.X = 39;
+        charLocation2.Y = 13;
+
+        ghost1.X=39;
+        ghost1.Y=13;
+
+        ghost2.X=2+ciOffsetX;
+        ghost2.Y=2+ciOffsetY;
+
+        ghost3.X=36+ciOffsetX;
+        ghost3.Y=19+ciOffsetY;
+
+        srand(time(NULL));
+        g_idirection=rand()%4;
+        g_idirection2=rand()%4;
+        g_idirection3=rand()%4;
+
+        tp1.X=0+ciOffsetX;
+        tp1.Y=9+ciOffsetY;
+        tp2.X=37+ciOffsetX;
+        tp2.Y=9+ciOffsetY;
+        break;
+    case end:
+        elapsedTime = 0.0;
+        break;
+    }
     // sets the width, height and the font name to use in the console
     console.setConsoleFont(0, 40, L"derp");
 }
-void init2()
-{
-    // Set precision for floating point output
-    elapsedTime = 0.0;
-    readfile(sPacMap,map1);
-
-    charLocation.X = 38;
-    charLocation.Y = 20;
-
-	charLocation2.X = 39;
-    charLocation2.Y = 13;
-
-    ghost1.X=39;
-    ghost1.Y=13;
-
-    ghost2.X=2+ciOffsetX;
-    ghost2.Y=2+ciOffsetY;
-
-    ghost3.X=36+ciOffsetX;
-    ghost3.Y=19+ciOffsetY;
-
-    srand(time(NULL));
-    g_idirection=rand()%4;
-    g_idirection2=rand()%4;
-    g_idirection3=rand()%4;
-
-    tp1.X=0+ciOffsetX;
-    tp1.Y=9+ciOffsetY;
-    tp2.X=37+ciOffsetX;
-    tp2.Y=9+ciOffsetY;
-    
-    // sets the width, height and the font name to use in the console
-    console.setConsoleFont(0, 40, L"derp");
-}
-
-void init3(){
-   elapsedTime = 0.0;
-
-   console.setConsoleFont(0, 40, L"derp");
-}
-
 // Do your clean up of memory here
 // This is called once just before the game exits
 void shutdown()
@@ -189,6 +190,12 @@ void update2(double dt)
     // sound can be played here too.
 }
 
+void timer(double seconds)
+{
+	clock_t endwait;
+	endwait = clock () + seconds * CLOCKS_PER_SEC ;
+	while (clock() < endwait);
+}
 
 /*
     This is the render loop
@@ -197,46 +204,45 @@ void update2(double dt)
     To get an idea of the values for colours, look at console.h and the URL listed there
 */
 
+
+
+
+void render(stage state)
+{
+    clearScreen();      // clears the current screen and draw from scratch
+    switch(state){
+        case menu:
+            renderMainMenu();
+            break;
+        case PVP_stage1:
+            renderMap();
+            renderCharacter(); 
+            break;
+        case transition: 
+            render_transition();
+            break;
+        case PVP_stage2:
+            renderMap2();
+            renderCharacter(); 
+            break;
+        case end:
+            render_end();
+            break;
+    }
+    renderFramerate();  // renders debug information, frame rate, elapsed time, etc
+    renderToScreen();   // dump the contents of the buffer to the screen, one frame worth of game
+}
+
 void renderMainMenu()
-{
-	clearScreen();     
+{   
 	console.writeToBuffer(10,10,"Press up to play",0x0F);
-    renderFramerate();  
-    renderToScreen();  
-}
-
-void render()
-{
-    clearScreen();      // clears the current screen and draw from scratch 
-    renderMap();        // renders the map to the buffer first
-    renderCharacter();  // renders the character into the buffer
-    renderFramerate();  // renders debug information, frame rate, elapsed time, etc
-    renderToScreen();   // dump the contents of the buffer to the screen, one frame worth of game
-}
-
-void render2()
-{
-    clearScreen();      // clears the current screen and draw from scratch 
-    renderMap2();        // renders the map to the buffer first
-    renderCharacter();  // renders the character into the buffer
-    renderFramerate();  // renders debug information, frame rate, elapsed time, etc
-    renderToScreen();   // dump the contents of the buffer to the screen, one frame worth of game
 }
 
 void render_transition()
 {
-	clearScreen();
-	console.writeToBuffer(25,15,"Player 2 Ready? Press Enter!",0x0F);       
-    renderFramerate();  
-    renderToScreen();   
+	console.writeToBuffer(25,15,"Player 2 Ready? Press Enter!",0x0F);         
 }
 
-void render_end(){
-    clearScreen();
-    renderMap3();        
-    renderFramerate();  
-    renderToScreen();   
-}
 void moveCharacter()
 {
 		if(state == menu)
@@ -429,7 +435,7 @@ void eneXp1(COORD &ene , COORD &p1)
 		if(g_bOrigin == true)
 		{
             if(state==PVP_stage1){
-			    state=transition;
+                state=transition;
             }
             else if(state==PVP_stage2){
                 state=end;
@@ -506,7 +512,7 @@ void renderTransition()
 	colour(0x0F);
 }
 
-void renderMap3(){
+void render_end(){
        if(score>score2){
             console.writeToBuffer(30,15,"Player one wins",0x0F);
         }
