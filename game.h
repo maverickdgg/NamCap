@@ -29,10 +29,12 @@ enum Keys
 enum stage
 {
 	menu,
+	stage_survival,
 	PVP_stage1,
 	transition,
 	PVP_stage2,
 	end,
+	end2,
     statecount
 };
 
@@ -53,6 +55,7 @@ void clearScreen();         // clears the current screen and draw from scratch
 void renderMap();           // renders the map to the buffer first
 void renderMap2();           
 void render_end();
+void render_end2();
 void render_transition();
 void renderMainMenu();
 void renderCharacter();     // renders the character into the buffer

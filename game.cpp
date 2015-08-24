@@ -7,7 +7,8 @@
 #include "game.h"
 #include "Framework\console.h"
 #include "GameUI.h"
-#include"ai.h"
+#include "ai.h"
+#include "survival.h"
 #include <iostream>
 
 #include "map.h"
@@ -31,9 +32,13 @@ bool	g_bCoin = false;
 COORD ghost1;
 COORD ghost2;
 COORD ghost3;
+COORD ghost4;
+COORD ghost5;
 int g_idirection;
 int g_idirection2;
 int g_idirection3;
+int g_idirection4;
+int g_idirection5;
 extern stage state;
 extern short sPacMap[21][38];
 extern Console console;
@@ -43,13 +48,13 @@ int score = 0;
 int score2=0;
 
 // Game specific variables here
-
-COORD charLocation;
-COORD charLocation2;
 COORD tp1;
 COORD tp2;
+COORD charLocation;
+COORD charLocation2;
 char map1[]="map.txt";
 char map2[]="map2.txt";
+char map3[]="map3.txt";
 // Initialize variables, allocate memory, load data from file, etc. 
 // This is called once before entering into your main loop
 void init(stage state)
@@ -60,6 +65,35 @@ void init(stage state)
     switch(state){
     case menu:
         elapsedTime = 0.0;
+        break;
+	case stage_survival:
+        elapsedTime = 0.0;
+        readfile(sPacMap,map3);
+
+        charLocation.X = 38;
+        charLocation.Y = 20;
+
+        ghost1.X=39;
+        ghost1.Y=13;
+
+        ghost2.X=2+ciOffsetX;
+        ghost2.Y=2+ciOffsetY;
+
+        ghost3.X=36+ciOffsetX;
+        ghost3.Y=19+ciOffsetY;
+
+		ghost4.X=23+ciOffsetX;
+        ghost4.Y=19+ciOffsetY;
+
+		ghost5.X=15+ciOffsetX;
+        ghost5.Y=19+ciOffsetY;
+
+        srand(time(NULL));
+        g_idirection=rand()%4;
+        g_idirection2=rand()%4;
+        g_idirection3=rand()%4;
+		g_idirection4=rand()%4;
+		g_idirection5=rand()%4;
         break;
     case PVP_stage1:
         elapsedTime = 0.0;
@@ -175,7 +209,7 @@ void update(double dt)
     elapsedTime += dt;
     deltaTime = dt;
 
-    processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
+    //processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
     moveCharacter();// moves the character, collision detection, physics, etc
 
     // sound can be played here too.
@@ -214,6 +248,10 @@ void render(stage state)
         case menu:
             renderMainMenu();
             break;
+		case stage_survival:
+			renderMapSurvival();
+			renderCharacterSurvival();
+			break;
         case PVP_stage1:
             renderMap();
             renderCharacter(); 
@@ -227,6 +265,9 @@ void render(stage state)
             break;
         case end:
             render_end();
+            break;
+		case end2:
+            render_end2();
             break;
     }
     renderFramerate();  // renders debug information, frame rate, elapsed time, etc
@@ -415,6 +456,9 @@ void moveCharacter()
         
         
     }
+	if(state==stage_survival){
+        survivalControls();
+	}
     monster(ghost1,g_idirection);
     monster(ghost2,g_idirection2);
     monster(ghost3,g_idirection3);
@@ -434,6 +478,9 @@ void eneXp1(COORD &ene , COORD &p1)
 		g_bOrigin = true;
 		if(g_bOrigin == true)
 		{
+			if(state==stage_survival){
+				state=end2;
+			}
             if(state==PVP_stage1){
                 state=transition;
             }
@@ -480,12 +527,12 @@ void teleport(COORD& a,COORD b, COORD c){
     }
 }
 
-void processUserInput()
-{
-    // quits the game if player hits the escape key
-    if (keyPressed[K_ESCAPE])
-        g_bQuitGame = true;
-}
+//void processUserInput()
+//{
+//    // quits the game if player hits the escape key
+//    if (keyPressed[K_ESCAPE])
+//        g_bQuitGame = true;
+//}
 
 void clearScreen()
 {
@@ -523,26 +570,33 @@ void render_end(){
 
 void renderCharacter()
 {
-    // Draw the location of the character
-    console.writeToBuffer(charLocation, (char)g_iChangeMod, 0x0C+g_iChangeCol);
-    console.writeToBuffer(ghost1,232,0x0B);
-    console.writeToBuffer(ghost2,232,0x0B);
-    console.writeToBuffer(ghost3,232,0x0B);
-    if(g_iChangeMod > 6)
+	if(state==stage_survival)
 	{
-		g_iChangeMod = 1;
+		renderCharacterSurvival();
 	}
-	if(g_iChangeCol > 6)
+	if(state==PVP_stage1 || state==PVP_stage2)
 	{
-		g_iChangeCol = 1;
+		// Draw the location of the character
+		console.writeToBuffer(charLocation, (char)g_iChangeMod, 0x0C+g_iChangeCol);
+		console.writeToBuffer(ghost1,232,0x0B);
+		console.writeToBuffer(ghost2,232,0x0B);
+		console.writeToBuffer(ghost3,232,0x0B);
+		if(g_iChangeMod > 6)
+		{
+			g_iChangeMod = 1;
+		}
+		if(g_iChangeCol > 6)
+		{
+			g_iChangeCol = 1;
+		}
+		eneXp1(charLocation2,charLocation);
+		eneXp1(ghost1,charLocation);
+		eneXp1(ghost2,charLocation);
+		eneXp1(ghost3,charLocation);
+		p1Xcoin(charLocation);
+		teleport(charLocation,tp1,tp2);
+		console.writeToBuffer(charLocation2, 148, 0x0C);
 	}
-	eneXp1(charLocation2,charLocation);
-	eneXp1(ghost1,charLocation);
-    eneXp1(ghost2,charLocation);
-    eneXp1(ghost3,charLocation);
-	p1Xcoin(charLocation);
-    teleport(charLocation,tp1,tp2);
-	console.writeToBuffer(charLocation2, 148, 0x0C);
 }
 
 void renderFramerate()
