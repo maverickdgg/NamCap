@@ -5,9 +5,8 @@
 
 const short g_csRows=21;
 const short g_csCol=38;
-const short g_csCol2=15;
-const int csOffsetX=20;
-const int csOffsetY=5;
+extern const int ciOffsetX=20;
+extern const int ciOffsetY=5;
 const unsigned char wall=178;
 unsigned char coin=48;
 extern Console console;
@@ -46,50 +45,15 @@ void insertmap(short sMap[21][38])
 	console.writeToBuffer(68,3,"Score: ",0x46);
     console.writeToBuffer(76,3,score2,0x46);
 
-    for(int i=csOffsetX;i<g_csCol+csOffsetX;++i){
-        for(int j=csOffsetY;j<g_csRows+csOffsetY;++j){ 
-            if(sMap[j-csOffsetY][i-csOffsetX]==1){
+    for(int i=ciOffsetX;i<g_csCol+ciOffsetX;++i){
+        for(int j=ciOffsetY;j<g_csRows+ciOffsetY;++j){ 
+            if(sMap[j-ciOffsetY][i-ciOffsetX]==1){
                 console.writeToBuffer(i,j,wall,0x0F);
             }
-			if(sMap[j-csOffsetY][i-csOffsetX]==0){
-                console.writeToBuffer(i,j,coin,0x0E);
+			if(sMap[j-ciOffsetY][i-ciOffsetX]==0){
+                console.writeToBuffer(i,j,coin,0x06);
             }
         }  
     }
 }
 
-short readExactFile(short sMapInUse[][15],string txt)
-{
-	ifstream inData;
-	string data;
-	inData.open (txt); // associate & open files
-	while (!inData.eof()) 
-	{
-		for(short i=0;i<g_csRows;++i)
-		{
-			getline(inData,data); // read from input file
-			for(short j=0;j<g_csCol2;++j)
-			{
-				sMapInUse[i][j]=static_cast<short>(data[j]-'0');
-			}
-			//data="";
-		}
-	}
-	return sMapInUse[21][15];
-	inData.close (); // close files
-}
-
-
-void printExactFile(short sMap[21][15])
-{
-	for(int i=csOffsetX;i<g_csCol2+csOffsetX;++i){
-        for(int j=csOffsetY;j<g_csRows+csOffsetY;++j){ 
-            if(sMap[j-csOffsetY][i-csOffsetX]==1){
-                console.writeToBuffer(i,j,wall,0x0F);
-            }
-			if(sMap[j-csOffsetY][i-csOffsetX]==0){
-                console.writeToBuffer(i,j,' ',0x0E);
-            }
-        }  
-    }
-}

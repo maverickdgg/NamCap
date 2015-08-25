@@ -80,6 +80,7 @@
     <ClCompile Include="Framework\console.cpp" />
     <ClCompile Include="Framework\timer.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="infection.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="GameUI.cpp" />
     <ClCompile Include="map.cpp" />
@@ -92,6 +93,7 @@
     <ClInclude Include="Framework\timer.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="GameUI.h" />
+    <ClInclude Include="infection.h" />
     <ClInclude Include="map.h" />
     <ClInclude Include="survival.h" />
   </ItemGroup>

@@ -9,6 +9,7 @@
 #include "GameUI.h"
 #include "ai.h"
 #include "survival.h"
+#include "infection.h"
 #include <iostream>
 #include "coop.h"
 
@@ -22,18 +23,20 @@ double elapsedTime;
 double deltaTime;
 bool keyPressed[K_COUNTbv];
 extern short sPacMap[21][38];
-short sMap2[21][38];
 extern short sCountdown[21][15];
 const int ciOffsetX=20;
 const int ciOffsetY=5;
+
 int		g_iChangeMod = 1;
 int		g_iChangeCol = 1;
 int		g_iauto = 2;
 bool	g_bOrigin = false;
 bool	g_bCoin = false;
+
 COORD ghost1;
 COORD ghost2;
 COORD ghost3;
+
 COORD ghost4;
 COORD ghost5;
 COORD ghost6;
@@ -51,12 +54,13 @@ int g_idirection7;
 int g_idirection8;
 int g_idirection9;
 //int g_idirection10;
+
+
 extern stage state;
 extern short sPacMap[21][38];
 extern short sCountdown[21][15];
 extern Console console;
 extern unsigned char coin;
-int i = 0;
 int score = 0;
 int score2=0;
 double countdown = 0.0;
@@ -76,13 +80,14 @@ char map3[]="map3.txt";
 char countdown3[]="3.txt";
 char countdown2[]="2.txt";
 char countdown1[]="1.txt";
+
 // Initialize variables, allocate memory, load data from file, etc. 
 // This is called once before entering into your main loop
 void init(stage state)
 {
     // Set precision for floating point output
-    charLocation.X=1;
-    charLocation.Y=1;
+    charLocation.X=40;
+    charLocation.Y=20;
     switch(state){
     case menu:
         elapsedTime = 0.0;
@@ -207,6 +212,7 @@ void init(stage state)
         tp2.X=37+ciOffsetX;
         tp2.Y=9+ciOffsetY;
         break;
+
 	case COOP_stage:
 
 		elapsedTime = 0.0;
@@ -233,6 +239,12 @@ void init(stage state)
         g_idirection3=rand()%4;
 
 		break;
+
+    case infection:
+        init_infect();
+        break;
+    
+
     case end:
         elapsedTime = 0.0;
         break;
@@ -308,7 +320,9 @@ void update2(double dt)
 
 double timer(double& seconds)
 {
-	seconds -= deltaTime;
+
+    seconds -= deltaTime;
+
     return seconds;
 }
 
@@ -347,13 +361,17 @@ void render(stage state)
             render_transition();
             break;
         case PVP_stage2:
-            renderMap2();
+            renderMap();
             renderCharacter(); 
             break;
 		case COOP_stage:
 			renderMap();
 			renderCoopCharacter();
 			break;
+
+        case infection:
+            renderMap();
+            renderCharacter_infection();
         case end:
             render_end();
             break;
@@ -393,13 +411,13 @@ void rendercountdown1()
 void render_transition()
 {
 	console.writeToBuffer(25,15,"Player 2 Ready? Press Enter!",0x0F);         
-}
+
 
 void moveCharacter()
 {
 		if(state == menu)
 	{
-		if (keyPressed[K_UP])
+		if (keyPressed[K_ENTER])
 	    {
 		    state = PVP_stage1;
 	    }
@@ -572,6 +590,13 @@ void moveCharacter()
             Beep(1440, 30);
             charLocation2.X++; 
         }
+        teleport(ghost1,tp1,tp2);
+        teleport(ghost2,tp1,tp2);
+        teleport(ghost3,tp1,tp2);
+        teleport(charLocation,tp1,tp2);
+        teleport(charLocation2,tp1,tp2);
+        
+    }
         
         
     }
@@ -724,12 +749,15 @@ void renderMap()
     insertmap(sPacMap);
 }
 
-void renderMap2()
-{
-    // Set up sample colours, and output shadings
-    colour(0x0F);
-    insertmap(sPacMap);
 
+void renderMainMenu()
+{   
+	console.writeToBuffer(10,10,"Press up to play",0x0F);
+}
+
+void render_transition()
+{
+	console.writeToBuffer(25,15,"Player 2 Ready? Press Enter!",0x0F);         
 }
 
 void renderTransition()
@@ -775,6 +803,14 @@ void renderCharacter()
 		teleport(charLocation,tp1,tp2);
 		console.writeToBuffer(charLocation2, 148, 0x0C);
 	}
+
+	eneXp1(charLocation2,charLocation);
+	eneXp1(ghost1,charLocation);
+    eneXp1(ghost2,charLocation);
+    eneXp1(ghost3,charLocation);
+	p1Xcoin(charLocation);
+	console.writeToBuffer(charLocation2, 148, 0x0C);
+
 }
 
 void renderFramerate()
@@ -800,4 +836,3 @@ void renderToScreen()
     // Writes the buffer to the console, hence you will see what you have written
     console.flushBufferToConsole();
 }
-

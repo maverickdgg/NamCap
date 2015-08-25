@@ -8,6 +8,7 @@
 #include "ai.h"
 #include "survival.h"
 #include "coop.h"
+#include "infection.h"
 
 CStopWatch g_Timer;							// Timer function to keep track of time and the frame rate
 bool g_bQuitGame = false;					// Set to true if you want to quit the game
@@ -19,18 +20,23 @@ extern COORD monster1;
 extern int score;
 extern int score2;
 extern Console console;
+
+//function declarations
+void stage_infection();
 void mainMenu();
 void Survival();
 void stage_1( void );
 void stage_transition();
 void stage_2();
 void state_end();
+
 void state_end2();
 void Count3();
 void Count2();
 void Count1();
 void coop();
 stage state=menu;
+
 
 
 // TODO:
@@ -48,6 +54,7 @@ int main( void )
     case PVP_stage1:stage_1();
     case transition: stage_transition();
     case PVP_stage2:stage_2();
+    case infection:stage_infection();
     case end:state_end();
 	case end2:state_end2();
 	case COOP_stage:coop();
@@ -66,7 +73,7 @@ void mainMenu()
 {
     g_Timer.startTimer();   // Start timer to calculate how long it takes to render this frame
     system ("mode 80,30");
-    init(state);   
+    init(state);
     while (state==menu)      // run this loop until user wants to quit 
 	{    
         getInput();                         // get keyboard input
@@ -123,6 +130,7 @@ void stage_transition(){
 }
 
 void stage_2(){
+    g_Timer.startTimer();   // Start timer to calculate how long it takes to render this frame
         init(state); 
         while (state==PVP_stage2){
             getInput();
@@ -133,7 +141,19 @@ void stage_2(){
             shutdown();  // do clean up, if any. free memory.
 }
 
+void stage_infection(){
+    g_Timer.startTimer();   // Start timer to calculate how long it takes to render this frame
+        init(state); 
+            while(state==infection){  
+            getInput();
+            update_infection(g_Timer.getElapsedTime());   // update the game
+            render(state);                          // render the graphics output to screen
+            g_Timer.waitUntil(gc_uFrameTime);
+        }
+}
+
 void state_end(){
+    g_Timer.startTimer();   // Start timer to calculate how long it takes to render this frame
         init(state); 
             while(state==end){  
             getInput();

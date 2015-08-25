@@ -5,7 +5,6 @@
 #include <iostream>
 #include <iomanip>
 #include <sstream>
-#include <random>
 extern CStopWatch g_timer;
 extern bool g_bQuitGame;
 
@@ -40,6 +39,7 @@ enum stage
 	count1,
 	COOP_stage,
 	COOP_end,
+    infection,
     statecount
 };
 
