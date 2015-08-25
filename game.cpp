@@ -10,6 +10,7 @@
 #include "ai.h"
 #include "survival.h"
 #include <iostream>
+#include "coop.h"
 
 #include "map.h"
 
@@ -22,6 +23,7 @@ double deltaTime;
 bool keyPressed[K_COUNTbv];
 extern short sPacMap[21][38];
 short sMap2[21][38];
+extern short sCountdown[21][15];
 const int ciOffsetX=20;
 const int ciOffsetY=5;
 int		g_iChangeMod = 1;
@@ -34,18 +36,34 @@ COORD ghost2;
 COORD ghost3;
 COORD ghost4;
 COORD ghost5;
+COORD ghost6;
+COORD ghost7;
+COORD ghost8;
+COORD ghost9;
+//COORD ghost10;
 int g_idirection;
 int g_idirection2;
 int g_idirection3;
 int g_idirection4;
 int g_idirection5;
+int g_idirection6;
+int g_idirection7;
+int g_idirection8;
+int g_idirection9;
+//int g_idirection10;
 extern stage state;
 extern short sPacMap[21][38];
+extern short sCountdown[21][15];
 extern Console console;
 extern unsigned char coin;
 int i = 0;
 int score = 0;
 int score2=0;
+double countdown = 0.0;
+double coutndwodntiemr = 0;
+extern bool death;
+extern bool p1die;
+extern bool p2die;
 
 // Game specific variables here
 COORD tp1;
@@ -55,6 +73,9 @@ COORD charLocation2;
 char map1[]="map.txt";
 char map2[]="map2.txt";
 char map3[]="map3.txt";
+char countdown3[]="3.txt";
+char countdown2[]="2.txt";
+char countdown1[]="1.txt";
 // Initialize variables, allocate memory, load data from file, etc. 
 // This is called once before entering into your main loop
 void init(stage state)
@@ -66,9 +87,24 @@ void init(stage state)
     case menu:
         elapsedTime = 0.0;
         break;
+	case count3:
+		elapsedTime = 0.0;
+		timer(countdown = 3.0);
+		readExactFile(sCountdown,countdown3);
+		break;
+	case count2:
+		elapsedTime = 0.0;
+		timer(countdown = 2.0);
+		readExactFile(sCountdown,countdown2);
+		break;
+	case count1:
+		elapsedTime = 0.0;
+		timer(countdown = 1.0);
+		readExactFile(sCountdown,countdown1);
+		break;
 	case stage_survival:
         elapsedTime = 0.0;
-        readfile(sPacMap,map3);
+		readfile(sPacMap,map3);
 
         charLocation.X = 38;
         charLocation.Y = 20;
@@ -88,12 +124,32 @@ void init(stage state)
 		ghost5.X=15+ciOffsetX;
         ghost5.Y=19+ciOffsetY;
 
+		ghost6.X=23+ciOffsetX;
+        ghost6.Y=19+ciOffsetY;
+
+		ghost7.X=2+ciOffsetX;
+        ghost7.Y=19+ciOffsetY;
+
+		ghost8.X=5+ciOffsetX;
+        ghost8.Y=23+ciOffsetY;
+
+		ghost9.X=14+ciOffsetX;
+        ghost9.Y=11+ciOffsetY;
+
+		/*ghost10.X=6+ciOffsetX;
+        ghost10.Y=14+ciOffsetY;*/
+
         srand(time(NULL));
         g_idirection=rand()%4;
         g_idirection2=rand()%4;
         g_idirection3=rand()%4;
 		g_idirection4=rand()%4;
 		g_idirection5=rand()%4;
+		g_idirection6=rand()%4;
+        g_idirection7=rand()%4;
+        g_idirection8=rand()%4;
+		g_idirection9=rand()%4;
+		/*g_idirection10=rand()%4;*/
         break;
     case PVP_stage1:
         elapsedTime = 0.0;
@@ -151,6 +207,32 @@ void init(stage state)
         tp2.X=37+ciOffsetX;
         tp2.Y=9+ciOffsetY;
         break;
+	case COOP_stage:
+
+		elapsedTime = 0.0;
+        readfile(sPacMap,map2);
+
+		charLocation.X = 38;
+        charLocation.Y = 20;
+
+		charLocation2.X = 38;
+        charLocation2.Y = 20;
+
+		ghost1.X=39;
+        ghost1.Y=13;
+
+        ghost2.X=2+ciOffsetX;
+        ghost2.Y=2+ciOffsetY;
+
+        ghost3.X=36+ciOffsetX;
+        ghost3.Y=19+ciOffsetY;
+
+        srand(time(NULL));
+        g_idirection=rand()%4;
+        g_idirection2=rand()%4;
+        g_idirection3=rand()%4;
+
+		break;
     case end:
         elapsedTime = 0.0;
         break;
@@ -224,11 +306,10 @@ void update2(double dt)
     // sound can be played here too.
 }
 
-void timer(double seconds)
+double timer(double& seconds)
 {
-	clock_t endwait;
-	endwait = clock () + seconds * CLOCKS_PER_SEC ;
-	while (clock() < endwait);
+	seconds -= deltaTime;
+    return seconds;
 }
 
 /*
@@ -238,9 +319,6 @@ void timer(double seconds)
     To get an idea of the values for colours, look at console.h and the URL listed there
 */
 
-
-
-
 void render(stage state)
 {
     clearScreen();      // clears the current screen and draw from scratch
@@ -248,6 +326,15 @@ void render(stage state)
         case menu:
             renderMainMenu();
             break;
+		case count3:
+			rendercountdown3();
+			break;
+		case count2:
+			rendercountdown2();
+			break;
+		case count1:
+			rendercountdown1();
+			break;
 		case stage_survival:
 			renderMapSurvival();
 			renderCharacterSurvival();
@@ -263,6 +350,10 @@ void render(stage state)
             renderMap2();
             renderCharacter(); 
             break;
+		case COOP_stage:
+			renderMap();
+			renderCoopCharacter();
+			break;
         case end:
             render_end();
             break;
@@ -276,7 +367,27 @@ void render(stage state)
 
 void renderMainMenu()
 {   
-	console.writeToBuffer(10,10,"Press up to play",0x0F);
+	console.writeToBuffer(10,10,"Press up to play PVP",0x0F);
+	console.writeToBuffer(10,11,"Press down to play Survival",0x0F);
+	console.writeToBuffer(10,12,"Press right to play COOP",0x0F);
+}
+
+void rendercountdown3()
+{
+	colour(0x0F);
+    printExactFile(sCountdown);
+}
+
+void rendercountdown2()
+{
+	colour(0x0F);
+    printExactFile(sCountdown);
+}
+
+void rendercountdown1()
+{
+	colour(0x0F);
+    printExactFile(sCountdown);
 }
 
 void render_transition()
@@ -291,6 +402,14 @@ void moveCharacter()
 		if (keyPressed[K_UP])
 	    {
 		    state = PVP_stage1;
+	    }
+		if (keyPressed[K_DOWN])
+	    {
+		    state = stage_survival;
+	    }
+		if (keyPressed[K_RIGHT])
+	    {
+		    state = COOP_stage;
 	    }
 	}
 	if(state==transition){
@@ -459,6 +578,64 @@ void moveCharacter()
 	if(state==stage_survival){
         survivalControls();
 	}
+	if(state==COOP_stage){
+		if(p1die == false)
+		{
+			if (keyPressed[K_UP] && charLocation.Y > 0 && wall_up(charLocation)==false)
+			{
+				//Beep(1440, 30);
+				charLocation.Y--;
+			}
+			if (keyPressed[K_LEFT] && charLocation.X > 0 && wall_left(charLocation)==false)
+			{
+				//Beep(1440, 30);
+				charLocation.X--;
+			}
+			if (keyPressed[K_DOWN] && charLocation.Y < console.getConsoleSize().Y - 1 && wall_down(charLocation)==false)
+			{
+				//Beep(1440, 30);
+				charLocation.Y++;
+			}
+			if (keyPressed[K_RIGHT] && charLocation.X < console.getConsoleSize().X - 1 && wall_right(charLocation)==false)
+			{
+				//Beep(1440, 30);
+				charLocation.X++;
+			}
+		}
+		if(p2die == false)
+		{
+			if (keyPressed[K_W] && charLocation2.Y > 0 && wall_up(charLocation2)==false)
+			{
+				//Beep(1440, 30);
+				charLocation2.Y--;
+			}
+			if (keyPressed[K_A] && charLocation2.X > 0 && wall_left(charLocation2)==false)
+			{
+				//Beep(1440, 30);
+				charLocation2.X--;
+			}
+			if (keyPressed[K_S] && charLocation2.Y < console.getConsoleSize().Y - 1 && wall_down(charLocation2)==false)
+			{
+				//Beep(1440, 30);
+				charLocation2.Y++;
+			}
+			if (keyPressed[K_D] && charLocation2.X < console.getConsoleSize().X - 1 && wall_right(charLocation2)==false)
+			{
+				//Beep(1440, 30);
+				charLocation2.X++;
+			}
+    
+			if(keyPressed[K_M])
+			{
+				g_iChangeMod += 1;
+			}
+			if(keyPressed[K_N])
+			{
+				g_iChangeCol += 1;
+			} 
+		}
+        
+    }
     monster(ghost1,g_idirection);
     monster(ghost2,g_idirection2);
     monster(ghost3,g_idirection3);
@@ -539,6 +716,7 @@ void clearScreen()
     // Clears the buffer with this colour attribute
     console.clearBuffer(0x00);
 }
+
 void renderMap()
 {
     // Set up sample colours, and output shadings

@@ -18,6 +18,11 @@ extern COORD ghost2;
 extern COORD ghost3;
 extern COORD ghost4;
 extern COORD ghost5;
+extern COORD ghost6;
+extern COORD ghost7;
+extern COORD ghost8;
+extern COORD ghost9;
+//extern COORD ghost10;
 extern COORD tp1;
 extern COORD tp2;
 extern int g_idirection;
@@ -25,6 +30,11 @@ extern int g_idirection2;
 extern int g_idirection3;
 extern int g_idirection4;
 extern int g_idirection5;
+extern int g_idirection6;
+extern int g_idirection7;
+extern int g_idirection8;
+extern int g_idirection9;
+//extern int g_idirection10;
 extern int		g_iChangeMod;
 extern int		g_iChangeCol;
 extern double elapsedTime;
@@ -32,6 +42,7 @@ extern double deltaTime;
 extern short sPacMap[21][38];
 extern Console console;
 extern void getInput();
+bool survival = true;
 
 
 void survivalControls()
@@ -56,12 +67,36 @@ void survivalControls()
             //Beep(1440, 30);
             charLocation.X++;
         }
-
-	monster(ghost1,g_idirection);
-    monster(ghost2,g_idirection2);
-    monster(ghost3,g_idirection3);
-	monster(ghost4,g_idirection4);
-	monster(ghost5,g_idirection5);
+		if(elapsedTime>=0.0){
+			monster(ghost1,g_idirection);
+		}
+		if(elapsedTime>=10.0){
+			monster(ghost2,g_idirection2);
+		}
+		if(elapsedTime>=20.0){
+			monster(ghost3,g_idirection3);
+		}
+		if(elapsedTime>=30.0){
+			monster(ghost4,g_idirection4);
+		}
+		if(elapsedTime>=40.0){
+			monster(ghost5,g_idirection5);
+		}
+		if(elapsedTime>=50.0){
+			monster(ghost6,g_idirection5);
+		}
+		if(elapsedTime>=60.0){
+			monster(ghost7,g_idirection5);
+		}
+		if(elapsedTime>=70.0){
+			monster(ghost8,g_idirection5);
+		}
+		if(elapsedTime>=80.0){
+			monster(ghost9,g_idirection5);
+		}
+		/*if(elapsedTime>=90.0){
+			monster(ghost10,g_idirection5);
+		}*/
 }
 
 void updateSurvival(double dt)
@@ -86,11 +121,47 @@ void renderCharacterSurvival()
 {
     // Draw the location of the character
     console.writeToBuffer(charLocation, (char)g_iChangeMod, 0x0C+g_iChangeCol);
-    console.writeToBuffer(ghost1,232,0x0B);
-    console.writeToBuffer(ghost2,232,0x0B);
-    console.writeToBuffer(ghost3,232,0x0B);
-	console.writeToBuffer(ghost4,232,0x0B);
-	console.writeToBuffer(ghost5,232,0x0B);
+	if(elapsedTime>=0.0){
+		console.writeToBuffer(ghost1,232,0x0B);
+		eneXp1(ghost1,charLocation);
+	}
+	if(elapsedTime>=10.0){
+		console.writeToBuffer(ghost2,232,0x0B);
+		eneXp1(ghost2,charLocation);
+	}
+	if(elapsedTime>=20.0){
+		console.writeToBuffer(ghost3,232,0x0B);
+		eneXp1(ghost3,charLocation);
+	}
+	if(elapsedTime>=30.0){
+		console.writeToBuffer(ghost4,232,0x0B);
+		eneXp1(ghost4,charLocation);
+	}
+	if(elapsedTime>=40.0){
+		console.writeToBuffer(ghost5,232,0x0B);
+		eneXp1(ghost5,charLocation);
+	}
+	if(elapsedTime>=50.0){
+		console.writeToBuffer(ghost6,232,0x0B);
+		eneXp1(ghost6,charLocation);
+	}
+	if(elapsedTime>=60.0){
+		console.writeToBuffer(ghost7,232,0x0B);
+		eneXp1(ghost7,charLocation);
+	}
+	if(elapsedTime>=70.0){
+		console.writeToBuffer(ghost8,232,0x0B);
+		eneXp1(ghost8,charLocation);
+	}
+	if(elapsedTime>=80.0){
+		console.writeToBuffer(ghost9,232,0x0B);
+		eneXp1(ghost9,charLocation);
+	}
+	/*if(elapsedTime>=90.0){
+		console.writeToBuffer(ghost10,232,0x0B);
+		eneXp1(ghost10,charLocation);
+	}*/
+
     if(g_iChangeMod > 6)
 	{
 		g_iChangeMod = 1;
@@ -100,11 +171,6 @@ void renderCharacterSurvival()
 		g_iChangeCol = 1;
 	}
 	eneXp1(charLocation2,charLocation);
-	eneXp1(ghost1,charLocation);
-    eneXp1(ghost2,charLocation);
-    eneXp1(ghost3,charLocation);
-	eneXp1(ghost4,charLocation);
-	eneXp1(ghost5,charLocation);
     teleport(charLocation,tp1,tp2);
 }
 
