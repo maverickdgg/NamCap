@@ -20,7 +20,9 @@ double elapsedTime;
 double deltaTime;
 bool keyPressed[K_COUNTbv];
 extern short sPacMap[21][38];
-extern short sCountdown[21][15];
+short sCountdown[21][15];
+short sCountdown2[21][15];
+short sCountdown3[21][15];
 const int ciOffsetX=20;
 const int ciOffsetY=5;
 
@@ -81,9 +83,30 @@ char countdown1[]="1.txt";
 void init()
 {   
     elapsedTime=0.0;
+	PlaySound(TEXT("pacman_beginning.wav"), NULL,SND_LOOP | SND_ASYNC);
+    readfile(sPacMap,map2);
 
+        charLocation.X = 38;
+        charLocation.Y = 20;
+
+	    charLocation2.X = 38;
+        charLocation2.Y = 13;
+
+        ghost1.X=39;
+        ghost1.Y=13;
+
+        ghost2.X=2+ciOffsetX;
+        ghost2.Y=2+ciOffsetY;
+
+        ghost3.X=36+ciOffsetX;
+        ghost3.Y=19+ciOffsetY;
+
+        srand(time(NULL));
+        g_idirection=rand()%4;
+        g_idirection2=rand()%4;
+        g_idirection3=rand()%4;
     // sets the width, height and the font name to use in the console
-    console.setConsoleFont(0, 40, L"RasterFonts");
+    console.setConsoleFont(100, 50, L"RasterFonts");
 }
 
 void init_PVP_stage1(){
@@ -141,6 +164,15 @@ void init_PVP_stage2(){
         tp2.Y=9+ciOffsetY;
 }
 
+void init_countdown321()
+{
+	elapsedTime = 0.0;
+
+	readExactFile(sCountdown,countdown3);
+	readExactFile(sCountdown2,countdown2);
+	readExactFile(sCountdown3,countdown1);
+}
+
 void init(stage state){
     switch(state){
         case menu:
@@ -149,6 +181,21 @@ void init(stage state){
         case stage_survival:
             init_survival();
             break;
+		case countPVP1:
+			init_countdown321();
+			break;
+		case countPVP2:
+			init_countdown321();
+			break;
+		case countSurvival:
+			init_countdown321();
+			break;
+		case countCOOP:
+			init_countdown321();
+			break;
+		case countInfection:
+			init_countdown321();
+			break;
         case PVP_stage1:
             init_PVP_stage1();
             break;
@@ -256,6 +303,21 @@ void render(stage state)
         case menu:
             renderMainMenu();
             break;
+		case countPVP1:
+			rendercountdown321(PVP_stage1);
+			break;
+		case countPVP2:
+			rendercountdown321(PVP_stage2);
+			break;
+		case countSurvival:
+			rendercountdown321(stage_survival);
+			break;
+		case countCOOP:
+			rendercountdown321(COOP_stage);
+			break;
+		case countInfection:
+			rendercountdown321(infection);
+			break;
 		//case count3:
 		//	rendercountdown3();
 		//	break;
@@ -283,8 +345,11 @@ void render(stage state)
 		case COOP_stage:
 			renderMap();
 			renderCoopCharacter();
+			coopWinCon();
 			break;
-
+		case COOP_end:
+			renderEndCondition();
+			break;
         case infection:
             renderMap();
             renderCharacter_infection();
@@ -307,23 +372,29 @@ void renderMainMenu()
     console.writeToBuffer(25,20,"Press UP to play Infection",0x0F);
 }
 
-void rendercountdown3()
+void rendercountdown321(stage changeState)
 {
 	colour(0x0F);
-    printExactFile(sCountdown);
+	if(elapsedTime <=1)
+	{
+		printExactFile(sCountdown);
+	}
+
+	if(elapsedTime <=2 && elapsedTime >1)
+	{
+		printExactFile(sCountdown2);
+	}
+	
+	if(elapsedTime <=3 && elapsedTime >2)
+	{
+		printExactFile(sCountdown3);
+	}
+	if(elapsedTime >= 3)
+	{
+		state=changeState;
+	}
 }
 
-void rendercountdown2()
-{
-	colour(0x0F);
-    printExactFile(sCountdown);
-}
-
-void rendercountdown1()
-{
-	colour(0x0F);
-    printExactFile(sCountdown);
-}
 
 void render_transition()
 {
@@ -333,18 +404,18 @@ void render_transition()
 void moveCharacter_menu(){
         if (keyPressed[K_LEFT])
 	    {
-		    state = PVP_stage1;
+		    state = countPVP1;
 	    }
 		if (keyPressed[K_DOWN])
 	    {
-		    state = stage_survival;
+		    state = countSurvival;
 	    }
 		if (keyPressed[K_RIGHT])
 	    {
-		    state = COOP_stage;
+		    state = countCOOP;
 	    }
         if(keyPressed[K_UP]){
-            state = infection;
+            state = countInfection;
         }
 }
 
@@ -600,6 +671,9 @@ bool p1Xcoin(COORD location)
         if(state==PVP_stage2){
             score2++;
         }
+		if(state==COOP_stage){
+            score++;
+        }
         return true;
     }
 	else
@@ -650,7 +724,7 @@ void render_end(){
        if(score>score2){
             console.writeToBuffer(30,15,"Player one wins",0x0F);
         }
-        else{
+        else if(score < score2){
             console.writeToBuffer(30,15,"Player two wins",0x0F);
         }
 }

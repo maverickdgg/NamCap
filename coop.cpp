@@ -43,9 +43,12 @@ double counter=10;
 void renderHelp();
 extern int score;
 extern int score2;
+int timeCom;
 
 void init_COOP(){
-    
+
+
+
 		elapsedTime = 0.0;
         readfile(sPacMap,map2);
 
@@ -68,6 +71,8 @@ void init_COOP(){
         g_idirection=rand()%4;
         g_idirection2=rand()%4;
         g_idirection3=rand()%4;
+		PlaySound(NULL, 0,0);
+		PlaySound(TEXT("pacman_eatfruit.wav"),NULL,SND_LOOP|SND_ASYNC);
 }
 
 void moveCharacter_COOP(){
@@ -199,6 +204,15 @@ void coopP1xP2(COORD &p1 , COORD &p2)
 	}
 }
 
+void coopWinCon()
+{
+	timeCom = elapsedTime;
+	if(score > 265)
+	{
+		state = COOP_end;
+	}
+}
+
 void renderCoopCharacter()
 {
 	console.writeToBuffer(charLocation, (char)g_iMod, 0x0C+g_iCol);
@@ -235,5 +249,18 @@ void renderHelp()
 	if(p2die == true)
 	{
 		console.writeToBuffer(charLocation.X + 1,charLocation2.Y + 1,"I DIE I DIE", 0x0C + counter);
+	}
+}
+
+void renderEndCondition()
+{
+	if(score > 265)
+	{
+		console.writeToBuffer(10,10,"Time Complete:",0x0C);
+		console.writeToBuffer(10,15,timeCom,0x0C);
+	}
+	if(score < 266)
+	{
+		console.writeToBuffer(10,10,"HAHA you suck at it",0x0C);
 	}
 }

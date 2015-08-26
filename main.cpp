@@ -15,7 +15,6 @@ bool g_bQuitGame = false;					// Set to true if you want to quit the game
 const unsigned char gc_ucFPS = 15;				// FPS of this game
 const unsigned int gc_uFrameTime = 1000 / gc_ucFPS;	// time for each frame
 short sPacMap[21][38];
-short sCountdown[21][15];
 extern COORD monster1;
 extern int score;
 extern int score2;

@@ -34,6 +34,11 @@ enum stage
 	PVP_stage2,
 	end,
 	end2,
+	countPVP1,
+	countPVP2,
+	countSurvival,
+	countCOOP,
+	countInfection,
 	//count3,
 	//count2,
 	//count1,
@@ -72,9 +77,7 @@ void render_end2();
 void render_transition();
 void renderMainMenu();
 void renderCharacter();		// renders the character into the buffer
-void rendercountdown3();
-void rendercountdown2();
-void rendercountdown1();
+void rendercountdown321(stage changeState);
 void renderFramerate();     // renders debug information, frame rate, elapsed time, etc
 void renderToScreen();      // dump the contents of the buffer to the screen, one frame worth of game
 

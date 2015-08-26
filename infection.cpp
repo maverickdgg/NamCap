@@ -46,7 +46,7 @@ void init_infection(){
         arrInfectants[0]->coordinates.Y = 20;
 
 	    arrInfectants[1]->coordinates.X = 39;
-        arrInfectants[1]->coordinates.Y = 13;
+        arrInfectants[1]->coordinates.Y = 11;
 
         arrInfectants[2]->coordinates.X=39;
         arrInfectants[2]->coordinates.Y=13;
