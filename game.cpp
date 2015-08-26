@@ -13,9 +13,6 @@
 #include <iostream>
 #include "coop.h"
 
-#include "map.h"
-
-
 // Console object
 Console console(82, 35, "NamCap");
 
@@ -304,9 +301,10 @@ void render(stage state)
 
 void renderMainMenu()
 {   
-	console.writeToBuffer(10,10,"Press up to play PVP",0x0F);
-	console.writeToBuffer(10,11,"Press down to play Survival",0x0F);
-	console.writeToBuffer(10,12,"Press right to play COOP",0x0F);
+	console.writeToBuffer(10,10,"Press LEFT to play PVP",0x0F);
+	console.writeToBuffer(10,11,"Press DOWN to play Survival",0x0F);
+	console.writeToBuffer(10,12,"Press RIGHT to play COOP",0x0F);
+    console.writeToBuffer(10,13,"Press UP to play Infection",0x0F);
 }
 
 void rendercountdown3()

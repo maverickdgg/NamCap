@@ -1,7 +1,6 @@
 #include "gameUI.h"
 #include "Framework/console.h"
 #include "game.h"
-#include "map.h"
 
 const short g_csRows=21;
 const short g_csCol=38;

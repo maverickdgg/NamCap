@@ -1,7 +1,6 @@
 #include "gameUI.h"
 #include "Framework/console.h"
 #include "game.h"
-#include "map.h"
 #include "coop.h"
 #include <windows.h>
 #include "ai.h"
