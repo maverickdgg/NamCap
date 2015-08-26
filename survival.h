@@ -10,8 +10,8 @@
 extern CStopWatch g_timer;
 extern bool g_bQuitGame;
 
-void survivalControls();
-void updateSurvival(double dt);
+void init_survival();
+void moveCharacter_survival();
 void renderMapSurvival();
 void renderCharacterSurvival();
 void render_end2();

@@ -60,14 +60,12 @@ extern stage state;
 extern short sPacMap[21][38];
 extern short sCountdown[21][15];
 extern Console console;
+
 extern unsigned char coin;
 int score = 0;
 int score2=0;
 double countdown = 0.0;
 double coutndwodntiemr = 0;
-extern bool death;
-extern bool p1die;
-extern bool p2die;
 
 // Game specific variables here
 COORD tp1;
@@ -83,81 +81,16 @@ char countdown1[]="1.txt";
 
 // Initialize variables, allocate memory, load data from file, etc. 
 // This is called once before entering into your main loop
-void init(stage state)
-{
-    // Set precision for floating point output
-    charLocation.X=40;
-    charLocation.Y=20;
-    switch(state){
-    case menu:
-        elapsedTime = 0.0;
-        break;
-	case count3:
-		elapsedTime = 0.0;
-		timer(countdown = 3.0);
-		readExactFile(sCountdown,countdown3);
-		break;
-	case count2:
-		elapsedTime = 0.0;
-		timer(countdown = 2.0);
-		readExactFile(sCountdown,countdown2);
-		break;
-	case count1:
-		elapsedTime = 0.0;
-		timer(countdown = 1.0);
-		readExactFile(sCountdown,countdown1);
-		break;
-	case stage_survival:
-        elapsedTime = 0.0;
-		readfile(sPacMap,map3);
+void init()
+{   
+    elapsedTime=0.0;
 
-        charLocation.X = 38;
-        charLocation.Y = 20;
+    // sets the width, height and the font name to use in the console
+    console.setConsoleFont(0, 40, L"RasterFonts");
+}
 
-        ghost1.X=39;
-        ghost1.Y=13;
-
-        ghost2.X=2+ciOffsetX;
-        ghost2.Y=2+ciOffsetY;
-
-        ghost3.X=36+ciOffsetX;
-        ghost3.Y=19+ciOffsetY;
-
-		ghost4.X=23+ciOffsetX;
-        ghost4.Y=19+ciOffsetY;
-
-		ghost5.X=15+ciOffsetX;
-        ghost5.Y=19+ciOffsetY;
-
-		ghost6.X=23+ciOffsetX;
-        ghost6.Y=19+ciOffsetY;
-
-		ghost7.X=2+ciOffsetX;
-        ghost7.Y=19+ciOffsetY;
-
-		ghost8.X=5+ciOffsetX;
-        ghost8.Y=23+ciOffsetY;
-
-		ghost9.X=14+ciOffsetX;
-        ghost9.Y=11+ciOffsetY;
-
-		/*ghost10.X=6+ciOffsetX;
-        ghost10.Y=14+ciOffsetY;*/
-
-        srand(time(NULL));
-        g_idirection=rand()%4;
-        g_idirection2=rand()%4;
-        g_idirection3=rand()%4;
-		g_idirection4=rand()%4;
-		g_idirection5=rand()%4;
-		g_idirection6=rand()%4;
-        g_idirection7=rand()%4;
-        g_idirection8=rand()%4;
-		g_idirection9=rand()%4;
-		/*g_idirection10=rand()%4;*/
-        break;
-    case PVP_stage1:
-        elapsedTime = 0.0;
+void init_PVP_stage1(){
+     elapsedTime = 0.0;
         readfile(sPacMap,map2);
 
         charLocation.X = 38;
@@ -179,11 +112,9 @@ void init(stage state)
         g_idirection=rand()%4;
         g_idirection2=rand()%4;
         g_idirection3=rand()%4;
-        break;
-    case transition:    
-        elapsedTime = 0.0;
-        break;
-    case PVP_stage2:    
+}
+
+void init_PVP_stage2(){
         elapsedTime = 0.0;
         readfile(sPacMap,map1);
 
@@ -211,47 +142,43 @@ void init(stage state)
         tp1.Y=9+ciOffsetY;
         tp2.X=37+ciOffsetX;
         tp2.Y=9+ciOffsetY;
-        break;
-
-	case COOP_stage:
-
-		elapsedTime = 0.0;
-        readfile(sPacMap,map2);
-
-		charLocation.X = 38;
-        charLocation.Y = 20;
-
-		charLocation2.X = 38;
-        charLocation2.Y = 20;
-
-		ghost1.X=39;
-        ghost1.Y=13;
-
-        ghost2.X=2+ciOffsetX;
-        ghost2.Y=2+ciOffsetY;
-
-        ghost3.X=36+ciOffsetX;
-        ghost3.Y=19+ciOffsetY;
-
-        srand(time(NULL));
-        g_idirection=rand()%4;
-        g_idirection2=rand()%4;
-        g_idirection3=rand()%4;
-
-		break;
-
-    case infection:
-        init_infect();
-        break;
-    
-
-    case end:
-        elapsedTime = 0.0;
-        break;
-    }
-    // sets the width, height and the font name to use in the console
-    console.setConsoleFont(0, 40, L"derp");
 }
+
+void init(stage state){
+    switch(state){
+        case menu:
+            init();
+            break;
+        case stage_survival:
+            init_survival();
+            break;
+        case PVP_stage1:
+            init_PVP_stage1();
+            break;
+        case transition:
+            init();
+            break;
+        case PVP_stage2:
+            init_PVP_stage2();
+            break;
+        case end:
+            init();
+            break;
+        case end2:
+            init();
+            break;
+        case COOP_stage:
+            init_COOP();
+            break;
+        case COOP_end:
+            init();
+            break;
+        case infection:
+            init_infection();
+            break;
+    }
+}
+
 // Do your clean up of memory here
 // This is called once just before the game exits
 void shutdown()
@@ -297,26 +224,18 @@ void getInput()
 
     If your game has multiple states, you should determine the current state, and call the relevant function here.
 */
-void update(double dt)
+void update(double dt, stage state)
 {
     // get the delta time
     elapsedTime += dt;
     deltaTime = dt;
 
-    //processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
-    moveCharacter();// moves the character, collision detection, physics, etc
+    processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
+    moveCharacter(state);// moves the character, collision detection, physics, etc
 
     // sound can be played here too.
 }
 
-void update2(double dt)
-{
-    // get the delta time
-    elapsedTime += dt;
-    deltaTime = dt;
-
-    // sound can be played here too.
-}
 
 double timer(double& seconds)
 {
@@ -340,15 +259,15 @@ void render(stage state)
         case menu:
             renderMainMenu();
             break;
-		case count3:
-			rendercountdown3();
-			break;
-		case count2:
-			rendercountdown2();
-			break;
-		case count1:
-			rendercountdown1();
-			break;
+		//case count3:
+		//	rendercountdown3();
+		//	break;
+		//case count2:
+		//	rendercountdown2();
+		//	break;
+		//case count1:
+		//	rendercountdown1();
+		//	break;
 		case stage_survival:
 			renderMapSurvival();
 			renderCharacterSurvival();
@@ -411,13 +330,10 @@ void rendercountdown1()
 void render_transition()
 {
 	console.writeToBuffer(25,15,"Player 2 Ready? Press Enter!",0x0F);         
+}
 
-
-void moveCharacter()
-{
-		if(state == menu)
-	{
-		if (keyPressed[K_ENTER])
+void moveCharacter_menu(){
+        if (keyPressed[K_LEFT])
 	    {
 		    state = PVP_stage1;
 	    }
@@ -429,16 +345,19 @@ void moveCharacter()
 	    {
 		    state = COOP_stage;
 	    }
-	}
-	if(state==transition){
-		if(keyPressed[K_ENTER]){
+        if(keyPressed[K_UP]){
+            state = infection;
+        }
+}
+
+void moveCharacter_transition(){
+    	if(keyPressed[K_ENTER]){
 			state=PVP_stage2;
 		}
-	}
+}
 
-    if(state==PVP_stage1){
-    // Updating the location of the character based on the key press
-        if (keyPressed[K_UP] && charLocation.Y > 0 && wall_up(charLocation)==false)
+void moveCharacter_PVP_stage1(){
+    if (keyPressed[K_UP] && charLocation.Y > 0 && wall_up(charLocation)==false)
         {
             //Beep(1440, 30);
             charLocation.Y--;
@@ -513,9 +432,10 @@ void moveCharacter()
             Beep(1440, 30);
             charLocation2.X++; 
         }
-    }
-    if(state==PVP_stage2){
-        if (keyPressed[K_W] && charLocation.Y > 0 && wall_up(charLocation)==false)
+}
+
+void moveCharacter_PVP_stage2(){
+    if (keyPressed[K_W] && charLocation.Y > 0 && wall_up(charLocation)==false)
         {
             //Beep(1440, 30);
             charLocation.Y--;
@@ -595,76 +515,49 @@ void moveCharacter()
         teleport(ghost3,tp1,tp2);
         teleport(charLocation,tp1,tp2);
         teleport(charLocation2,tp1,tp2);
-        
-    }
-        
-        
-    }
-	if(state==stage_survival){
-        survivalControls();
-	}
-	if(state==COOP_stage){
-		if(p1die == false)
-		{
-			if (keyPressed[K_UP] && charLocation.Y > 0 && wall_up(charLocation)==false)
-			{
-				//Beep(1440, 30);
-				charLocation.Y--;
-			}
-			if (keyPressed[K_LEFT] && charLocation.X > 0 && wall_left(charLocation)==false)
-			{
-				//Beep(1440, 30);
-				charLocation.X--;
-			}
-			if (keyPressed[K_DOWN] && charLocation.Y < console.getConsoleSize().Y - 1 && wall_down(charLocation)==false)
-			{
-				//Beep(1440, 30);
-				charLocation.Y++;
-			}
-			if (keyPressed[K_RIGHT] && charLocation.X < console.getConsoleSize().X - 1 && wall_right(charLocation)==false)
-			{
-				//Beep(1440, 30);
-				charLocation.X++;
-			}
-		}
-		if(p2die == false)
-		{
-			if (keyPressed[K_W] && charLocation2.Y > 0 && wall_up(charLocation2)==false)
-			{
-				//Beep(1440, 30);
-				charLocation2.Y--;
-			}
-			if (keyPressed[K_A] && charLocation2.X > 0 && wall_left(charLocation2)==false)
-			{
-				//Beep(1440, 30);
-				charLocation2.X--;
-			}
-			if (keyPressed[K_S] && charLocation2.Y < console.getConsoleSize().Y - 1 && wall_down(charLocation2)==false)
-			{
-				//Beep(1440, 30);
-				charLocation2.Y++;
-			}
-			if (keyPressed[K_D] && charLocation2.X < console.getConsoleSize().X - 1 && wall_right(charLocation2)==false)
-			{
-				//Beep(1440, 30);
-				charLocation2.X++;
-			}
-    
-			if(keyPressed[K_M])
-			{
-				g_iChangeMod += 1;
-			}
-			if(keyPressed[K_N])
-			{
-				g_iChangeCol += 1;
-			} 
-		}
-        
-    }
-    monster(ghost1,g_idirection);
-    monster(ghost2,g_idirection2);
-    monster(ghost3,g_idirection3);
+}
 
+void moveCharacter_end(){
+    if(keyPressed[K_ENTER]){
+        state=menu;
+    }
+}
+
+void moveCharacter(stage state)
+{
+    // Updating the location of the character based on the key press
+    // switches constrols based on state
+    switch(state){
+        case menu:
+            moveCharacter_menu();
+            break;
+        case stage_survival:
+            moveCharacter_survival();
+            break;
+        case PVP_stage1:
+            moveCharacter_PVP_stage1();
+            break;
+        case transition:
+            moveCharacter_transition();
+            break;
+        case PVP_stage2:
+            moveCharacter_PVP_stage2();
+            break;
+        case end:
+            moveCharacter_end();
+            break;
+        case end2:
+            moveCharacter_end();
+            break;
+        case COOP_stage:
+            moveCharacter_COOP();
+            break;
+        case COOP_end:
+            moveCharacter_end();
+        case infection:
+            moveCharacter_infection();
+            break;
+    }
 
 }
 
@@ -729,12 +622,12 @@ void teleport(COORD& a,COORD b, COORD c){
     }
 }
 
-//void processUserInput()
-//{
-//    // quits the game if player hits the escape key
-//    if (keyPressed[K_ESCAPE])
-//        g_bQuitGame = true;
-//}
+void processUserInput()
+{
+    // quits the game if player hits the escape key
+    if (keyPressed[K_ESCAPE])
+        g_bQuitGame = true;
+}
 
 void clearScreen()
 {
@@ -749,16 +642,6 @@ void renderMap()
     insertmap(sPacMap);
 }
 
-
-void renderMainMenu()
-{   
-	console.writeToBuffer(10,10,"Press up to play",0x0F);
-}
-
-void render_transition()
-{
-	console.writeToBuffer(25,15,"Player 2 Ready? Press Enter!",0x0F);         
-}
 
 void renderTransition()
 {

@@ -38,7 +38,7 @@ infectants player2;
 
 infectants* arrInfectants[ciInfect_count]={&player1,&player2,&infectantAI_1,&infectantAI_2,&infectantAI_3};
 
-void init_infect(){
+void init_infection(){
         elapsedTime = 0.0;
         readfile(sPacMap,map1);
 
@@ -76,22 +76,6 @@ void init_infect(){
     //arrInfectants[4].bInfect_status=false;
 
     
-}
-
-void update_infection(double dt){
-    elapsedTime += dt;
-    deltaTime = dt;
-
-    //arrInfectants[0]=player1;
-    //arrInfectants[1]=player2;
-    //arrInfectants[2]=infectantAI_1;
-    //arrInfectants[3]=infectantAI_2;
-    //arrInfectants[4]=infectantAI_3;
-
-    processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
-    moveCharacter_infection();// moves the character, collision detection, physics, etc
-    //arrInfectants[ciInfect_count]={player1,player2,infectantAI_1,infectantAI_2,infectantAI_3};
-   
 }
 
 void moveCharacter_infection(){

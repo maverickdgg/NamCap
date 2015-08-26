@@ -4,9 +4,23 @@
 #include "map.h"
 #include "coop.h"
 #include <windows.h>
+#include "ai.h"
 
 extern CStopWatch g_Timer;	
 extern Console console;
+extern bool keyPressed[K_COUNTbv];
+extern short sPacMap[21][38];
+extern char map2[];
+
+extern const int ciOffsetX;
+extern const int ciOffsetY;
+extern int g_idirection;
+extern int g_idirection2;
+extern int g_idirection3;
+extern int	g_iChangeMod;
+extern int	g_iChangeCol;
+extern int	g_iauto;
+
 extern COORD charLocation;
 extern COORD charLocation2;
 extern COORD tp1;
@@ -14,11 +28,14 @@ extern COORD tp2;
 extern COORD ghost1;
 extern COORD ghost2;
 extern COORD ghost3;
+
 extern int	g_iMod = 1;
 extern int	g_iCol = 1;
+
 bool death = false;
 bool p1die = false;
 bool p2die = false;
+
 extern stage state;
 extern double elapsedTime; 
 extern double deltaTime;
@@ -28,7 +45,92 @@ void renderHelp();
 extern int score;
 extern int score2;
 
+void init_COOP(){
+    
+		elapsedTime = 0.0;
+        readfile(sPacMap,map2);
 
+		charLocation.X = 38;
+        charLocation.Y = 20;
+
+		charLocation2.X = 38;
+        charLocation2.Y = 20;
+
+		ghost1.X=39;
+        ghost1.Y=13;
+
+        ghost2.X=2+ciOffsetX;
+        ghost2.Y=2+ciOffsetY;
+
+        ghost3.X=36+ciOffsetX;
+        ghost3.Y=19+ciOffsetY;
+
+        srand(time(NULL));
+        g_idirection=rand()%4;
+        g_idirection2=rand()%4;
+        g_idirection3=rand()%4;
+}
+
+void moveCharacter_COOP(){
+    		if(p1die == false)
+		{
+			if (keyPressed[K_UP] && charLocation.Y > 0 && wall_up(charLocation)==false)
+			{
+				//Beep(1440, 30);
+				charLocation.Y--;
+			}
+			if (keyPressed[K_LEFT] && charLocation.X > 0 && wall_left(charLocation)==false)
+			{
+				//Beep(1440, 30);
+				charLocation.X--;
+			}
+			if (keyPressed[K_DOWN] && charLocation.Y < console.getConsoleSize().Y - 1 && wall_down(charLocation)==false)
+			{
+				//Beep(1440, 30);
+				charLocation.Y++;
+			}
+			if (keyPressed[K_RIGHT] && charLocation.X < console.getConsoleSize().X - 1 && wall_right(charLocation)==false)
+			{
+				//Beep(1440, 30);
+				charLocation.X++;
+			}
+		}
+		if(p2die == false)
+		{
+			if (keyPressed[K_W] && charLocation2.Y > 0 && wall_up(charLocation2)==false)
+			{
+				//Beep(1440, 30);
+				charLocation2.Y--;
+			}
+			if (keyPressed[K_A] && charLocation2.X > 0 && wall_left(charLocation2)==false)
+			{
+				//Beep(1440, 30);
+				charLocation2.X--;
+			}
+			if (keyPressed[K_S] && charLocation2.Y < console.getConsoleSize().Y - 1 && wall_down(charLocation2)==false)
+			{
+				//Beep(1440, 30);
+				charLocation2.Y++;
+			}
+			if (keyPressed[K_D] && charLocation2.X < console.getConsoleSize().X - 1 && wall_right(charLocation2)==false)
+			{
+				//Beep(1440, 30);
+				charLocation2.X++;
+			}
+    
+			if(keyPressed[K_M])
+			{
+				g_iChangeMod += 1;
+			}
+			if(keyPressed[K_N])
+			{
+				g_iChangeCol += 1;
+			} 
+		}
+    monster(ghost1,g_idirection);
+    monster(ghost2,g_idirection2);
+    monster(ghost3,g_idirection3);
+}
 
 void eneXp1Coop(COORD &ene , COORD &p1)
 {
@@ -135,15 +237,4 @@ void renderHelp()
 	{
 		console.writeToBuffer(charLocation.X + 1,charLocation2.Y + 1,"I DIE I DIE", 0x0C + counter);
 	}
-}
-
-void updateCOOP(double dt)
-{
-    // get the delta time
-    elapsedTime += dt;
-    deltaTime = dt;
-    //processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
-    moveCharacter();// moves the character, collision detection, physics, etc
-
-    // sound can be played here too.
 }

@@ -6,10 +6,9 @@ struct infectants{
     bool bInfect_status;
 };
 
-void init_infect();
+void init_infection();
 bool infected_win();
 void moveCharacter_infection();
-void update_infection(double dt);
 void infect_collision(infectants infect1,infectants infect2);
 void renderCharacter_infection();
 

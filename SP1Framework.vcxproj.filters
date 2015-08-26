@@ -39,13 +39,13 @@
     <ClCompile Include="ai.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="map.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="survival.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="coop.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="infection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -65,13 +65,13 @@
     <ClInclude Include="ai.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="map.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="survival.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="coop.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="infection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -5,12 +5,11 @@
 #include"ai.h"
 #include <iostream>
 
-void survivalControls();
-void getInput();
-void update(double dt);
-void renderMapSurvival();
-void renderCharacter();
 extern bool keyPressed[K_COUNTbv];
+extern const int ciOffsetX;
+extern const int ciOffsetY;
+extern char map3[];
+
 extern COORD charLocation;
 extern COORD charLocation2;
 extern COORD ghost1;
@@ -23,6 +22,7 @@ extern COORD ghost7;
 extern COORD ghost8;
 extern COORD ghost9;
 //extern COORD ghost10;
+
 extern COORD tp1;
 extern COORD tp2;
 extern int g_idirection;
@@ -35,6 +35,7 @@ extern int g_idirection7;
 extern int g_idirection8;
 extern int g_idirection9;
 //extern int g_idirection10;
+
 extern int		g_iChangeMod;
 extern int		g_iChangeCol;
 extern double elapsedTime;
@@ -45,7 +46,57 @@ extern void getInput();
 bool survival = true;
 
 
-void survivalControls()
+void init_survival(){
+    elapsedTime = 0.0;
+		readfile(sPacMap,map3);
+
+        charLocation.X = 38;
+        charLocation.Y = 20;
+
+        ghost1.X=39;
+        ghost1.Y=13;
+
+        ghost2.X=2+ciOffsetX;
+        ghost2.Y=2+ciOffsetY;
+
+        ghost3.X=36+ciOffsetX;
+        ghost3.Y=19+ciOffsetY;
+
+		ghost4.X=23+ciOffsetX;
+        ghost4.Y=19+ciOffsetY;
+
+		ghost5.X=15+ciOffsetX;
+        ghost5.Y=19+ciOffsetY;
+
+		ghost6.X=23+ciOffsetX;
+        ghost6.Y=19+ciOffsetY;
+
+		ghost7.X=2+ciOffsetX;
+        ghost7.Y=19+ciOffsetY;
+
+		ghost8.X=5+ciOffsetX;
+        ghost8.Y=23+ciOffsetY;
+
+		ghost9.X=14+ciOffsetX;
+        ghost9.Y=11+ciOffsetY;
+
+		/*ghost10.X=6+ciOffsetX;
+        ghost10.Y=14+ciOffsetY;*/
+
+        srand(time(NULL));
+        g_idirection=rand()%4;
+        g_idirection2=rand()%4;
+        g_idirection3=rand()%4;
+		g_idirection4=rand()%4;
+		g_idirection5=rand()%4;
+		g_idirection6=rand()%4;
+        g_idirection7=rand()%4;
+        g_idirection8=rand()%4;
+		g_idirection9=rand()%4;
+		/*g_idirection10=rand()%4;*/
+}
+
+void moveCharacter_survival()
 {
 		if (keyPressed[K_UP] && charLocation.Y > 0 && wall_up(charLocation)==false)
         {
@@ -97,17 +148,6 @@ void survivalControls()
 		/*if(elapsedTime>=90.0){
 			monster(ghost10,g_idirection5);
 		}*/
-}
-
-void updateSurvival(double dt)
-{
-    // get the delta time
-    elapsedTime += dt;
-    deltaTime = dt;
-
-    survivalControls();// moves the character, collision detection, physics, etc
-
-    // sound can be played here too.
 }
 
 void renderMapSurvival()
