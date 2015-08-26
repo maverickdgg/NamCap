@@ -10,6 +10,10 @@
 extern CStopWatch g_timer;
 extern bool g_bQuitGame;
 
+struct SurvivalAI{
+	COORD ghosts;
+};
+
 void init_survival();
 void moveCharacter_survival();
 void renderMapSurvival();

@@ -301,10 +301,10 @@ void render(stage state)
 
 void renderMainMenu()
 {   
-	console.writeToBuffer(10,10,"Press LEFT to play PVP",0x0F);
-	console.writeToBuffer(10,11,"Press DOWN to play Survival",0x0F);
-	console.writeToBuffer(10,12,"Press RIGHT to play COOP",0x0F);
-    console.writeToBuffer(10,13,"Press UP to play Infection",0x0F);
+	console.writeToBuffer(25,17,"Press LEFT to play PVP",0x0F);
+	console.writeToBuffer(25,18,"Press DOWN to play Survival",0x0F);
+	console.writeToBuffer(25,19,"Press RIGHT to play COOP",0x0F);
+    console.writeToBuffer(25,20,"Press UP to play Infection",0x0F);
 }
 
 void rendercountdown3()

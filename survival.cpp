@@ -12,16 +12,6 @@ extern char map3[];
 
 extern COORD charLocation;
 extern COORD charLocation2;
-extern COORD ghost1;
-extern COORD ghost2;
-extern COORD ghost3;
-extern COORD ghost4;
-extern COORD ghost5;
-extern COORD ghost6;
-extern COORD ghost7;
-extern COORD ghost8;
-extern COORD ghost9;
-//extern COORD ghost10;
 
 extern COORD tp1;
 extern COORD tp2;
@@ -45,6 +35,17 @@ extern Console console;
 extern void getInput();
 bool survival = true;
 
+SurvivalAI ghost1;
+SurvivalAI ghost2;
+SurvivalAI ghost3;
+SurvivalAI ghost4;
+SurvivalAI ghost5;
+SurvivalAI ghost6;
+SurvivalAI ghost7;
+SurvivalAI ghost8;
+SurvivalAI ghost9;
+
+SurvivalAI* arrghosts[9] = {&ghost1,&ghost2,&ghost3,&ghost4,&ghost5,&ghost6,&ghost7,&ghost8,&ghost9};
 
 void init_survival(){
     elapsedTime = 0.0;
@@ -53,32 +54,32 @@ void init_survival(){
         charLocation.X = 38;
         charLocation.Y = 20;
 
-        ghost1.X=39;
-        ghost1.Y=13;
+        arrghosts[0] -> ghosts.X=39;
+        arrghosts[0] -> ghosts.Y=13;
 
-        ghost2.X=2+ciOffsetX;
-        ghost2.Y=2+ciOffsetY;
+		arrghosts[1] -> ghosts.X=2+ciOffsetX;
+        arrghosts[1] -> ghosts.Y=2+ciOffsetY;
 
-        ghost3.X=36+ciOffsetX;
-        ghost3.Y=19+ciOffsetY;
+		arrghosts[2] -> ghosts.X=36+ciOffsetX;
+		arrghosts[2] -> ghosts.Y=19+ciOffsetY;
 
-		ghost4.X=23+ciOffsetX;
-        ghost4.Y=19+ciOffsetY;
+		arrghosts[3] -> ghosts.X=23+ciOffsetX;
+		arrghosts[3] -> ghosts.Y=19+ciOffsetY;
 
-		ghost5.X=15+ciOffsetX;
-        ghost5.Y=19+ciOffsetY;
+		arrghosts[4] -> ghosts.X=15+ciOffsetX;
+		arrghosts[4] -> ghosts.Y=19+ciOffsetY;
 
-		ghost6.X=23+ciOffsetX;
-        ghost6.Y=19+ciOffsetY;
+		arrghosts[5] -> ghosts.X=23+ciOffsetX;
+		arrghosts[5] -> ghosts.Y=19+ciOffsetY;
 
-		ghost7.X=2+ciOffsetX;
-        ghost7.Y=19+ciOffsetY;
+		arrghosts[6] -> ghosts.X=2+ciOffsetX;
+		arrghosts[6] -> ghosts.Y=19+ciOffsetY;
 
-		ghost8.X=5+ciOffsetX;
-        ghost8.Y=23+ciOffsetY;
+		arrghosts[7] -> ghosts.X=5+ciOffsetX;
+        arrghosts[7] -> ghosts.Y=23+ciOffsetY;
 
-		ghost9.X=14+ciOffsetX;
-        ghost9.Y=11+ciOffsetY;
+		arrghosts[8] -> ghosts.X=14+ciOffsetX;
+        arrghosts[8] -> ghosts.Y=11+ciOffsetY;
 
 		/*ghost10.X=6+ciOffsetX;
         ghost10.Y=14+ciOffsetY;*/
@@ -118,32 +119,33 @@ void moveCharacter_survival()
             //Beep(1440, 30);
             charLocation.X++;
         }
+
 		if(elapsedTime>=0.0){
-			monster(ghost1,g_idirection);
+			monster(arrghosts[0]->ghosts,g_idirection);
 		}
 		if(elapsedTime>=10.0){
-			monster(ghost2,g_idirection2);
+			monster(arrghosts[1]->ghosts,g_idirection2);
 		}
 		if(elapsedTime>=20.0){
-			monster(ghost3,g_idirection3);
+			monster(arrghosts[2]->ghosts,g_idirection3);
 		}
 		if(elapsedTime>=30.0){
-			monster(ghost4,g_idirection4);
+			monster(arrghosts[3]->ghosts,g_idirection4);
 		}
 		if(elapsedTime>=40.0){
-			monster(ghost5,g_idirection5);
+			monster(arrghosts[4]->ghosts,g_idirection5);
 		}
 		if(elapsedTime>=50.0){
-			monster(ghost6,g_idirection5);
+			monster(arrghosts[5]->ghosts,g_idirection6);
 		}
 		if(elapsedTime>=60.0){
-			monster(ghost7,g_idirection5);
+			monster(arrghosts[6]->ghosts,g_idirection7);
 		}
 		if(elapsedTime>=70.0){
-			monster(ghost8,g_idirection5);
+			monster(arrghosts[7]->ghosts,g_idirection8);
 		}
 		if(elapsedTime>=80.0){
-			monster(ghost9,g_idirection5);
+			monster(arrghosts[8]->ghosts,g_idirection9);
 		}
 		/*if(elapsedTime>=90.0){
 			monster(ghost10,g_idirection5);
@@ -157,46 +159,49 @@ void renderMapSurvival()
     insertmap(sPacMap);
 }
 
+
+
 void renderCharacterSurvival()
 {
     // Draw the location of the character
     console.writeToBuffer(charLocation, (char)g_iChangeMod, 0x0C+g_iChangeCol);
-	if(elapsedTime>=0.0){
-		console.writeToBuffer(ghost1,232,0x0B);
-		eneXp1(ghost1,charLocation);
-	}
-	if(elapsedTime>=10.0){
-		console.writeToBuffer(ghost2,232,0x0B);
-		eneXp1(ghost2,charLocation);
-	}
-	if(elapsedTime>=20.0){
-		console.writeToBuffer(ghost3,232,0x0B);
-		eneXp1(ghost3,charLocation);
-	}
-	if(elapsedTime>=30.0){
-		console.writeToBuffer(ghost4,232,0x0B);
-		eneXp1(ghost4,charLocation);
-	}
-	if(elapsedTime>=40.0){
-		console.writeToBuffer(ghost5,232,0x0B);
-		eneXp1(ghost5,charLocation);
-	}
-	if(elapsedTime>=50.0){
-		console.writeToBuffer(ghost6,232,0x0B);
-		eneXp1(ghost6,charLocation);
-	}
-	if(elapsedTime>=60.0){
-		console.writeToBuffer(ghost7,232,0x0B);
-		eneXp1(ghost7,charLocation);
-	}
-	if(elapsedTime>=70.0){
-		console.writeToBuffer(ghost8,232,0x0B);
-		eneXp1(ghost8,charLocation);
-	}
-	if(elapsedTime>=80.0){
-		console.writeToBuffer(ghost9,232,0x0B);
-		eneXp1(ghost9,charLocation);
-	}
+		
+	if(elapsedTime>=1.0){
+			console.writeToBuffer(arrghosts[0]->ghosts,232,0x0B);
+			eneXp1(arrghosts[0]->ghosts,charLocation);
+		}
+	if(elapsedTime>=11.0){
+			console.writeToBuffer(arrghosts[1]->ghosts,232,0x0B);
+			eneXp1(arrghosts[1]->ghosts,charLocation);
+		}
+	if(elapsedTime>=21.0){
+			console.writeToBuffer(arrghosts[2]->ghosts,232,0x0B);
+			eneXp1(arrghosts[2]->ghosts,charLocation);
+		}
+	if(elapsedTime>=31.0){
+			console.writeToBuffer(arrghosts[3]->ghosts,232,0x0B);
+			eneXp1(arrghosts[3]->ghosts,charLocation);
+		}
+	if(elapsedTime>=41.0){
+			console.writeToBuffer(arrghosts[4]->ghosts,232,0x0B);
+			eneXp1(arrghosts[4]->ghosts,charLocation);
+		}
+	if(elapsedTime>=51.0){
+			console.writeToBuffer(arrghosts[5]->ghosts,232,0x0B);
+			eneXp1(arrghosts[5]->ghosts,charLocation);
+		}
+	if(elapsedTime>=61.0){
+			console.writeToBuffer(arrghosts[6]->ghosts,232,0x0B);
+			eneXp1(arrghosts[6]->ghosts,charLocation);
+		}
+	if(elapsedTime>=71.0){
+			console.writeToBuffer(arrghosts[7]->ghosts,232,0x0B);
+			eneXp1(arrghosts[7]->ghosts,charLocation);
+		}
+	if(elapsedTime>=81.0){
+			console.writeToBuffer(arrghosts[8]->ghosts,232,0x0B);
+			eneXp1(arrghosts[8]->ghosts,charLocation);
+		}
 	/*if(elapsedTime>=90.0){
 		console.writeToBuffer(ghost10,232,0x0B);
 		eneXp1(ghost10,charLocation);
@@ -210,7 +215,7 @@ void renderCharacterSurvival()
 	{
 		g_iChangeCol = 1;
 	}
-	eneXp1(charLocation2,charLocation);
+	//eneXp1(charLocation2,charLocation);
     teleport(charLocation,tp1,tp2);
 }
 
