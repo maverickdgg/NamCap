@@ -75,11 +75,11 @@ void init_survival(){
 		arrghosts[6] -> ghosts.X=2+ciOffsetX;
 		arrghosts[6] -> ghosts.Y=19+ciOffsetY;
 
-		arrghosts[7] -> ghosts.X=5+ciOffsetX;
-        arrghosts[7] -> ghosts.Y=23+ciOffsetY;
+		arrghosts[7] -> ghosts.X=36+ciOffsetX;
+        arrghosts[7] -> ghosts.Y=19+ciOffsetY;
 
 		arrghosts[8] -> ghosts.X=14+ciOffsetX;
-        arrghosts[8] -> ghosts.Y=11+ciOffsetY;
+        arrghosts[8] -> ghosts.Y=19+ciOffsetY;
 
 		/*ghost10.X=6+ciOffsetX;
         ghost10.Y=14+ciOffsetY;*/
