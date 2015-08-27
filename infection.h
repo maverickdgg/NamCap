@@ -1,10 +1,16 @@
 #ifndef _INFECTION_H
 #define _INFECTION_H
 
-struct infectants{
+
+
+struct infectants {
+    //Enum gameCharacter;// player, ghost, infectants 
     COORD coordinates;
+    int direction;
     bool bInfect_status;
 };
+
+
 
 void init_infection();
 bool infected_win();

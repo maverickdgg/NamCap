@@ -38,7 +38,6 @@ bool p2die = false;
 extern stage state;
 extern double elapsedTime; 
 extern double deltaTime;
-extern double coutndwodntiemr;
 double counter=10;
 void renderHelp();
 extern int score;

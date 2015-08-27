@@ -21,7 +21,7 @@ extern int score2;
 extern Console console;
 stage state=menu;
 stage current_stage;
-
+extern PMAP pacMap;
 //function declarations
 void mainLoop();
 
@@ -34,7 +34,7 @@ int main( void )
     init();      // initialize your variables
     mainLoop();  // main loop
     shutdown();  // do clean up, if any. free memory.
-    
+    free_map(pacMap);
     return 0;
 }
 

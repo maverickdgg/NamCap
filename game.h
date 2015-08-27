@@ -28,6 +28,7 @@ enum Keys
 enum stage
 {
 	menu,
+    stage_survival_init,
 	stage_survival,
 	PVP_stage1,
 	transition,

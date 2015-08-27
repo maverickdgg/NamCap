@@ -1,6 +1,7 @@
 #include "gameUI.h"
 #include "Framework/console.h"
 #include "game.h"
+#include "map.h"
 
 const short g_csRows=21;
 const short g_csCol=38;
@@ -12,7 +13,6 @@ unsigned char coin=48;
 extern Console console;
 extern int score;
 extern int score2;
-
 
 short readfile(short sMapInUse[][38],string txt)
 {
@@ -57,7 +57,7 @@ short readExactFile(short sMapInUse[][15],string txt)
 }
 
 
-void insertmap(short sMap[21][38])
+void insertmap(PMAP sMap)
 {
 
 	console.writeToBuffer(0,2,"Player1",0x1B);
@@ -67,12 +67,12 @@ void insertmap(short sMap[21][38])
 	console.writeToBuffer(68,3,"Score: ",0x46);
     console.writeToBuffer(76,3,score2,0x46);
 
-    for(int i=ciOffsetX;i<g_csCol+ciOffsetX;++i){
-        for(int j=ciOffsetY;j<g_csRows+ciOffsetY;++j){ 
-            if(sMap[j-ciOffsetY][i-ciOffsetX]==1){
+    for(int j=ciOffsetY;j<sMap->nrow+ciOffsetY;++j){
+        for(int i=ciOffsetX;i<sMap->ncol+ciOffsetX;++i){ 
+            if(sMap->data[j-ciOffsetY][i-ciOffsetX]=='1'){
                 console.writeToBuffer(i,j,wall,0x0F);
             }
-			if(sMap[j-ciOffsetY][i-ciOffsetX]==0){
+            if(sMap->data[j-ciOffsetY][i-ciOffsetX]=='0'){
                 console.writeToBuffer(i,j,coin,0x06);
             }
         }  

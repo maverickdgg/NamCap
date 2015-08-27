@@ -9,6 +9,7 @@ extern bool keyPressed[K_COUNTbv];
 extern const int ciOffsetX;
 extern const int ciOffsetY;
 extern char map3[];
+extern PMAP pacMap;
 
 extern COORD charLocation;
 extern COORD charLocation2;
@@ -49,7 +50,7 @@ SurvivalAI* arrghosts[9] = {&ghost1,&ghost2,&ghost3,&ghost4,&ghost5,&ghost6,&gho
 
 void init_survival(){
     elapsedTime = 0.0;
-		readfile(sPacMap,map3);
+		pacMap=load_map(map3);
 
         charLocation.X = 38;
         charLocation.Y = 20;
@@ -156,7 +157,7 @@ void renderMapSurvival()
 {
     // Set up sample colours, and output shadings
     colour(0x0F);
-    insertmap(sPacMap);
+    insertmap(pacMap);
 }
 
 

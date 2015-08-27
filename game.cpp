@@ -12,14 +12,16 @@
 #include "infection.h"
 #include <iostream>
 #include "coop.h"
+#include "map.h"
 
 // Console object
-Console console(82, 35, "NamCap");
+Console console(90, 50, "NamCap");
 
 double elapsedTime;
 double deltaTime;
 bool keyPressed[K_COUNTbv];
 extern short sPacMap[21][38];
+PMAP pacMap;
 short sCountdown[21][15];
 short sCountdown2[21][15];
 short sCountdown3[21][15];
@@ -63,8 +65,6 @@ extern Console console;
 extern unsigned char coin;
 int score = 0;
 int score2=0;
-double countdown = 0.0;
-double coutndwodntiemr = 0;
 
 // Game specific variables here
 COORD tp1;
@@ -77,6 +77,7 @@ char map3[]="map3.txt";
 char countdown3[]="3.txt";
 char countdown2[]="2.txt";
 char countdown1[]="1.txt";
+char* maps[]={"map.txt\0","map2.txt\0","map3.txt\0","3.txt\0","2.txt\0","1.txt\0"};
 
 // Initialize variables, allocate memory, load data from file, etc. 
 // This is called once before entering into your main loop
@@ -84,7 +85,6 @@ void init()
 {   
     elapsedTime=0.0;
 	PlaySound(TEXT("pacman_beginning.wav"), NULL,SND_LOOP | SND_ASYNC);
-    readfile(sPacMap,map2);
 
         charLocation.X = 38;
         charLocation.Y = 20;
@@ -106,12 +106,12 @@ void init()
         g_idirection2=rand()%4;
         g_idirection3=rand()%4;
     // sets the width, height and the font name to use in the console
-    console.setConsoleFont(100, 50, L"RasterFonts");
+    console.setConsoleFont(10, 20, L"Raster Fonts");
 }
 
 void init_PVP_stage1(){
      elapsedTime = 0.0;
-        readfile(sPacMap,map2);
+        pacMap=load_map(map2);
 
         charLocation.X = 38;
         charLocation.Y = 20;
@@ -136,7 +136,7 @@ void init_PVP_stage1(){
 
 void init_PVP_stage2(){
         elapsedTime = 0.0;
-        readfile(sPacMap,map1);
+        pacMap=load_map(map1);
 
         charLocation.X = 38;
         charLocation.Y = 20;
@@ -318,15 +318,6 @@ void render(stage state)
 		case countInfection:
 			rendercountdown321(infection);
 			break;
-		//case count3:
-		//	rendercountdown3();
-		//	break;
-		//case count2:
-		//	rendercountdown2();
-		//	break;
-		//case count1:
-		//	rendercountdown1();
-		//	break;
 		case stage_survival:
 			renderMapSurvival();
 			renderCharacterSurvival();
@@ -501,6 +492,10 @@ void moveCharacter_PVP_stage1(){
             Beep(1440, 30);
             charLocation2.X++; 
         }
+        
+        monster(ghost1,g_idirection);
+        monster(ghost2,g_idirection2);
+        monster(ghost3,g_idirection3);
 }
 
 void moveCharacter_PVP_stage2(){
@@ -584,6 +579,9 @@ void moveCharacter_PVP_stage2(){
         teleport(ghost3,tp1,tp2);
         teleport(charLocation,tp1,tp2);
         teleport(charLocation2,tp1,tp2);
+        monster(ghost1,g_idirection);
+        monster(ghost2,g_idirection2);
+        monster(ghost3,g_idirection3);
 }
 
 void moveCharacter_end(){
@@ -711,7 +709,7 @@ void renderMap()
 {
     // Set up sample colours, and output shadings
     colour(0x0F);
-    insertmap(sPacMap);
+    insertmap(pacMap);
 }
 
 
