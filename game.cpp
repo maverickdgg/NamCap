@@ -663,9 +663,9 @@ void eneXp1(COORD &ene , COORD &p1)
 
 bool p1Xcoin(COORD location)
 {
-	if(sPacMap[location.Y-ciOffsetY][location.X-ciOffsetX] == 0)
+	if(pacMap->data[location.Y-ciOffsetY][location.X-ciOffsetX] == '0')
 	{
-		sPacMap[location.Y-ciOffsetY][location.X-ciOffsetX] = ' ';
+		pacMap->data[location.Y-ciOffsetY][location.X-ciOffsetX] = ' ';
         if(state==PVP_stage1){
 		    score++;
         }

@@ -12,9 +12,6 @@ using std::string;
 using std::getline;
 using std::ifstream;
 
-short readfile(short sMapInUse[][38],string txt);
-short readExactFile(short sMapInUse[][15],string txt);
 void insertmap(PMAP sMap);
-void printExactFile(short sMap[21][15]);
 //void insertmap1(short** sMap);
 #endif
