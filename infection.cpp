@@ -1,6 +1,8 @@
 #include "game.h"
+#include "GameUI.h"
 #include "infection.h"
 #include "ai.h"
+#include "map.h"
 
 extern bool keyPressed[K_COUNTbv];
 extern Console console;
@@ -8,6 +10,7 @@ extern double elapsedTime;
 extern double deltaTime;
 extern stage state;
 extern int score;
+extern PMAP pacMap;
 
 extern short sPacMap[21][38];
 extern char map1[];
@@ -40,7 +43,7 @@ infectants* arrInfectants[ciInfect_count]={&player1,&player2,&infectantAI_1,&inf
 
 void init_infection(){
         elapsedTime = 0.0;
-        readfile(sPacMap,map1);
+        pacMap=load_map(0);
 
         arrInfectants[0]->coordinates.X = 38;
         arrInfectants[0]->coordinates.Y = 20;
@@ -74,6 +77,7 @@ void init_infection(){
     //arrInfectants[2].bInfect_status=true;
     //arrInfectants[3].bInfect_status=false;
     //arrInfectants[4].bInfect_status=false;
+	pacMap=load_map(6);
 
     
 }
@@ -219,10 +223,30 @@ void renderCharacter_infection()
     // detect if win
     if(infected_win()==true){
         score=100;
-        state=end;
+        state=end_infectants;
     }
     timer(timeLeft);
     if(timeLeft<=0.0){
-        state=end;
+        state=end_survivors;
     }
+}
+
+void render_end_infectants()
+{
+		insertmap(pacMap);
+		console.writeToBuffer(20,27,"CONGRATULATIONS!!!!!! WHOOOOOOOO!!!!!!!!",0x0C);
+		console.writeToBuffer(30,28,"INFECTANTS WIN!!!",0x0C);
+		console.writeToBuffer(25,29,"HAHAHAHAHAHAHAHAHA!!!!!!!!!!",0x0C);
+		console.writeToBuffer(20,30,"Press Enter To Play Another Mode!!!!!!",0x0C);
+		console.writeToBuffer(25,31,"Press Escape To Quit, HAHAHAHA",0x0C);
+}
+
+void render_end_survivors()
+{
+		insertmap(pacMap);
+		console.writeToBuffer(20,27,"CONGRATULATIONS!!!!!! WHOOOOOOOO!!!!!!!!",0x0C);
+		console.writeToBuffer(30,28,"SURVIVORS WIN!!!",0x0C);
+		console.writeToBuffer(25,29,"HAHAHAHAHAHAHAHAHA!!!!!!!!!!",0x0C);
+		console.writeToBuffer(20,30,"Press Enter To Play Another Mode!!!!!!",0x0C);
+		console.writeToBuffer(25,31,"Press Escape To Quit, HAHAHAHA",0x0C);
 }

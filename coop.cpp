@@ -4,12 +4,14 @@
 #include "coop.h"
 #include <windows.h>
 #include "ai.h"
+#include "map.h"
 
 extern CStopWatch g_Timer;	
 extern Console console;
 extern bool keyPressed[K_COUNTbv];
 extern short sPacMap[21][38];
 extern char map2[];
+extern PMAP pacMap;
 
 extern const int ciOffsetX;
 extern const int ciOffsetY;
@@ -46,10 +48,8 @@ int timeCom;
 
 void init_COOP(){
 
-
-
 		elapsedTime = 0.0;
-        readfile(sPacMap,map2);
+        pacMap=load_map(1);
 
 		charLocation.X = 38;
         charLocation.Y = 20;
@@ -72,6 +72,14 @@ void init_COOP(){
         g_idirection3=rand()%4;
 		PlaySound(NULL, 0,0);
 		PlaySound(TEXT("pacman_eatfruit.wav"),NULL,SND_LOOP|SND_ASYNC);
+}
+
+void init_COOP_end()
+{
+	elapsedTime = 0.0;
+	pacMap=load_map(6);
+	PlaySound(NULL, 0,0);
+	PlaySound(TEXT("pacman_eatfruit.wav"),NULL,SND_LOOP|SND_ASYNC);
 }
 
 void moveCharacter_COOP(){
@@ -253,13 +261,14 @@ void renderHelp()
 
 void renderEndCondition()
 {
+	insertmap(pacMap);
 	if(score > 265)
 	{
-		console.writeToBuffer(10,10,"Time Complete:",0x0C);
-		console.writeToBuffer(10,15,timeCom,0x0C);
+		console.writeToBuffer(10,27,"Time Complete:",0x0C);
+		console.writeToBuffer(10,32,timeCom,0x0C);
 	}
 	if(score < 266)
 	{
-		console.writeToBuffer(10,10,"HAHA you suck at it",0x0C);
+		console.writeToBuffer(30,27,"HAHA you suck at it",0x0C);
 	}
 }

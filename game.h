@@ -28,7 +28,7 @@ enum Keys
 enum stage
 {
 	menu,
-    stage_survival_init,
+    //stage_survival_init,
 	stage_survival,
 	PVP_stage1,
 	transition,
@@ -40,6 +40,8 @@ enum stage
 	countSurvival,
 	countCOOP,
 	countInfection,
+	end_survivors,
+	end_infectants,
 	//count3,
 	//count2,
 	//count1,
@@ -54,6 +56,7 @@ void init();                // initialize your variables, allocate memory, etc
 void init(stage state);
 void init_PVP_stage1();
 void init_PVP_stage2();
+void init_countdown321();
 void getInput();            // get input from player
 void update(double dt,stage state);     // update the game and the state of the game
 void update2(double dt);
@@ -75,6 +78,8 @@ void renderMap();           // renders the map to the buffer first
 void renderMap2();           
 void render_end();
 void render_end2();
+void render_end_survivors();
+void render_end_infectants();
 void render_transition();
 void renderMainMenu();
 void renderCharacter();		// renders the character into the buffer

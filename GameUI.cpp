@@ -14,6 +14,7 @@ extern Console console;
 extern int score;
 extern int score2;
 
+
 short readfile(short sMapInUse[][38],string txt)
 {
 	ifstream inData;
@@ -74,6 +75,9 @@ void insertmap(PMAP sMap)
             }
             if(sMap->data[j-ciOffsetY][i-ciOffsetX]=='0'){
                 console.writeToBuffer(i,j,coin,0x06);
+            }
+			if(sMap->data[j-ciOffsetY][i-ciOffsetX]==' '){
+                console.writeToBuffer(i,j,static_cast<unsigned char>(' '),0x0F);
             }
         }  
     }

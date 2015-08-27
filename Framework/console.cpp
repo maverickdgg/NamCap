@@ -250,6 +250,7 @@ void Console::writeToBuffer(SHORT x, SHORT y, unsigned char ch, WORD attribute)
 	m_ciScreenDataBuffer[x + m_cConsoleSize.X * y].Attributes = attribute;
 }
 
+
 void Console::writeToBuffer(COORD c,unsigned char ch, WORD attribute)
 {
     writeToBuffer(c.X, c.Y, ch, attribute);

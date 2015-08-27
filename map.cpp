@@ -7,10 +7,13 @@ using namespace std;
 #include "map.h"
 #include "game.h"
 
-PMAP load_map(char* filename)
+extern char* maps[];
+
+PMAP load_map(int x)
 {
 	MAP* map; 
 	
+	char* filename=maps[x];
 	ifstream infile; 
 	int nrow, ncol, i; 
 

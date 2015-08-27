@@ -49,8 +49,8 @@ SurvivalAI ghost9;
 SurvivalAI* arrghosts[9] = {&ghost1,&ghost2,&ghost3,&ghost4,&ghost5,&ghost6,&ghost7,&ghost8,&ghost9};
 
 void init_survival(){
-    elapsedTime = 0.0;
-		pacMap=load_map(map3);
+		elapsedTime = 0.0;
+		pacMap=load_map(2);
 
         charLocation.X = 38;
         charLocation.Y = 20;
@@ -96,6 +96,8 @@ void init_survival(){
         g_idirection8=rand()%4;
 		g_idirection9=rand()%4;
 		/*g_idirection10=rand()%4;*/
+
+		
 }
 
 void moveCharacter_survival()
@@ -222,5 +224,9 @@ void renderCharacterSurvival()
 
 void render_end2()
 {
-	 console.writeToBuffer(35,15,"You Lose",0x0F);
+		insertmap(pacMap);
+		console.writeToBuffer(30,27,"GAME OVER NOOB!!!!!!",0x0C);
+		console.writeToBuffer(25,28,"HAHAHAHAHAHAHAHAHA!!!!!!!!!!",0x0C);
+		console.writeToBuffer(17,29,"You Died, Press Enter To Play Another Mode!!!!!!",0x0C);
+		console.writeToBuffer(22,30,"PRESS ESCAPE TO RAGEQUIT, MUAHAHAHAHA",0x0C);
 }

@@ -22,6 +22,8 @@ double deltaTime;
 bool keyPressed[K_COUNTbv];
 extern short sPacMap[21][38];
 PMAP pacMap;
+PMAP pacMap2;
+PMAP pacMap3;
 short sCountdown[21][15];
 short sCountdown2[21][15];
 short sCountdown3[21][15];
@@ -71,13 +73,7 @@ COORD tp1;
 COORD tp2;
 COORD charLocation;
 COORD charLocation2;
-char map1[]="map.txt";
-char map2[]="map2.txt";
-char map3[]="map3.txt";
-char countdown3[]="3.txt";
-char countdown2[]="2.txt";
-char countdown1[]="1.txt";
-char* maps[]={"map.txt\0","map2.txt\0","map3.txt\0","3.txt\0","2.txt\0","1.txt\0"};
+char* maps[]={"map.txt\0","map2.txt\0","map3.txt\0","3.txt\0","2.txt\0","1.txt\0","GAMEOVER.txt\0"};
 
 // Initialize variables, allocate memory, load data from file, etc. 
 // This is called once before entering into your main loop
@@ -106,12 +102,13 @@ void init()
         g_idirection2=rand()%4;
         g_idirection3=rand()%4;
     // sets the width, height and the font name to use in the console
+		pacMap=load_map(6);
     console.setConsoleFont(10, 20, L"Raster Fonts");
 }
 
 void init_PVP_stage1(){
      elapsedTime = 0.0;
-        pacMap=load_map(map2);
+        pacMap=load_map(1);
 
         charLocation.X = 38;
         charLocation.Y = 20;
@@ -136,7 +133,7 @@ void init_PVP_stage1(){
 
 void init_PVP_stage2(){
         elapsedTime = 0.0;
-        pacMap=load_map(map1);
+        pacMap=load_map(0);
 
         charLocation.X = 38;
         charLocation.Y = 20;
@@ -166,11 +163,10 @@ void init_PVP_stage2(){
 
 void init_countdown321()
 {
-	elapsedTime = 0.0;
-
-	readExactFile(sCountdown,countdown3);
-	readExactFile(sCountdown2,countdown2);
-	readExactFile(sCountdown3,countdown1);
+	 elapsedTime = 0.0;
+	 pacMap= load_map(3);
+	 pacMap2= load_map(4);
+	 pacMap3= load_map(5);
 }
 
 void init(stage state){
@@ -215,7 +211,7 @@ void init(stage state){
             init_COOP();
             break;
         case COOP_end:
-            init();
+            init_COOP_end();
             break;
         case infection:
             init_infection();
@@ -350,6 +346,12 @@ void render(stage state)
 		case end2:
             render_end2();
             break;
+		case end_survivors:
+			render_end_survivors();
+			break;
+		case end_infectants:
+			render_end_infectants();
+			break;
     }
     renderFramerate();  // renders debug information, frame rate, elapsed time, etc
     renderToScreen();   // dump the contents of the buffer to the screen, one frame worth of game
@@ -368,17 +370,17 @@ void rendercountdown321(stage changeState)
 	colour(0x0F);
 	if(elapsedTime <=1)
 	{
-		printExactFile(sCountdown);
+		insertmap(pacMap);
 	}
 
 	if(elapsedTime <=2 && elapsedTime >1)
 	{
-		printExactFile(sCountdown2);
+		insertmap(pacMap2);
 	}
 	
 	if(elapsedTime <=3 && elapsedTime >2)
 	{
-		printExactFile(sCountdown3);
+		insertmap(pacMap3);
 	}
 	if(elapsedTime >= 3)
 	{
@@ -621,6 +623,7 @@ void moveCharacter(stage state)
             break;
         case COOP_end:
             moveCharacter_end();
+			break;
         case infection:
             moveCharacter_infection();
             break;

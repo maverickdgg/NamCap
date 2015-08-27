@@ -19,7 +19,7 @@ extern COORD monster1;
 extern int score;
 extern int score2;
 extern Console console;
-stage state=menu;
+stage state=COOP_end;
 stage current_stage;
 extern PMAP pacMap;
 //function declarations

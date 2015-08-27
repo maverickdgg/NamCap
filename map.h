@@ -45,7 +45,7 @@ MAP, * PMAP;
 //				memory for 
 //
 // ==========================================================================
-PMAP load_map(char* filename);
+PMAP load_map(int x);
 
 void free_map(PMAP pmap);
 
