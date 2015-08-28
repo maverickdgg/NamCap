@@ -29,6 +29,11 @@ enum stage
 {
 	intro,
 	menu,
+	settings,
+	settings_PVP,
+	settings_Survival,
+	settings_COOP,
+	settings_Infection,
 	stage_survival,
 	PVP_stage1,
 	transition,
@@ -85,6 +90,11 @@ double timer(double& seconds);
 
 void moveCharacter(stage state);       // moves the character, collision detection, physics, etc
 void moveCharacter_menu();
+void moveCharacter_settings();
+void moveCharacter_settings_PVP();
+void moveCharacter_settings_COOP();
+void moveCharacter_settings_Survival();
+void moveCharacter_settings_Infection();
 void moveCharacter_PVP_stage1();
 void moveCharacter_transition();
 void moveCharacter_PVP_stage2();
@@ -100,6 +110,11 @@ void render_end_survivors();
 void render_end_infectants();
 void render_transition();
 void renderMainMenu();
+void renderSettings();
+void renderSettings_Survival();
+void renderSettings_PVP();
+void renderSettings_Infection();
+void renderSettings_COOP();
 void renderIntro(stage changeState);
 void renderCharacter();		// renders the character into the buffer
 void rendercountdown321(stage changeState);

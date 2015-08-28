@@ -210,6 +210,9 @@ void coopP1xP2(COORD &p1 , COORD &p2)
 	if(p1die && p2die && death == true)
 	{
 		state = INIT_COOP_end;
+		death = false;
+		p1die = false;
+		p2die = false;
 	}
 }
 
