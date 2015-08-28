@@ -14,10 +14,6 @@ extern Console console;
 extern int score;
 extern int score2;
 
-
-
-
-
 void insertmap(PMAP sMap)
 {
 	console.writeToBuffer(0,2,"Player1",0x1B);

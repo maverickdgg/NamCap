@@ -1,30 +1,11 @@
-﻿Build started 28/8/2015 12:35:32 PM.
-     1>Project "D:\NamCap\SP1Framework.vcxproj" on node 2 (build target(s)).
+﻿Build started 28/8/2015 4:28:44 PM.
+     1>Project "C:\Users\iPhantomiKX\NYP\NamCapLatest\SP1Framework.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Touching "Release\SP1Framework.unsuccessfulbuild".
        ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt ai.cpp coop.cpp Framework\console.cpp Framework\timer.cpp game.cpp infection.cpp main.cpp GameUI.cpp map.cpp survival.cpp
-         ai.cpp
-         coop.cpp
-     1>coop.cpp(71): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
-     1>coop.cpp(216): warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
-     1>coop.cpp(254): warning C4244: 'argument' : conversion from 'double' to 'WORD', possible loss of data
-     1>coop.cpp(258): warning C4244: 'argument' : conversion from 'double' to 'WORD', possible loss of data
-         console.cpp
-         timer.cpp
-         game.cpp
-     1>game.cpp(98): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
-     1>game.cpp(127): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
-     1>game.cpp(153): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
-         infection.cpp
-     1>infection.cpp(66): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
-         main.cpp
-         GameUI.cpp
-         map.cpp
-         survival.cpp
-     1>survival.cpp(90): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
+         All outputs are up-to-date.
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\NamCap\Release\SP1Framework.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Release\SP1Framework.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"D:\NamCap\Release\SP1Framework.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\NamCap\Release\SP1Framework.lib" /MACHINE:X86 Release\ai.obj
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\iPhantomiKX\NYP\NamCapLatest\Release\SP1Framework.exe" /INCREMENTAL:NO /NOLOGO winmm.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Release\SP1Framework.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\iPhantomiKX\NYP\NamCapLatest\Release\SP1Framework.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\iPhantomiKX\NYP\NamCapLatest\Release\SP1Framework.lib" /MACHINE:X86 Release\ai.obj
          Release\coop.obj
          Release\console.obj
          Release\timer.obj
@@ -34,13 +15,16 @@
          Release\GameUI.obj
          Release\map.obj
          Release\survival.obj
-     1>coop.obj : error LNK2001: unresolved external symbol __imp__PlaySoundW@12
-     1>timer.obj : error LNK2001: unresolved external symbol __imp__timeEndPeriod@4
-     1>timer.obj : error LNK2001: unresolved external symbol __imp__timeBeginPeriod@4
-     1>timer.obj : error LNK2001: unresolved external symbol __imp__timeGetDevCaps@8
-     1>D:\NamCap\Release\SP1Framework.exe : fatal error LNK1120: 4 unresolved externals
-     1>Done Building Project "D:\NamCap\SP1Framework.vcxproj" (build target(s)) -- FAILED.
+         Generating code
+         Finished generating code
+         SP1Framework.vcxproj -> C:\Users\iPhantomiKX\NYP\NamCapLatest\Release\SP1Framework.exe
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"C:\Users\iPhantomiKX\NYP\NamCapLatest\Release\SP1Framework.exe;#1" /manifest Release\SP1Framework.exe.intermediate.manifest
+       FinalizeBuildStatus:
+         Deleting file "Release\SP1Framework.unsuccessfulbuild".
+         Touching "Release\SP1Framework.lastbuildstate".
+     1>Done Building Project "C:\Users\iPhantomiKX\NYP\NamCapLatest\SP1Framework.vcxproj" (build target(s)).
 
-Build FAILED.
+Build succeeded.
 
-Time Elapsed 00:00:08.00
+Time Elapsed 00:00:03.17
