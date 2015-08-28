@@ -25,6 +25,8 @@ int g_iauto2=4;
 extern int g_idirection;
 extern int g_idirection2;
 extern int g_idirection3;
+extern COORD tp1;
+extern COORD tp2;
 
 
 const int ciInfect_count=5;
@@ -41,15 +43,16 @@ infectants player2;
 
 infectants* arrInfectants[ciInfect_count]={&player1,&player2,&infectantAI_1,&infectantAI_2,&infectantAI_3};
 
-void init_infection(){
+void init_infection(stage changeState){
         elapsedTime = 0.0;
-        pacMap=load_map(0);
+        pacMap=load_map(10);
+		PlaySound(TEXT("Star Fox Corneria Theme.wav"),NULL,SND_LOOP|SND_ASYNC);
 
         arrInfectants[0]->coordinates.X = 38;
         arrInfectants[0]->coordinates.Y = 20;
 
-	    arrInfectants[1]->coordinates.X = 39;
-        arrInfectants[1]->coordinates.Y = 11;
+	    arrInfectants[1]->coordinates.X = 32;
+        arrInfectants[1]->coordinates.Y = 10;
 
         arrInfectants[2]->coordinates.X=39;
         arrInfectants[2]->coordinates.Y=13;
@@ -72,14 +75,22 @@ void init_infection(){
     player1.bInfect_status=false;
     player2.bInfect_status=false;
 
+
     //arrInfectants[0].bInfect_status=false;
     //arrInfectants[1].bInfect_status=false;
     //arrInfectants[2].bInfect_status=true;
     //arrInfectants[3].bInfect_status=false;
     //arrInfectants[4].bInfect_status=false;
-	pacMap=load_map(6);
+    state=changeState;
+}
 
-    
+void init_infection_end(stage changeState)
+{
+	
+	PlaySound(NULL,0,0);
+	PlaySound(TEXT("Super Mario Bros. - Game Over Sound Effect.wav"),NULL,SND_LOOP|SND_ASYNC);
+	 pacMap=load_map(6);
+     state=changeState;
 }
 
 void moveCharacter_infection(){
@@ -223,11 +234,11 @@ void renderCharacter_infection()
     // detect if win
     if(infected_win()==true){
         score=100;
-        state=end_infectants;
+        state=INIT_end_infectants;
     }
     timer(timeLeft);
     if(timeLeft<=0.0){
-        state=end_survivors;
+        state=INIT_end_survivors;
     }
 }
 

@@ -12,11 +12,11 @@ struct infectants {
 
 
 
-void init_infection();
+void init_infection(stage changeState);
+void init_infection_end(stage changeState);
 bool infected_win();
 void moveCharacter_infection();
 void infect_collision(infectants infect1,infectants infect2);
 void renderCharacter_infection();
-
 
 #endif

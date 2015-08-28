@@ -13,5 +13,6 @@ using std::getline;
 using std::ifstream;
 
 void insertmap(PMAP sMap);
+void printText(PMAP text);
 //void insertmap1(short** sMap);
 #endif

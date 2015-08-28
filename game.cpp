@@ -20,13 +20,12 @@ Console console(90, 50, "NamCap");
 double elapsedTime;
 double deltaTime;
 bool keyPressed[K_COUNTbv];
-extern short sPacMap[21][38];
 PMAP pacMap;
 PMAP pacMap2;
 PMAP pacMap3;
-short sCountdown[21][15];
-short sCountdown2[21][15];
-short sCountdown3[21][15];
+PMAP introMap;
+PMAP introMap2;
+PMAP introMap3;
 const int ciOffsetX=20;
 const int ciOffsetY=5;
 
@@ -60,8 +59,6 @@ int g_idirection9;
 
 
 extern stage state;
-extern short sPacMap[21][38];
-extern short sCountdown[21][15];
 extern Console console;
 
 extern unsigned char coin;
@@ -73,15 +70,16 @@ COORD tp1;
 COORD tp2;
 COORD charLocation;
 COORD charLocation2;
-char* maps[]={"map.txt\0","map2.txt\0","map3.txt\0","3.txt\0","2.txt\0","1.txt\0","GAMEOVER.txt\0"};
+char* maps[]={"map.txt\0","map2.txt\0","map3.txt\0","3.txt\0","2.txt\0","1.txt\0","GAMEOVER.txt\0","PD1.txt\0","PD2.txt\0","PD3.txt\0","map5.txt\0"};
 
 // Initialize variables, allocate memory, load data from file, etc. 
 // This is called once before entering into your main loop
 void init()
 {   
-    elapsedTime=0.0;
-	PlaySound(TEXT("pacman_beginning.wav"), NULL,SND_LOOP | SND_ASYNC);
-
+		PlaySound(NULL,0,0);
+		PlaySound(TEXT("pacman_beginning"),NULL,SND_LOOP|SND_ASYNC);
+		elapsedTime=0.0;
+		
         charLocation.X = 38;
         charLocation.Y = 20;
 
@@ -102,14 +100,21 @@ void init()
         g_idirection2=rand()%4;
         g_idirection3=rand()%4;
     // sets the width, height and the font name to use in the console
-		pacMap=load_map(6);
     console.setConsoleFont(10, 20, L"Raster Fonts");
 }
 
-void init_PVP_stage1(){
+void init_menu(stage changeState){
+    	PlaySound(NULL,0,0);
+		PlaySound(TEXT("pacman_beginning"),NULL,SND_LOOP|SND_ASYNC);
+		elapsedTime=0.0;
+        state=changeState;
+}
+
+void init_PVP_stage1(stage changeState){
      elapsedTime = 0.0;
         pacMap=load_map(1);
-
+		PlaySound(NULL,0,0);
+		PlaySound(TEXT("Super Mario Bros. Original Theme by Nintendo.wav"),NULL,SND_LOOP|SND_ASYNC);
         charLocation.X = 38;
         charLocation.Y = 20;
 
@@ -129,12 +134,14 @@ void init_PVP_stage1(){
         g_idirection=rand()%4;
         g_idirection2=rand()%4;
         g_idirection3=rand()%4;
+        state=changeState;
 }
 
-void init_PVP_stage2(){
+void init_PVP_stage2(stage changeState){
         elapsedTime = 0.0;
         pacMap=load_map(0);
-
+		PlaySound(NULL,0,0);
+		PlaySound(TEXT("Super Mario Bros. Original Theme by Nintendo.wav"),NULL,SND_LOOP|SND_ASYNC);
         charLocation.X = 38;
         charLocation.Y = 20;
 
@@ -159,65 +166,30 @@ void init_PVP_stage2(){
         tp1.Y=9+ciOffsetY;
         tp2.X=37+ciOffsetX;
         tp2.Y=9+ciOffsetY;
+        state=changeState;
 }
 
-void init_countdown321()
+void init_countdown321(stage changeState)
 {
 	 elapsedTime = 0.0;
+	 PlaySound(NULL,0,0);
+	 PlaySound(TEXT("Mario Kart Race Start.wav"),NULL,SND_ASYNC);
 	 pacMap= load_map(3);
 	 pacMap2= load_map(4);
 	 pacMap3= load_map(5);
+     state=changeState;
 }
 
-void init(stage state){
-    switch(state){
-        case menu:
-            init();
-            break;
-        case stage_survival:
-            init_survival();
-            break;
-		case countPVP1:
-			init_countdown321();
-			break;
-		case countPVP2:
-			init_countdown321();
-			break;
-		case countSurvival:
-			init_countdown321();
-			break;
-		case countCOOP:
-			init_countdown321();
-			break;
-		case countInfection:
-			init_countdown321();
-			break;
-        case PVP_stage1:
-            init_PVP_stage1();
-            break;
-        case transition:
-            init();
-            break;
-        case PVP_stage2:
-            init_PVP_stage2();
-            break;
-        case end:
-            init();
-            break;
-        case end2:
-            init();
-            break;
-        case COOP_stage:
-            init_COOP();
-            break;
-        case COOP_end:
-            init_COOP_end();
-            break;
-        case infection:
-            init_infection();
-            break;
-    }
+void init_intro(stage changeState)
+{
+	 elapsedTime = 0.0;
+
+	 introMap = load_map(7);
+	 introMap2 = load_map(8);
+	 introMap3 = load_map(9);
+     state=changeState;
 }
+
 
 // Do your clean up of memory here
 // This is called once just before the game exits
@@ -279,9 +251,7 @@ void update(double dt, stage state)
 
 double timer(double& seconds)
 {
-
     seconds -= deltaTime;
-
     return seconds;
 }
 
@@ -296,23 +266,26 @@ void render(stage state)
 {
     clearScreen();      // clears the current screen and draw from scratch
     switch(state){
+		case intro:
+			renderIntro(INIT_menu);
+			break;
         case menu:
             renderMainMenu();
             break;
 		case countPVP1:
-			rendercountdown321(PVP_stage1);
+			rendercountdown321(INIT_PVP_stage1);
 			break;
 		case countPVP2:
-			rendercountdown321(PVP_stage2);
+			rendercountdown321(INIT_PVP_stage2);
 			break;
 		case countSurvival:
-			rendercountdown321(stage_survival);
+			rendercountdown321(INIT_stage_survival);
 			break;
 		case countCOOP:
-			rendercountdown321(COOP_stage);
+			rendercountdown321(INIT_COOP_stage);
 			break;
 		case countInfection:
-			rendercountdown321(infection);
+			rendercountdown321(INIT_infection);
 			break;
 		case stage_survival:
 			renderMapSurvival();
@@ -340,6 +313,7 @@ void render(stage state)
         case infection:
             renderMap();
             renderCharacter_infection();
+			break;
         case end:
             render_end();
             break;
@@ -384,6 +358,63 @@ void rendercountdown321(stage changeState)
 	}
 	if(elapsedTime >= 3)
 	{
+		state = changeState;
+	}
+}
+
+void renderIntro(stage changeState)
+{
+	colour(0x0F);
+	if(elapsedTime <= 1)
+	{
+		//printText(introMap);
+		PlaySound(NULL,0,0);
+		PlaySound(TEXT("Nvidia Intro.wav"),NULL,SND_ASYNC);
+		console.writeToBuffer(25,17,"====================",0x0F);
+		console.writeToBuffer(25,18,"                    ",0x0F);
+		console.writeToBuffer(25,19,"                    ",0x0F);
+		console.writeToBuffer(25,20,"                    ",0x0F);
+		console.writeToBuffer(25,20,"=  ====  ==  ====  =",0x0F);
+		console.writeToBuffer(25,21,"                    ",0x0F);
+		console.writeToBuffer(25,22,"                    ",0x0F);
+		console.writeToBuffer(25,23,"                    ",0x0F);
+		console.writeToBuffer(25,24,"=  ========  ====  =",0x0F);
+		console.writeToBuffer(25,25,"                    ",0x0F);
+		console.writeToBuffer(25,26,"====================",0x0F);
+	}
+	if(elapsedTime <=2 && elapsedTime >1)
+	{
+		//printText(introMap2);
+		console.writeToBuffer(25,17,"====================",0x0F);
+		console.writeToBuffer(25,18,"                    ",0x0F);
+		console.writeToBuffer(25,19,"=  ====  ==  ====  =",0x0F);
+		console.writeToBuffer(25,20,"                    ",0x0F);
+		console.writeToBuffer(25,20,"=  ====  ==  ====  =",0x0F);
+		console.writeToBuffer(25,21,"                    ",0x0F);
+		console.writeToBuffer(25,22,"=  ========  ====  =",0x0F);
+		console.writeToBuffer(25,23,"=  ========  ====  =",0x0F);
+		console.writeToBuffer(25,24,"=  ========  ====  =",0x0F);
+		console.writeToBuffer(25,25,"=  ========       ==",0x0F);
+		console.writeToBuffer(25,26,"====================",0x0F);
+	}
+	if(elapsedTime <=3 && elapsedTime >2)
+	{
+		//printText(introMap3);
+		console.writeToBuffer(25,17,"====================",0x0F);
+		console.writeToBuffer(25,18,"=       ===       ==",0x0F);
+		console.writeToBuffer(25,19,"=  ====  ==  ====  =",0x0F);
+		console.writeToBuffer(25,20,"=  ====  ==  ====  =",0x0F);
+		console.writeToBuffer(25,20,"=  ====  ==  ====  =",0x0F);
+		console.writeToBuffer(25,21,"=       ===  ====  =",0x0F);
+		console.writeToBuffer(25,22,"=  ========  ====  =",0x0F);
+		console.writeToBuffer(25,23,"=  ========  ====  =",0x0F);
+		console.writeToBuffer(25,24,"=  ========  ====  =",0x0F);
+		console.writeToBuffer(25,25,"=  ========       ==",0x0F);
+		console.writeToBuffer(25,26,"====================",0x0F);
+		console.writeToBuffer(25,27,"  PD ENTERTAINMENT  ",0x0F);
+	}
+	if(elapsedTime >= 3)
+	{
 		state=changeState;
 	}
 }
@@ -397,24 +428,24 @@ void render_transition()
 void moveCharacter_menu(){
         if (keyPressed[K_LEFT])
 	    {
-		    state = countPVP1;
+		    state = INIT_countPVP1;
 	    }
 		if (keyPressed[K_DOWN])
 	    {
-		    state = countSurvival;
+		    state = INIT_countSurvival;
 	    }
 		if (keyPressed[K_RIGHT])
 	    {
-		    state = countCOOP;
+		    state = INIT_countCOOP;
 	    }
         if(keyPressed[K_UP]){
-            state = countInfection;
+            state = INIT_countInfection;
         }
 }
 
 void moveCharacter_transition(){
     	if(keyPressed[K_ENTER]){
-			state=PVP_stage2;
+			state=INIT_PVP_stage2;
 		}
 }
 
@@ -588,7 +619,7 @@ void moveCharacter_PVP_stage2(){
 
 void moveCharacter_end(){
     if(keyPressed[K_ENTER]){
-        state=menu;
+        state=INIT_menu;
     }
 }
 
@@ -597,6 +628,64 @@ void moveCharacter(stage state)
     // Updating the location of the character based on the key press
     // switches constrols based on state
     switch(state){
+        //init states
+        case INIT_intro:
+			init_intro(intro);
+			break;
+        case INIT_menu:
+            init_menu(menu);
+            break;
+        case INIT_stage_survival:
+            init_survival(stage_survival);
+            break;
+		case INIT_countPVP1:
+			init_countdown321(countPVP1);
+			break;
+		case INIT_countPVP2:
+			init_countdown321(countPVP2);
+			break;
+		case INIT_countSurvival:
+			init_countdown321(countSurvival);
+			break;
+		case INIT_countCOOP:
+			init_countdown321(countCOOP);
+			break;
+		case INIT_countInfection:
+			init_countdown321(countInfection);
+			break;
+        case INIT_PVP_stage1:
+            init_PVP_stage1(PVP_stage1);
+            break;
+        case INIT_transition:
+            init_menu(transition);
+            break;
+        case INIT_PVP_stage2:
+            init_PVP_stage2(PVP_stage2);
+            break;
+        case INIT_end:
+            init_menu(end);
+            break;
+        case INIT_end2:
+            init_menu(end2);
+            break;
+        case INIT_COOP_stage:
+            init_COOP(COOP_stage);
+            break;
+        case INIT_COOP_end:
+            init_COOP_end(COOP_end);
+            break;
+        case INIT_infection:
+            init_infection(infection);
+            break;
+		case INIT_end_survivors:
+			init_infection_end(end_survivors);
+			break;
+		case INIT_end_infectants:
+			init_infection_end(end_infectants);
+			break;
+        // actual controls
+		case intro:
+			break;
         case menu:
             moveCharacter_menu();
             break;
@@ -627,6 +716,12 @@ void moveCharacter(stage state)
         case infection:
             moveCharacter_infection();
             break;
+		case end_survivors:
+			moveCharacter_end();
+			break;
+		case end_infectants:
+			moveCharacter_end();
+			break;
     }
 
 }
@@ -644,13 +739,19 @@ void eneXp1(COORD &ene , COORD &p1)
 		if(g_bOrigin == true)
 		{
 			if(state==stage_survival){
-				state=end2;
+				state=INIT_end2;
+				PlaySound(NULL,0,0);
+				PlaySound(TEXT("Super Mario Bros. - Game Over Sound Effect.wav"),NULL,SND_LOOP|SND_ASYNC);
 			}
             if(state==PVP_stage1){
-                state=transition;
+                state=INIT_transition;
+				PlaySound(NULL,0,0);
+				PlaySound(TEXT("Super Mario Bros. - Game Over Sound Effect.wav"),NULL,SND_LOOP|SND_ASYNC);
             }
             else if(state==PVP_stage2){
-                state=end;
+                state=INIT_end;
+				PlaySound(NULL,0,0);
+				PlaySound(TEXT("Super Mario Bros. - Game Over Sound Effect.wav"),NULL,SND_LOOP|SND_ASYNC);
             }
 		}
 	}
@@ -714,7 +815,6 @@ void renderMap()
     colour(0x0F);
     insertmap(pacMap);
 }
-
 
 void renderTransition()
 {

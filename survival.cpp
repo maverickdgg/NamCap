@@ -1,5 +1,4 @@
 #include "survival.h"
-#include "game.h"
 #include "Framework\console.h"
 #include "GameUI.h"
 #include"ai.h"
@@ -10,6 +9,7 @@ extern const int ciOffsetX;
 extern const int ciOffsetY;
 extern char map3[];
 extern PMAP pacMap;
+extern stage state;
 
 extern COORD charLocation;
 extern COORD charLocation2;
@@ -48,9 +48,11 @@ SurvivalAI ghost9;
 
 SurvivalAI* arrghosts[9] = {&ghost1,&ghost2,&ghost3,&ghost4,&ghost5,&ghost6,&ghost7,&ghost8,&ghost9};
 
-void init_survival(){
+void init_survival(stage changeState){
 		elapsedTime = 0.0;
 		pacMap=load_map(2);
+		PlaySound(NULL,0,0);
+		PlaySound(TEXT("Donkey Kong Theme song"),NULL,SND_LOOP | SND_ASYNC);
 
         charLocation.X = 38;
         charLocation.Y = 20;
@@ -96,7 +98,7 @@ void init_survival(){
         g_idirection8=rand()%4;
 		g_idirection9=rand()%4;
 		/*g_idirection10=rand()%4;*/
-
+        state=changeState;
 		
 }
 
@@ -160,6 +162,7 @@ void renderMapSurvival()
     // Set up sample colours, and output shadings
     colour(0x0F);
     insertmap(pacMap);
+	
 }
 
 

@@ -27,8 +27,8 @@ enum Keys
 
 enum stage
 {
+	intro,
 	menu,
-    //stage_survival_init,
 	stage_survival,
 	PVP_stage1,
 	transition,
@@ -42,26 +42,44 @@ enum stage
 	countInfection,
 	end_survivors,
 	end_infectants,
-	//count3,
-	//count2,
-	//count1,
 	COOP_stage,
 	COOP_end,
     infection,
-    statecount
+    //init states
+    INIT_intro,
+	INIT_menu,
+	INIT_stage_survival,
+	INIT_PVP_stage1,
+	INIT_transition,
+	INIT_PVP_stage2,
+	INIT_end,
+	INIT_end2,
+	INIT_countPVP1,
+	INIT_countPVP2,
+	INIT_countSurvival,
+	INIT_countCOOP,
+	INIT_countInfection,
+	INIT_end_survivors,
+	INIT_end_infectants,
+	INIT_COOP_stage,
+	INIT_COOP_end,
+    INIT_infection,
+    INIT_statecount
 };
 
 
 void init();                // initialize your variables, allocate memory, etc
-void init(stage state);
-void init_PVP_stage1();
-void init_PVP_stage2();
-void init_countdown321();
+// init function for different states
+void init_menu(stage changeState);
+void init_PVP_stage1(stage changeState);
+void init_PVP_stage2(stage changeState);
+void init_countdown321(stage changeState);
+void init_intro(stage changeState);
+
 void getInput();            // get input from player
 void update(double dt,stage state);     // update the game and the state of the game
 void update2(double dt);
 void render(stage state);              // renders the current state of the game to the console
-void updateCOOP(double dt);
 void shutdown();   // do clean up, free memory
 double timer(double& seconds);
 
@@ -82,6 +100,7 @@ void render_end_survivors();
 void render_end_infectants();
 void render_transition();
 void renderMainMenu();
+void renderIntro(stage changeState);
 void renderCharacter();		// renders the character into the buffer
 void rendercountdown321(stage changeState);
 void renderFramerate();     // renders debug information, frame rate, elapsed time, etc

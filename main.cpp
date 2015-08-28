@@ -19,7 +19,7 @@ extern COORD monster1;
 extern int score;
 extern int score2;
 extern Console console;
-stage state=menu;
+stage state=INIT_intro;
 stage current_stage;
 extern PMAP pacMap;
 extern PMAP pacMap2;
@@ -53,10 +53,6 @@ void mainLoop()
     g_Timer.startTimer();    // Start timer to calculate how long it takes to render this frame
     while (!g_bQuitGame)      // run this loop until user wants to quit 
     {  
-        if(current_stage!=state){
-            init(state);
-        }
-        current_stage=state;        // current state as a checker for if state changes
         getInput();                         // get keyboard input
         update(g_Timer.getElapsedTime(),state);   // update the game
         render(state);                // render the graphics output to screen

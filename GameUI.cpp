@@ -20,7 +20,6 @@ extern int score2;
 
 void insertmap(PMAP sMap)
 {
-
 	console.writeToBuffer(0,2,"Player1",0x1B);
 	console.writeToBuffer(0,3,"Score: ",0x1B);
 	console.writeToBuffer(8,3,score,0x1B);
@@ -46,7 +45,7 @@ void insertmap(PMAP sMap)
 void printText(PMAP text){
 	for(int j=ciOffsetY;j<text->nrow+ciOffsetY;++j){
         for(int i=ciOffsetX;i<text->ncol+ciOffsetX;++i){
-			console.writeToBuffer(i,j,text->data[i-ciOffsetX][j-ciOffsetY],0x0F);
+			console.writeToBuffer(i,j,static_cast<unsigned char>(text->data[i-ciOffsetX][j-ciOffsetY]),0x0F);
 		}
 	}
 }

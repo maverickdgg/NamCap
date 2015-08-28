@@ -46,10 +46,12 @@ extern int score;
 extern int score2;
 int timeCom;
 
-void init_COOP(){
+void init_COOP(stage changeState){
 
 		elapsedTime = 0.0;
         pacMap=load_map(1);
+		PlaySound(NULL,0,0);
+		PlaySound(TEXT("Zelda Link's Awakening Music - Overworld  Main Theme"),NULL,SND_LOOP | SND_ASYNC);
 
 		charLocation.X = 38;
         charLocation.Y = 20;
@@ -70,16 +72,16 @@ void init_COOP(){
         g_idirection=rand()%4;
         g_idirection2=rand()%4;
         g_idirection3=rand()%4;
-		PlaySound(NULL, 0,0);
-		PlaySound(TEXT("pacman_eatfruit.wav"),NULL,SND_LOOP|SND_ASYNC);
+        state=changeState;
 }
 
-void init_COOP_end()
+void init_COOP_end(stage changeState)
 {
 	elapsedTime = 0.0;
 	pacMap=load_map(6);
 	PlaySound(NULL, 0,0);
-	PlaySound(TEXT("pacman_eatfruit.wav"),NULL,SND_LOOP|SND_ASYNC);
+	PlaySound(TEXT("Super Mario Bros. - Game Over Sound Effect.wav"),NULL,SND_LOOP|SND_ASYNC);
+    state=changeState;
 }
 
 void moveCharacter_COOP(){
@@ -160,7 +162,7 @@ void eneXp1Coop(COORD &ene , COORD &p1)
 	{
 		if(timer(counter) < 0)
 		{
-			state = COOP_end;
+			state = INIT_COOP_end;
 		}
 	}
 	else if(death == false)
@@ -185,7 +187,7 @@ void eneXp2Coop(COORD &ene , COORD &p2)
 	{
 		if(timer < 0)
 		{
-			state = COOP_end;
+			state = INIT_COOP_end;
 		}
 	}
 	else if(death == false)
@@ -207,7 +209,7 @@ void coopP1xP2(COORD &p1 , COORD &p2)
 	}
 	if(p1die && p2die && death == true)
 	{
-		state = COOP_end;
+		state = INIT_COOP_end;
 	}
 }
 
@@ -216,7 +218,7 @@ void coopWinCon()
 	timeCom = elapsedTime;
 	if(score > 265)
 	{
-		state = COOP_end;
+		state = INIT_COOP_end;
 	}
 }
 

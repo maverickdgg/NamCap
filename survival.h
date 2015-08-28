@@ -7,6 +7,7 @@
 #include <iomanip>
 #include <sstream>
 #include <random>
+#include "game.h"
 extern CStopWatch g_timer;
 extern bool g_bQuitGame;
 
@@ -14,7 +15,7 @@ struct SurvivalAI{
 	COORD ghosts;
 };
 
-void init_survival();
+void init_survival(stage changeState);
 void moveCharacter_survival();
 void renderMapSurvival();
 void renderCharacterSurvival();
