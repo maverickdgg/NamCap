@@ -639,7 +639,7 @@ void moveCharacter_settings_COOP(){
 
 void moveCharacter_transition(){
     	if(keyPressed[K_ENTER]){
-			state=INIT_PVP_stage2;
+			state=INIT_countPVP2;
 		}
 }
 
