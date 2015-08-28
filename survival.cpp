@@ -98,8 +98,7 @@ void init_survival(stage changeState){
         g_idirection8=rand()%4;
 		g_idirection9=rand()%4;
 		/*g_idirection10=rand()%4;*/
-        state=changeState;
-		
+        state=changeState;	
 }
 
 void moveCharacter_survival()
@@ -227,6 +226,7 @@ void renderCharacterSurvival()
 
 void render_end2()
 {
+		pacMap=load_map(6);
 		insertmap(pacMap);
 		console.writeToBuffer(30,27,"GAME OVER NOOB!!!!!!",0x0C);
 		console.writeToBuffer(25,28,"HAHAHAHAHAHAHAHAHA!!!!!!!!!!",0x0C);
