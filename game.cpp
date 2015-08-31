@@ -13,6 +13,7 @@
 #include <iostream>
 #include "coop.h"
 #include "map.h"
+#include "animation.h"
 
 // Console object
 Console console(90, 50, "NamCap");
@@ -185,17 +186,6 @@ void init_countdown321(stage changeState)
 	 pacMap3= load_map(5);
      state=changeState;
 }
-
-void init_intro(stage changeState)
-{
-	 elapsedTime = 0.0;
-
-	 introMap = load_map(7);
-	 introMap2 = load_map(8);
-	 introMap3 = load_map(9);
-     state=changeState;
-}
-
 
 // Do your clean up of memory here
 // This is called once just before the game exits
@@ -438,64 +428,6 @@ void rendercountdown321(stage changeState)
 		state = changeState;
 	}
 }
-
-void renderIntro(stage changeState)
-{
-	colour(0x0F);
-	if(elapsedTime <= 1)
-	{
-		//printText(introMap);
-		PlaySound(NULL,0,0);
-		PlaySound(TEXT("Nvidia Intro.wav"),NULL,SND_ASYNC);
-		console.writeToBuffer(25,17,"====================",0x0F);
-		console.writeToBuffer(25,18,"                    ",0x0F);
-		console.writeToBuffer(25,19,"                    ",0x0F);
-		console.writeToBuffer(25,20,"                    ",0x0F);
-		console.writeToBuffer(25,20,"=  ====  ==  ====  =",0x0F);
-		console.writeToBuffer(25,21,"                    ",0x0F);
-		console.writeToBuffer(25,22,"                    ",0x0F);
-		console.writeToBuffer(25,23,"                    ",0x0F);
-		console.writeToBuffer(25,24,"=  ========  ====  =",0x0F);
-		console.writeToBuffer(25,25,"                    ",0x0F);
-		console.writeToBuffer(25,26,"====================",0x0F);
-	}
-	if(elapsedTime <=2 && elapsedTime >1)
-	{
-		//printText(introMap2);
-		console.writeToBuffer(25,17,"====================",0x0F);
-		console.writeToBuffer(25,18,"                    ",0x0F);
-		console.writeToBuffer(25,19,"=  ====  ==  ====  =",0x0F);
-		console.writeToBuffer(25,20,"                    ",0x0F);
-		console.writeToBuffer(25,20,"=  ====  ==  ====  =",0x0F);
-		console.writeToBuffer(25,21,"                    ",0x0F);
-		console.writeToBuffer(25,22,"=  ========  ====  =",0x0F);
-		console.writeToBuffer(25,23,"=  ========  ====  =",0x0F);
-		console.writeToBuffer(25,24,"=  ========  ====  =",0x0F);
-		console.writeToBuffer(25,25,"=  ========       ==",0x0F);
-		console.writeToBuffer(25,26,"====================",0x0F);
-	}
-	if(elapsedTime <=3 && elapsedTime >2)
-	{
-		//printText(introMap3);
-		console.writeToBuffer(25,17,"====================",0x0F);
-		console.writeToBuffer(25,18,"=       ===       ==",0x0F);
-		console.writeToBuffer(25,19,"=  ====  ==  ====  =",0x0F);
-		console.writeToBuffer(25,20,"=  ====  ==  ====  =",0x0F);
-		console.writeToBuffer(25,20,"=  ====  ==  ====  =",0x0F);
-		console.writeToBuffer(25,21,"=       ===  ====  =",0x0F);
-		console.writeToBuffer(25,22,"=  ========  ====  =",0x0F);
-		console.writeToBuffer(25,23,"=  ========  ====  =",0x0F);
-		console.writeToBuffer(25,24,"=  ========  ====  =",0x0F);
-		console.writeToBuffer(25,25,"=  ========       ==",0x0F);
-		console.writeToBuffer(25,26,"====================",0x0F);
-		console.writeToBuffer(25,27,"  PD ENTERTAINMENT  ",0x0F);
-	}
-	if(elapsedTime >= 3)
-	{
-		state=changeState;
-	}
-}
-
 
 void render_transition()
 {
@@ -819,8 +751,6 @@ void moveCharacter_end(){
 
 void moveCharacter(stage state)
 {
-    // Updating the location of the character based on the key press
-    // switches constrols based on state
     switch(state){
         //init states
         case INIT_intro:
@@ -932,7 +862,6 @@ void moveCharacter(stage state)
 			moveCharacter_end();
 			break;
     }
-
 }
 
 void eneXp1(COORD &ene , COORD &p1)

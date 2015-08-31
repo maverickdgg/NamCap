@@ -79,7 +79,6 @@ void init_menu(stage changeState);
 void init_PVP_stage1(stage changeState);
 void init_PVP_stage2(stage changeState);
 void init_countdown321(stage changeState);
-void init_intro(stage changeState);
 
 void getInput();            // get input from player
 void update(double dt,stage state);     // update the game and the state of the game
@@ -115,7 +114,6 @@ void renderSettings_Survival();
 void renderSettings_PVP();
 void renderSettings_Infection();
 void renderSettings_COOP();
-void renderIntro(stage changeState);
 void renderCharacter();		// renders the character into the buffer
 void rendercountdown321(stage changeState);
 void renderFramerate();     // renders debug information, frame rate, elapsed time, etc

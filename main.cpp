@@ -20,7 +20,6 @@ extern int score;
 extern int score2;
 extern Console console;
 stage state=INIT_intro;
-stage current_stage;
 extern PMAP pacMap;
 extern PMAP pacMap2;
 extern PMAP pacMap3;
