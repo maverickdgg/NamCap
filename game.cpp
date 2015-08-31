@@ -73,6 +73,8 @@ COORD charLocation;
 COORD charLocation2;
 char* maps[]={"map.txt\0","map2.txt\0","map3.txt\0","3.txt\0","2.txt\0","1.txt\0","GAMEOVER.txt\0","PD1.txt\0","PD2.txt\0","PD3.txt\0","map5.txt\0"};
 int Lives = 1;
+int LivesStore = Lives;
+int LivesStore2 = Lives;
 int RespawnRate = 0;
 int RespawnTF = 5;
 int SpawnRate = 10;
@@ -366,23 +368,23 @@ void renderSettings()
 {
 	console.writeToBuffer(25,15,"Press ENTER to go back to Menu",0x0F);
 	console.writeToBuffer(25,17,"Press LEFT to change PVP Settings",0x0F);
-	console.writeToBuffer(25,18,"Press DOWN to change Survival Settings",0x0F);
+	/*console.writeToBuffer(25,18,"Press DOWN to change Survival Settings",0x0F);*/
 	console.writeToBuffer(25,19,"Press RIGHT to change COOP Settings",0x0F);
-    console.writeToBuffer(25,20,"Press UP to change Infection Settings",0x0F);
+    /*console.writeToBuffer(25,20,"Press UP to change Infection Settings",0x0F);*/
 }
 
 //Done By Jacob
 void renderSettings_PVP()
 {
 	console.writeToBuffer(25,15,"Press ENTER to go back to Settings",0x0F);
-	console.writeToBuffer(25,17,"Press Up to increase Ghost Speed",0x0F);
-	console.writeToBuffer(25,18,"Press Down to decrease Ghost Speed",0x0F);
-	console.writeToBuffer(25,19,"Ghost Speed:",0x0F);
-	console.writeToBuffer(37,19,GhostSpeed,0x0F);
-	console.writeToBuffer(25,20,"Press Right to increase Lives",0x0F);
-	console.writeToBuffer(25,21,"Press Left to decrease Lives",0x0F);
-	console.writeToBuffer(25,22,"Lives:",0x0F);
-	console.writeToBuffer(32,22,Lives,0x0F);
+	console.writeToBuffer(25,17,"Press Up to increase Lives",0x0F);
+	console.writeToBuffer(25,18,"Press Down to decrease Lives",0x0F);
+	console.writeToBuffer(25,19,"Lives:",0x0F);
+	console.writeToBuffer(37,19,Lives,0x0F);
+	/*console.writeToBuffer(25,20,"Press Right to increase Ghost Speed",0x0F);
+	console.writeToBuffer(25,21,"Press Left to decrease Ghost Speed",0x0F);
+	console.writeToBuffer(25,22,"Ghost Speed:",0x0F);
+	console.writeToBuffer(32,22,GhostSpeed,0x0F);*/
 }
 
 //Done By Jacob
@@ -393,10 +395,10 @@ void renderSettings_COOP()
 	console.writeToBuffer(25,18,"Press Down to decrease Revive Timeframe",0x0F);
 	console.writeToBuffer(25,19,"Timeframe:",0x0F);
 	console.writeToBuffer(36,19,RespawnTF,0x0F);
-	console.writeToBuffer(25,20,"Press Right to increase Revive Time Required",0x0F);
+	/*console.writeToBuffer(25,20,"Press Right to increase Revive Time Required",0x0F);
 	console.writeToBuffer(25,21,"Press Left to decrease Revive Time Required",0x0F);
 	console.writeToBuffer(25,22,"Time Required:",0x0F);
-	console.writeToBuffer(39,22,RespawnRate,0x0F);
+	console.writeToBuffer(39,22,RespawnRate,0x0F);*/
 
 }
 
@@ -451,7 +453,7 @@ void render_transition()
 	console.writeToBuffer(25,15,"Player 2 Ready? Press Enter!",0x0F);         
 }
 
-//Done by Daniel(Leader), Victor & Amirul
+//Done by Daniel(Leader), Victor, Jacob & Amirul
 void moveCharacter_menu(){
 		if (keyPressed[K_ENTER])
 		{
@@ -472,6 +474,8 @@ void moveCharacter_menu(){
         if(keyPressed[K_UP]){
             state = INIT_countInfection;
         }
+		score=0;
+		score2=0;
 }
 
 //Done by Jacob
@@ -484,17 +488,17 @@ void moveCharacter_settings(){
 	    {
 		    state = settings_PVP;
 	    }
-		if (keyPressed[K_DOWN])
+		/*if (keyPressed[K_DOWN])
 	    {
 		    state = settings_Survival;
-	    }
+	    }*/
 		if (keyPressed[K_RIGHT])
 	    {
 		    state = settings_COOP;
 	    }
-        if(keyPressed[K_UP]){
+        /*if(keyPressed[K_UP]){
             state = settings_Infection;
-        }
+        }*/
 }
 
 //Done by Jacob
@@ -503,27 +507,27 @@ void moveCharacter_settings_PVP(){
 		{
 			state = settings;
 		}
-        if (keyPressed[K_LEFT])
+        if (keyPressed[K_DOWN])
 	    {
 			if (Lives > 1)
 			{
 				Lives -= 1;
 			}
 	    }
-		if (keyPressed[K_DOWN])
+		/*if (keyPressed[K_LEFT])
 	    {
 			if (GhostSpeed > 1)
 			{
 				GhostSpeed -= 1;
 			}
-	    }
-		if (keyPressed[K_RIGHT])
+	    }*/
+		if (keyPressed[K_UP])
 	    {
 		    Lives += 1;
 	    }
-        if(keyPressed[K_UP]){
+        /*if(keyPressed[K_RIGHT]){
             GhostSpeed += 1;
-        }
+        }*/
 }
 
 //Done By Jacob
@@ -892,7 +896,7 @@ void moveCharacter(stage state)
     }
 }
 
-//Done By Daniel(Leader), Victor
+//Done By Daniel(Leader), Victor, Jacob
 void eneXp1(COORD &ene , COORD &p1)
 {
 	SHORT x = 38;
@@ -910,12 +914,23 @@ void eneXp1(COORD &ene , COORD &p1)
 				PlaySound(NULL,0,0);
 				PlaySound(TEXT("Super Mario Bros. - Game Over Sound Effect.wav"),NULL,SND_LOOP|SND_ASYNC);
 			}
-            if(state==PVP_stage1){
+            if(state==PVP_stage1 && LivesStore>0){
+				LivesStore -= 1;
+				g_bOrigin = false;
+			}
+			else if (state == PVP_stage1)
+			{
+				LivesStore=Lives;
                 state=INIT_transition;
 				PlaySound(NULL,0,0);
 				PlaySound(TEXT("Super Mario Bros. - Game Over Sound Effect.wav"),NULL,SND_LOOP|SND_ASYNC);
             }
-            else if(state==PVP_stage2){
+            if(state==PVP_stage2 && LivesStore2>0){
+				LivesStore2 -=1;
+				g_bOrigin = false;
+			}
+			else if (state == PVP_stage2){
+				LivesStore2=Lives;
                 state=INIT_end;
 				PlaySound(NULL,0,0);
 				PlaySound(TEXT("Super Mario Bros. - Game Over Sound Effect.wav"),NULL,SND_LOOP|SND_ASYNC);

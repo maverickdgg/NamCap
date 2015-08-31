@@ -37,6 +37,7 @@ bool death = false;
 bool p1die = false;
 bool p2die = false;
 
+extern int RespawnTF;
 extern stage state;
 extern double elapsedTime; 
 extern double deltaTime;
@@ -160,13 +161,16 @@ void eneXp1Coop(COORD &ene , COORD &p1)
 	{
 		death = true;
 		p1die = true;
-		counter=7;
+		counter=RespawnTF;
 	}
 	if(death == true)
 	{
 		if(timer(counter) < 0)
 		{
 			state = INIT_COOP_end;
+			p1die = false;
+			p2die = false;
+			death = false;
 		}
 	}
 	else if(death == false)
@@ -193,11 +197,15 @@ void eneXp2Coop(COORD &ene , COORD &p2)
 		if(timer < 0)
 		{
 			state = INIT_COOP_end;
+			death = false;
+			p1die = false;
+			p2die = false;
 		}
 	}
 	else if(death == false)
 	{
 		counter = 10;
+		
 	}
 }
 
@@ -208,6 +216,7 @@ void coopP1xP2(COORD &p1 , COORD &p2)
 	{
 		if(p2.Y == p1.Y && p2.X == p1.X)
 		{
+			
 			death = false;
 			p1die = false;
 			p2die = false;
@@ -282,7 +291,7 @@ void renderEndCondition()
 		console.writeToBuffer(10,27,"Time Complete:",0x0C);
 		console.writeToBuffer(10,32,timeCom,0x0C);
 	}
-	if(score < 266)
+	if(score < 265)
 	{
 		console.writeToBuffer(30,27,"HAHA you suck at it",0x0C);
 	}
