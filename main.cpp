@@ -30,6 +30,7 @@ void mainLoop();
 // Bug in waitUnitil. it waits for the time from getElapsedTime to waitUntil, but should be insignificant.
 
 // main function - starting function
+//Done By Daniel(Leader)
 int main( void )
 {
     init();      // initialize your variables
@@ -47,6 +48,8 @@ int main( void )
 // Input	: void
 // Output	: void
 //--------------------------------------------------------------
+
+//Done By Daniel(Leader)
 void mainLoop()
 {
     g_Timer.startTimer();    // Start timer to calculate how long it takes to render this frame

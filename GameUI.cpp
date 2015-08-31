@@ -14,6 +14,8 @@ extern Console console;
 extern int score;
 extern int score2;
 
+//Done By Amirul
+//With tips from Mr Alex Toh
 void insertmap(PMAP sMap)
 {
 	console.writeToBuffer(0,2,"Player1",0x1B);
@@ -38,6 +40,8 @@ void insertmap(PMAP sMap)
     }
 }
 
+//Done By Amirul
+//With tips from Mr Alex Toh
 void printText(PMAP text){
 	for(int j=ciOffsetY;j<text->nrow+ciOffsetY;++j){
         for(int i=ciOffsetX;i<text->ncol+ciOffsetX;++i){

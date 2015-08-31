@@ -81,6 +81,8 @@ int GhostSpeed = 1;
 
 // Initialize variables, allocate memory, load data from file, etc. 
 // This is called once before entering into your main loop
+
+//Done By Daniel(Leader)
 void init()
 {   
 		PlaySound(NULL,0,0);
@@ -110,6 +112,7 @@ void init()
     console.setConsoleFont(10, 20, L"Raster Fonts");
 }
 
+//Done By Daniel(Leader)
 void init_menu(stage changeState){
     	PlaySound(NULL,0,0);
 		PlaySound(TEXT("pacman_beginning"),NULL,SND_LOOP|SND_ASYNC);
@@ -117,6 +120,7 @@ void init_menu(stage changeState){
         state=changeState;
 }
 
+//Done By Daniel(Leader)
 void init_PVP_stage1(stage changeState){
      elapsedTime = 0.0;
         pacMap=load_map(1);
@@ -144,6 +148,7 @@ void init_PVP_stage1(stage changeState){
         state=changeState;
 }
 
+//Done By Daniel(Leader)
 void init_PVP_stage2(stage changeState){
         elapsedTime = 0.0;
         pacMap=load_map(0);
@@ -176,6 +181,7 @@ void init_PVP_stage2(stage changeState){
         state=changeState;
 }
 
+//Done By Amirul
 void init_countdown321(stage changeState)
 {
 	 elapsedTime = 0.0;
@@ -204,6 +210,8 @@ void shutdown()
 	To get other VK key defines, right click on the VK define (e.g. VK_UP) and choose "Go To Definition" 
 	For Alphanumeric keys, the values are their ascii values (uppercase).
 */
+
+//Done By Daniel(Leader)
 void getInput()
 {    
     keyPressed[K_UP] = isKeyPressed(VK_UP);
@@ -244,7 +252,7 @@ void update(double dt, stage state)
     // sound can be played here too.
 }
 
-
+//Done By Daniel(Leader)
 double timer(double& seconds)
 {
     seconds -= deltaTime;
@@ -258,6 +266,7 @@ double timer(double& seconds)
     To get an idea of the values for colours, look at console.h and the URL listed there
 */
 
+//Done By Daniel(Leader), Victor & Amirul
 void render(stage state)
 {
     clearScreen();      // clears the current screen and draw from scratch
@@ -342,6 +351,7 @@ void render(stage state)
     renderToScreen();   // dump the contents of the buffer to the screen, one frame worth of game
 }
 
+//Done By Daniel(Leader), Victor, Amirul, Jacob
 void renderMainMenu()
 {   
 	console.writeToBuffer(25,15,"Press Enter to go to Settings",0x0F);
@@ -351,6 +361,7 @@ void renderMainMenu()
     console.writeToBuffer(25,20,"Press UP to play Infection",0x0F);
 }
 
+//Done By Jacob
 void renderSettings()
 {
 	console.writeToBuffer(25,15,"Press ENTER to go back to Menu",0x0F);
@@ -360,6 +371,7 @@ void renderSettings()
     console.writeToBuffer(25,20,"Press UP to change Infection Settings",0x0F);
 }
 
+//Done By Jacob
 void renderSettings_PVP()
 {
 	console.writeToBuffer(25,15,"Press ENTER to go back to Settings",0x0F);
@@ -373,6 +385,7 @@ void renderSettings_PVP()
 	console.writeToBuffer(32,22,Lives,0x0F);
 }
 
+//Done By Jacob
 void renderSettings_COOP()
 {
 	console.writeToBuffer(25,15,"Press Enter to go back to Settings",0x0F);
@@ -387,6 +400,7 @@ void renderSettings_COOP()
 
 }
 
+//Done By Jacob
 void renderSettings_Survival()
 {
 	console.writeToBuffer(25,15,"Press ENTER to go back to Settings",0x0F);
@@ -400,12 +414,14 @@ void renderSettings_Survival()
 	console.writeToBuffer(41,22,MaxGhostCount,0x0F);
 }
 
+//Done By Jacob
 void renderSettings_Infection()
 {
 	console.writeToBuffer(25,15,"Nothing to change here :P",0x0F);
 	console.writeToBuffer(25,17,"Press ENTER to go back to Settings",0x0F);
 }
 
+//Done By Amirul
 void rendercountdown321(stage changeState)
 {
 	colour(0x0F);
@@ -429,11 +445,13 @@ void rendercountdown321(stage changeState)
 	}
 }
 
+//Done By Daniel(Leader) & Amirul
 void render_transition()
 {
 	console.writeToBuffer(25,15,"Player 2 Ready? Press Enter!",0x0F);         
 }
 
+//Done by Daniel(Leader), Victor & Amirul
 void moveCharacter_menu(){
 		if (keyPressed[K_ENTER])
 		{
@@ -456,6 +474,7 @@ void moveCharacter_menu(){
         }
 }
 
+//Done by Jacob
 void moveCharacter_settings(){
 		if (keyPressed[K_ENTER])
 		{
@@ -478,6 +497,7 @@ void moveCharacter_settings(){
         }
 }
 
+//Done by Jacob
 void moveCharacter_settings_PVP(){
 		if (keyPressed[K_ENTER])
 		{
@@ -506,6 +526,7 @@ void moveCharacter_settings_PVP(){
         }
 }
 
+//Done By Jacob
 void moveCharacter_settings_Survival(){
 		if (keyPressed[K_ENTER])
 		{
@@ -534,6 +555,7 @@ void moveCharacter_settings_Survival(){
         }
 }
 
+//Done By Jacob
 void moveCharacter_settings_Infection(){
 		if (keyPressed[K_ENTER])
 		{
@@ -541,6 +563,7 @@ void moveCharacter_settings_Infection(){
 		}
 }
 
+//Done By Jacob
 void moveCharacter_settings_COOP(){
 	if (keyPressed[K_ENTER])
 		{
@@ -569,12 +592,14 @@ void moveCharacter_settings_COOP(){
         }
 }
 
+//Done By Daniel(Leader), Victor & Amirul
 void moveCharacter_transition(){
     	if(keyPressed[K_ENTER]){
 			state=INIT_countPVP2;
 		}
 }
 
+//Done By Daniel(Leader)
 void moveCharacter_PVP_stage1(){
     if (keyPressed[K_UP] && charLocation.Y > 0 && wall_up(charLocation)==false)
         {
@@ -657,6 +682,7 @@ void moveCharacter_PVP_stage1(){
         monster(ghost3,g_idirection3);
 }
 
+//Done By Daniel(Leader)
 void moveCharacter_PVP_stage2(){
     if (keyPressed[K_W] && charLocation.Y > 0 && wall_up(charLocation)==false)
         {
@@ -743,12 +769,14 @@ void moveCharacter_PVP_stage2(){
         monster(ghost3,g_idirection3);
 }
 
+//Done By Daniel(Leader)
 void moveCharacter_end(){
     if(keyPressed[K_ENTER]){
         state=INIT_menu;
     }
 }
 
+//Done By Daniel(Leader), Victor & Amirul
 void moveCharacter(stage state)
 {
     switch(state){
@@ -864,6 +892,7 @@ void moveCharacter(stage state)
     }
 }
 
+//Done By Daniel(Leader), Victor
 void eneXp1(COORD &ene , COORD &p1)
 {
 	SHORT x = 38;
@@ -899,7 +928,7 @@ void eneXp1(COORD &ene , COORD &p1)
 	}
 }
 
-
+//Done By Daniel(Leader) & Victor
 bool p1Xcoin(COORD location)
 {
 	if(pacMap->data[location.Y-ciOffsetY][location.X-ciOffsetX] == '0')
@@ -922,6 +951,7 @@ bool p1Xcoin(COORD location)
     }
 }
 
+//Done By Daniel(Leader)
 void teleport(COORD& a,COORD b, COORD c){
     
     if (a.X == b.X && a.Y==b.Y){
@@ -934,6 +964,7 @@ void teleport(COORD& a,COORD b, COORD c){
     }
 }
 
+//Done By Daniel(Leader)
 void processUserInput()
 {
     // quits the game if player hits the escape key
@@ -947,6 +978,7 @@ void clearScreen()
     console.clearBuffer(0x00);
 }
 
+//Done By Daniel(Leader) & Amirul
 void renderMap()
 {
     // Set up sample colours, and output shadings
@@ -954,11 +986,13 @@ void renderMap()
     insertmap(pacMap);
 }
 
+//Done By Daniel(Leader) & Amirul
 void renderTransition()
 {
 	colour(0x0F);
 }
 
+//Done By Daniel(Leader) & Amirul
 void render_end(){
        if(score>score2){
             console.writeToBuffer(30,15,"Player one wins",0x0F);
@@ -968,6 +1002,7 @@ void render_end(){
         }
 }
 
+//Done By Daniel(Leader)
 void renderCharacter()
 {
 	if(state==stage_survival)

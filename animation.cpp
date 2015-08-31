@@ -19,6 +19,7 @@ PCSPRITE introAnimation;
 
 char intro_animation[]="intro_animation.txt";
 
+//Done By Daniel(Leader)
 PCSPRITE load_animation(char* fname)
 {
 	PCSPRITE animation = NULL; 
@@ -57,12 +58,14 @@ PCSPRITE load_animation(char* fname)
 	return animation; 
 }
 
+//Done By Daniel(Leader)
 //function to delete animation
 void free_animation(PCSPRITE animation)
 {
 	delete animation; 
 }
 
+//Done By Daniel(Leader)
 //rendering one frame of animation
 void render_animation(PCSPRITE animation, int frame, int x,int y, WORD color)
 {
@@ -73,6 +76,7 @@ void render_animation(PCSPRITE animation, int frame, int x,int y, WORD color)
 	}
 }
 
+//Done By Daniel(Leader)
 void init_intro(stage changeState)
 {
 	elapsedTime = 0.0;
@@ -84,6 +88,7 @@ void init_intro(stage changeState)
     state=changeState;
 }
 
+//Done By Daniel(Leader)
 void renderIntro(stage changeState)
 {
 	colour(0x0F);

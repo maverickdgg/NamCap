@@ -258,6 +258,8 @@ int reroll(int& x){
 //    }
 //}
 //
+
+//Done By Daniel(Leader)
 void monster(COORD& monster1,int& g_idirection){
     bool bcollision =false;
     if(bcollision==false){
@@ -319,7 +321,7 @@ void monster(COORD& monster1,int& g_idirection){
 }
 
 
-
+//Done By Daniel(Leader)
 bool wall_left(COORD location){
     if(pacMap->data[location.Y-ciOffsetY][location.X-1-ciOffsetX] == '1'){
         return true;
@@ -329,6 +331,8 @@ bool wall_left(COORD location){
     }
 }
 
+
+//Done By Daniel(Leader)
 bool wall_right(COORD location){
     if(pacMap->data[location.Y-ciOffsetY][location.X+1-ciOffsetX] == '1'){
         return true;
@@ -338,6 +342,8 @@ bool wall_right(COORD location){
     }
 }
 
+
+//Done By Daniel(Leader)
 bool wall_up(COORD location){
     if(pacMap->data[location.Y-1-ciOffsetY][location.X-ciOffsetX] == '1'){
         return true;
@@ -347,6 +353,8 @@ bool wall_up(COORD location){
     }
 }
 
+
+//Done By Daniel(Leader)
 bool wall_down(COORD location){
     if(pacMap->data[location.Y+1-ciOffsetY][location.X-ciOffsetX] == '1'){
         return true;

@@ -43,6 +43,7 @@ infectants player2;
 
 infectants* arrInfectants[ciInfect_count]={&player1,&player2,&infectantAI_1,&infectantAI_2,&infectantAI_3};
 
+//Done By Daniel(Leader)
 void init_infection(stage changeState){
         elapsedTime = 0.0;
         pacMap=load_map(10);
@@ -84,6 +85,7 @@ void init_infection(stage changeState){
     state=changeState;
 }
 
+//Done By Daniel(Leader)
 void init_infection_end(stage changeState)
 {
 	
@@ -93,6 +95,7 @@ void init_infection_end(stage changeState)
      state=changeState;
 }
 
+//Done By Daniel(Leader)
 void moveCharacter_infection(){
     if (keyPressed[K_UP] && arrInfectants[0]->coordinates.Y > 0 && wall_up(arrInfectants[0]->coordinates)==false)
         {
@@ -156,6 +159,7 @@ void moveCharacter_infection(){
     monster(arrInfectants[4]->coordinates,g_idirection3);
 }
 
+//Done By Daniel(Leader)
 bool infected_win(){
     bool checker=true;
     for(int i=0;i<ciInfect_count;++i){
@@ -168,7 +172,7 @@ bool infected_win(){
 }
 
 
-
+//Done By Daniel(Leader)
 void infect_collision(infectants infect1,infectants infect2){
     int i=0;
     int j=0;
@@ -191,6 +195,7 @@ void infect_collision(infectants infect1,infectants infect2){
     }
 }
 
+//Done By Daniel(Leader)
 void renderCharacter_infection()
 {
     // Draw the location of the character
@@ -242,6 +247,7 @@ void renderCharacter_infection()
     }
 }
 
+//Done By Amirul
 void render_end_infectants()
 {
 		insertmap(pacMap);
@@ -252,6 +258,7 @@ void render_end_infectants()
 		console.writeToBuffer(25,31,"Press Escape To Quit, HAHAHAHA",0x0C);
 }
 
+//Done By Amirul
 void render_end_survivors()
 {
 		insertmap(pacMap);

@@ -46,6 +46,8 @@ extern int score;
 extern int score2;
 int timeCom;
 
+
+//Done By Victor
 void init_COOP(stage changeState){
 
 		elapsedTime = 0.0;
@@ -75,6 +77,7 @@ void init_COOP(stage changeState){
         state=changeState;
 }
 
+//Done By Victor
 void init_COOP_end(stage changeState)
 {
 	elapsedTime = 0.0;
@@ -145,6 +148,7 @@ void moveCharacter_COOP(){
     monster(ghost3,g_idirection3);
 }
 
+//Done By Victor
 void eneXp1Coop(COORD &ene , COORD &p1)
 {
 	SHORT x = 38;
@@ -171,6 +175,7 @@ void eneXp1Coop(COORD &ene , COORD &p1)
 	}
 }
 
+//Done By Victor
 void eneXp2Coop(COORD &ene , COORD &p2)
 {
 	SHORT x = 38;
@@ -196,6 +201,7 @@ void eneXp2Coop(COORD &ene , COORD &p2)
 	}
 }
 
+//Done By Victor
 void coopP1xP2(COORD &p1 , COORD &p2)
 {
 	if(death == true)
@@ -216,6 +222,7 @@ void coopP1xP2(COORD &p1 , COORD &p2)
 	}
 }
 
+//Done By Victor
 void coopWinCon()
 {
 	timeCom = elapsedTime;
@@ -225,6 +232,7 @@ void coopWinCon()
 	}
 }
 
+//Done By Victor
 void renderCoopCharacter()
 {
 	console.writeToBuffer(charLocation, (char)g_iMod, 0x0C+g_iCol);
@@ -252,6 +260,7 @@ void renderCoopCharacter()
 	renderHelp();
 }
 
+//Done By Victor
 void renderHelp()
 {
 	if(p1die == true)
@@ -264,6 +273,7 @@ void renderHelp()
 	}
 }
 
+//Done By Amirul
 void renderEndCondition()
 {
 	insertmap(pacMap);

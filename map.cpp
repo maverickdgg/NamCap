@@ -9,6 +9,8 @@ using namespace std;
 
 extern char* maps[];
 
+//Done By Daniel(Leader) & Amirul
+//Tips from Mr Alex Toh
 PMAP load_map(int x)
 {
 	MAP* map; 
@@ -54,7 +56,8 @@ PMAP load_map(int x)
 	return map; 
 }
 
-
+//Done By Daniel(Leader) & Amirul
+//Tips from Mr Alex Toh
 void free_map(PMAP pmap)
 {
 	delete pmap; 

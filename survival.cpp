@@ -48,6 +48,7 @@ SurvivalAI ghost9;
 
 SurvivalAI* arrghosts[9] = {&ghost1,&ghost2,&ghost3,&ghost4,&ghost5,&ghost6,&ghost7,&ghost8,&ghost9};
 
+//Done By Amirul
 void init_survival(stage changeState){
 		elapsedTime = 0.0;
 		pacMap=load_map(2);
@@ -101,6 +102,7 @@ void init_survival(stage changeState){
         state=changeState;	
 }
 
+//Done By Amirul
 void moveCharacter_survival()
 {
 		if (keyPressed[K_UP] && charLocation.Y > 0 && wall_up(charLocation)==false)
@@ -156,6 +158,7 @@ void moveCharacter_survival()
 		}*/
 }
 
+//Done By Amirul
 void renderMapSurvival()
 {
     // Set up sample colours, and output shadings
@@ -165,7 +168,7 @@ void renderMapSurvival()
 }
 
 
-
+//Done By Amirul
 void renderCharacterSurvival()
 {
     // Draw the location of the character
@@ -224,6 +227,7 @@ void renderCharacterSurvival()
     teleport(charLocation,tp1,tp2);
 }
 
+//Done By Amirul
 void render_end2()
 {
 		pacMap=load_map(6);
