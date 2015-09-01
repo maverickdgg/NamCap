@@ -863,6 +863,13 @@ void render_end(){
 //Done By Daniel(Leader)
 void renderCharacter()
 {
+	console.writeToBuffer(0,2,"Player1",0x1B);
+	console.writeToBuffer(0,3,"Score: ",0x1B);
+	console.writeToBuffer(8,3,score,0x1B);
+	console.writeToBuffer(68,2,"Player2",0x46);
+	console.writeToBuffer(68,3,"Score: ",0x46);
+    console.writeToBuffer(76,3,score2,0x46);
+
 	if(state==stage_survival)
 	{
 		renderCharacterSurvival();

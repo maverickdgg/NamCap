@@ -5,6 +5,7 @@
 #include <windows.h>
 #include "ai.h"
 #include "map.h"
+#include "tutorial.h"
 
 extern CStopWatch g_Timer;	
 extern Console console;
@@ -37,7 +38,6 @@ bool death = false;
 bool p1die = false;
 bool p2die = false;
 
-extern int RespawnTF;
 extern stage state;
 extern double elapsedTime; 
 extern double deltaTime;
@@ -161,16 +161,12 @@ void eneXp1Coop(COORD &ene , COORD &p1)
 	{
 		death = true;
 		p1die = true;
-		counter=RespawnTF;
 	}
 	if(death == true)
 	{
 		if(timer(counter) < 0)
 		{
 			state = INIT_COOP_end;
-			p1die = false;
-			p2die = false;
-			death = false;
 		}
 	}
 	else if(death == false)
@@ -197,15 +193,11 @@ void eneXp2Coop(COORD &ene , COORD &p2)
 		if(timer < 0)
 		{
 			state = INIT_COOP_end;
-			death = false;
-			p1die = false;
-			p2die = false;
 		}
 	}
 	else if(death == false)
 	{
 		counter = 10;
-		
 	}
 }
 
@@ -216,7 +208,6 @@ void coopP1xP2(COORD &p1 , COORD &p2)
 	{
 		if(p2.Y == p1.Y && p2.X == p1.X)
 		{
-			
 			death = false;
 			p1die = false;
 			p2die = false;
@@ -225,9 +216,6 @@ void coopP1xP2(COORD &p1 , COORD &p2)
 	if(p1die && p2die && death == true)
 	{
 		state = INIT_COOP_end;
-		death = false;
-		p1die = false;
-		p2die = false;
 	}
 }
 
@@ -235,7 +223,7 @@ void coopP1xP2(COORD &p1 , COORD &p2)
 void coopWinCon()
 {
 	timeCom = elapsedTime;
-	if(score > 265)
+	if(score >= 266)
 	{
 		state = INIT_COOP_end;
 	}
@@ -244,10 +232,10 @@ void coopWinCon()
 //Done By Victor
 void renderCoopCharacter()
 {
-	console.writeToBuffer(charLocation, (char)g_iMod, 0x06+g_iCol);
-    console.writeToBuffer(ghost1,232,0x0D);
-    console.writeToBuffer(ghost2,232,0x0D);
-    console.writeToBuffer(ghost3,232,0x0D);
+	console.writeToBuffer(charLocation, (char)g_iMod, 0x0C+g_iCol);
+    console.writeToBuffer(ghost1,232,0x0B);
+    console.writeToBuffer(ghost2,232,0x0B);
+    console.writeToBuffer(ghost3,232,0x0B);
     if(g_iMod > 6)
 	{
 		g_iMod = 1;
@@ -265,7 +253,7 @@ void renderCoopCharacter()
 	coopP1xP2(charLocation, charLocation2);
 	p1Xcoin(charLocation);
 	p1Xcoin(charLocation2);
-	console.writeToBuffer(charLocation2, 148, 0x0F);
+	console.writeToBuffer(charLocation2, 148, 0x0C);
 	renderHelp();
 }
 
@@ -286,12 +274,12 @@ void renderHelp()
 void renderEndCondition()
 {
 	insertmap(pacMap);
-	if(score > 265)
+	if(score >= 326)
 	{
 		console.writeToBuffer(10,27,"Time Complete:",0x0C);
 		console.writeToBuffer(10,32,timeCom,0x0C);
 	}
-	if(score < 265)
+	if(score <= 325)
 	{
 		console.writeToBuffer(30,27,"HAHA you suck at it",0x0C);
 	}
