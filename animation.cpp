@@ -16,8 +16,10 @@ extern double elapsedTime;
 extern double deltaTime;
 extern stage state;
 PCSPRITE introAnimation;
+extern PCSPRITE menuAnimation;
 
 char intro_animation[]="intro_animation.txt";
+extern char menu_animation[];
 
 //Done By Daniel(Leader)
 PCSPRITE load_animation(char* fname)
@@ -113,4 +115,159 @@ void renderIntro(stage changeState)
 	{
 		state=changeState;
 	}
+}
+
+void renderMenuAnime()
+{
+	colour(0x0F);
+	if(elapsedTime>= 1)
+	{
+        render_animation(menuAnimation,0,20,10,0x0F);
+	}
+	if(elapsedTime>=1.1)
+	{
+        render_animation(menuAnimation,1,20,10,0x0F);
+
+	}
+	if(elapsedTime>=1.2)
+	{
+        render_animation(menuAnimation,2,20,10,0x0F);
+	}
+	if(elapsedTime>=1.3)
+	{
+        render_animation(menuAnimation,3,20,10,0x0F);
+	}
+	if(elapsedTime>=1.4)
+	{
+        render_animation(menuAnimation,4,20,10,0x0F);
+	}
+	if(elapsedTime>=1.5)
+	{
+        render_animation(menuAnimation,5,20,10,0x0F);
+	}
+	if(elapsedTime>=1.6)
+	{
+        render_animation(menuAnimation,6,20,10,0x0F);
+	}
+	if(elapsedTime>=1.7)
+	{
+        render_animation(menuAnimation,7,20,10,0x0F);
+	}
+	if(elapsedTime>=1.8)
+	{
+        render_animation(menuAnimation,8,20,10,0x0F);
+	}
+	if(elapsedTime>=1.9)
+	{
+        render_animation(menuAnimation,9,20,10,0x0F);
+	}
+	if(elapsedTime>=2.0)
+	{
+        render_animation(menuAnimation,10,20,10,0x0F);
+	}
+	if(elapsedTime>=2.1)
+	{
+        render_animation(menuAnimation,11,20,10,0x0F);
+	}
+	if(elapsedTime>=2.2)
+	{
+        render_animation(menuAnimation,12,20,10,0x0F);
+	}
+	if(elapsedTime>=2.3)
+	{
+        render_animation(menuAnimation,13,20,10,0x0F);
+	}
+	if(elapsedTime>=2.4)
+	{
+        render_animation(menuAnimation,14,20,10,0x0F);
+	}
+	if(elapsedTime>=2.5)
+	{
+        render_animation(menuAnimation,15,20,10,0x0F);
+	}
+	if(elapsedTime>=2.6)
+	{
+        render_animation(menuAnimation,16,20,10,0x0F);
+	}
+	if(elapsedTime>=2.7)
+	{
+        render_animation(menuAnimation,17,20,10,0x0F);
+	}
+	if(elapsedTime>=2.8)
+	{
+        render_animation(menuAnimation,18,20,10,0x0F);
+	}
+	if(elapsedTime>=2.9)
+	{
+        render_animation(menuAnimation,19,20,10,0x0F);
+	}
+	if(elapsedTime>=3.0)
+	{
+        render_animation(menuAnimation,20,20,10,0x0F);
+	}
+	if(elapsedTime>=3.1)
+	{
+        render_animation(menuAnimation,21,20,10,0x0F);
+	}
+	if(elapsedTime>=3.2)
+	{
+        render_animation(menuAnimation,22,20,10,0x0F);
+	}
+	if(elapsedTime>=3.3)
+	{
+        render_animation(menuAnimation,23,20,10,0x0F);
+	}
+	if(elapsedTime>=3.4)
+	{
+        render_animation(menuAnimation,24,20,10,0x0F);
+	}
+	if(elapsedTime>=3.5)
+	{
+        render_animation(menuAnimation,25,20,10,0x0F);
+	}
+	if(elapsedTime>=3.6)
+	{
+        render_animation(menuAnimation,26,20,10,0x0F);
+	}
+	if(elapsedTime>=3.7)
+	{
+        render_animation(menuAnimation,27,20,10,0x0F);
+	}
+	if(elapsedTime>=3.8)
+	{
+        render_animation(menuAnimation,28,20,10,0x0F);
+	}
+	if(elapsedTime>=3.9)
+	{
+        render_animation(menuAnimation,29,20,10,0x0F);
+	}
+	if(elapsedTime>=4.0)
+	{
+        render_animation(menuAnimation,30,20,10,0x0F);
+	}
+	if(elapsedTime>=4.1)
+	{
+        render_animation(menuAnimation,31,20,10,0x0F);
+	}
+	if(elapsedTime>=4.2)
+	{
+        render_animation(menuAnimation,32,20,10,0x0F);
+	}
+	if(elapsedTime>=4.3)
+	{
+        render_animation(menuAnimation,33,20,10,0x0F);
+	}
+	if(elapsedTime>=4.4)
+	{
+        render_animation(menuAnimation,34,20,10,0x0F);
+	}
+	if(elapsedTime>=4.5)
+	{
+        render_animation(menuAnimation,35,20,10,0x0F);
+	}
+	if(elapsedTime>4.6)
+	{
+        render_animation(menuAnimation,36,20,10,0x0F);
+	}
+	
 }

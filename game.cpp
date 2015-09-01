@@ -14,6 +14,7 @@
 #include "coop.h"
 #include "map.h"
 #include "animation.h"
+#include "Settings.h"
 
 // Console object
 Console console(90, 50, "NamCap");
@@ -61,6 +62,8 @@ int g_idirection9;
 
 extern stage state;
 extern Console console;
+char menu_animation[]="menu_anime.txt";
+PCSPRITE menuAnimation;
 
 extern unsigned char coin;
 int score = 0;
@@ -73,13 +76,13 @@ COORD charLocation;
 COORD charLocation2;
 char* maps[]={"map.txt\0","map2.txt\0","map3.txt\0","3.txt\0","2.txt\0","1.txt\0","GAMEOVER.txt\0","PD1.txt\0","PD2.txt\0","PD3.txt\0","map5.txt\0"};
 int Lives = 1;
-int LivesStore = Lives;
-int LivesStore2 = Lives;
 int RespawnRate = 0;
 int RespawnTF = 5;
 int SpawnRate = 10;
 int MaxGhostCount = 10;
 int GhostSpeed = 1;
+int LivesStore = Lives;
+int LivesStore2 = Lives;
 
 // Initialize variables, allocate memory, load data from file, etc. 
 // This is called once before entering into your main loop
@@ -116,10 +119,12 @@ void init()
 
 //Done By Daniel(Leader)
 void init_menu(stage changeState){
-    	PlaySound(NULL,0,0);
-		PlaySound(TEXT("pacman_beginning"),NULL,SND_LOOP|SND_ASYNC);
-		elapsedTime=0.0;
-        state=changeState;
+	elapsedTime=0.0;
+    PlaySound(NULL,0,0);
+	PlaySound(TEXT("pacman_beginning"),NULL,SND_LOOP|SND_ASYNC);
+	
+ 	menuAnimation=load_animation(menu_animation);
+    state=changeState;
 }
 
 //Done By Daniel(Leader)
@@ -213,7 +218,7 @@ void shutdown()
 	For Alphanumeric keys, the values are their ascii values (uppercase).
 */
 
-//Done By Daniel(Leader)
+//Done By TEACHER (framework)
 void getInput()
 {    
     keyPressed[K_UP] = isKeyPressed(VK_UP);
@@ -223,6 +228,7 @@ void getInput()
     keyPressed[K_ESCAPE] = isKeyPressed(VK_ESCAPE);
     keyPressed[K_M] = isKeyPressed(0x4D);
 	keyPressed[K_N] = isKeyPressed(0x4E);
+	keyPressed[K_BACKSPACE] = isKeyPressed(0x08);
 
 	keyPressed[K_W] = isKeyPressed(0x57);
     keyPressed[K_S] = isKeyPressed(0x53);
@@ -277,6 +283,7 @@ void render(stage state)
 			renderIntro(INIT_menu);
 			break;
         case menu:
+			
             renderMainMenu();
             break;
 		case settings:
@@ -361,67 +368,9 @@ void renderMainMenu()
 	console.writeToBuffer(25,18,"Press DOWN to play Survival",0x0F);
 	console.writeToBuffer(25,19,"Press RIGHT to play COOP",0x0F);
     console.writeToBuffer(25,20,"Press UP to play Infection",0x0F);
+	renderMenuAnime();
 }
 
-//Done By Jacob
-void renderSettings()
-{
-	console.writeToBuffer(25,15,"Press ENTER to go back to Menu",0x0F);
-	console.writeToBuffer(25,17,"Press LEFT to change PVP Settings",0x0F);
-	/*console.writeToBuffer(25,18,"Press DOWN to change Survival Settings",0x0F);*/
-	console.writeToBuffer(25,19,"Press RIGHT to change COOP Settings",0x0F);
-    /*console.writeToBuffer(25,20,"Press UP to change Infection Settings",0x0F);*/
-}
-
-//Done By Jacob
-void renderSettings_PVP()
-{
-	console.writeToBuffer(25,15,"Press ENTER to go back to Settings",0x0F);
-	console.writeToBuffer(25,17,"Press Up to increase Lives",0x0F);
-	console.writeToBuffer(25,18,"Press Down to decrease Lives",0x0F);
-	console.writeToBuffer(25,19,"Lives:",0x0F);
-	console.writeToBuffer(37,19,Lives,0x0F);
-	/*console.writeToBuffer(25,20,"Press Right to increase Ghost Speed",0x0F);
-	console.writeToBuffer(25,21,"Press Left to decrease Ghost Speed",0x0F);
-	console.writeToBuffer(25,22,"Ghost Speed:",0x0F);
-	console.writeToBuffer(32,22,GhostSpeed,0x0F);*/
-}
-
-//Done By Jacob
-void renderSettings_COOP()
-{
-	console.writeToBuffer(25,15,"Press Enter to go back to Settings",0x0F);
-	console.writeToBuffer(25,17,"Press Up to increase Revive Timeframe",0x0F);
-	console.writeToBuffer(25,18,"Press Down to decrease Revive Timeframe",0x0F);
-	console.writeToBuffer(25,19,"Timeframe:",0x0F);
-	console.writeToBuffer(36,19,RespawnTF,0x0F);
-	/*console.writeToBuffer(25,20,"Press Right to increase Revive Time Required",0x0F);
-	console.writeToBuffer(25,21,"Press Left to decrease Revive Time Required",0x0F);
-	console.writeToBuffer(25,22,"Time Required:",0x0F);
-	console.writeToBuffer(39,22,RespawnRate,0x0F);*/
-
-}
-
-//Done By Jacob
-void renderSettings_Survival()
-{
-	console.writeToBuffer(25,15,"Press ENTER to go back to Settings",0x0F);
-	console.writeToBuffer(25,17,"Press UP to increase Spawn Time",0x0F);
-	console.writeToBuffer(25,18,"Press Down to decrease Spawn Time",0x0F);
-	console.writeToBuffer(25,19,"Spawn Time:",0x0F);
-	console.writeToBuffer(37,19,SpawnRate,0x0F);
-	console.writeToBuffer(25,20,"Press Right to increase Max Ghost",0x0F);
-	console.writeToBuffer(25,21,"Press Left to decrease Max Ghost",0x0F);
-	console.writeToBuffer(25,22,"Max Ghost Count:",0x0F);
-	console.writeToBuffer(41,22,MaxGhostCount,0x0F);
-}
-
-//Done By Jacob
-void renderSettings_Infection()
-{
-	console.writeToBuffer(25,15,"Nothing to change here :P",0x0F);
-	console.writeToBuffer(25,17,"Press ENTER to go back to Settings",0x0F);
-}
 
 //Done By Amirul
 void rendercountdown321(stage changeState)
@@ -453,7 +402,7 @@ void render_transition()
 	console.writeToBuffer(25,15,"Player 2 Ready? Press Enter!",0x0F);         
 }
 
-//Done by Daniel(Leader), Victor, Jacob & Amirul
+//Done by Daniel(Leader), Victor & Amirul
 void moveCharacter_menu(){
 		if (keyPressed[K_ENTER])
 		{
@@ -474,127 +423,8 @@ void moveCharacter_menu(){
         if(keyPressed[K_UP]){
             state = INIT_countInfection;
         }
-		score=0;
-		score2=0;
 }
 
-//Done by Jacob
-void moveCharacter_settings(){
-		if (keyPressed[K_ENTER])
-		{
-			state = menu;
-		}
-        if (keyPressed[K_LEFT])
-	    {
-		    state = settings_PVP;
-	    }
-		/*if (keyPressed[K_DOWN])
-	    {
-		    state = settings_Survival;
-	    }*/
-		if (keyPressed[K_RIGHT])
-	    {
-		    state = settings_COOP;
-	    }
-        /*if(keyPressed[K_UP]){
-            state = settings_Infection;
-        }*/
-}
-
-//Done by Jacob
-void moveCharacter_settings_PVP(){
-		if (keyPressed[K_ENTER])
-		{
-			state = settings;
-		}
-        if (keyPressed[K_DOWN])
-	    {
-			if (Lives > 1)
-			{
-				Lives -= 1;
-			}
-	    }
-		/*if (keyPressed[K_LEFT])
-	    {
-			if (GhostSpeed > 1)
-			{
-				GhostSpeed -= 1;
-			}
-	    }*/
-		if (keyPressed[K_UP])
-	    {
-		    Lives += 1;
-	    }
-        /*if(keyPressed[K_RIGHT]){
-            GhostSpeed += 1;
-        }*/
-}
-
-//Done By Jacob
-void moveCharacter_settings_Survival(){
-		if (keyPressed[K_ENTER])
-		{
-			state = settings;
-		}
-        if (keyPressed[K_LEFT])
-	    {
-			if (MaxGhostCount > 1)
-			{
-				MaxGhostCount -= 1;
-			}
-		}
-		if (keyPressed[K_DOWN])
-	    {
-			if (SpawnRate > 1)
-			{
-				SpawnRate -= 1;
-			}
-	    }
-		if (keyPressed[K_RIGHT])
-	    {
-		    MaxGhostCount += 1;
-	    }
-        if(keyPressed[K_UP]){
-            SpawnRate += 1;
-        }
-}
-
-//Done By Jacob
-void moveCharacter_settings_Infection(){
-		if (keyPressed[K_ENTER])
-		{
-			state = settings;
-		}
-}
-
-//Done By Jacob
-void moveCharacter_settings_COOP(){
-	if (keyPressed[K_ENTER])
-		{
-			state = settings;
-		}
-        if (keyPressed[K_LEFT])
-	    {
-			if(RespawnRate > 0)
-			{
-				RespawnRate -= 1;
-			}
-	    }
-		if (keyPressed[K_DOWN])
-	    {
-		    if(RespawnTF > 1)
-			{
-				RespawnTF -= 1;
-			}
-	    }
-		if (keyPressed[K_RIGHT])
-	    {
-		    RespawnRate += 1;
-	    }
-        if(keyPressed[K_UP]){
-            RespawnTF += 1;
-        }
-}
 
 //Done By Daniel(Leader), Victor & Amirul
 void moveCharacter_transition(){

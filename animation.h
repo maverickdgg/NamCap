@@ -42,6 +42,8 @@ PCSPRITE load_animation(char* fname);
 void render_animation(PCSPRITE pAnimation, int frame, int x,int y, WORD color);
 void free_animation(PCSPRITE);
 void init_intro(stage changeState);
+void init_menuAnime();
 void renderIntro(stage changeState);
+void renderMenuAnime();
 
 #endif 

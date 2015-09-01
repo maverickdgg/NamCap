@@ -20,6 +20,7 @@ enum Keys
 	K_D,
 	K_M,
 	K_N,
+	K_BACKSPACE,
 	K_ENTER,
     K_ESCAPE,
     K_COUNTbv

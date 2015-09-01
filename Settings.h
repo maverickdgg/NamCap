@@ -6,12 +6,20 @@
 #include <iomanip>
 #include <sstream>
 
-int Lives = 1;
-int RespawnRate = 0;
-int RespawnTF = 5;
-int SpawnRate = 10;
-int MaxGhostCount = 10;
-int GhostSpeed = 1;
+extern int Lives;
+extern int LivesStore;
+extern int LivesStore2;
+extern int RespawnRate;
+extern int RespawnTF;
+extern int SpawnRate;
+extern int MaxGhostCount;
+extern int GhostSpeed;
+void moveCharacter_settings();
+void moveCharacter_settings_PVP();
+void moveCharacter_settings_Survival();
+void moveCharacter_settings_Infection();
+void moveCharacter_settings_COOP();
 
 
 #endif
+

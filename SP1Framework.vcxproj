@@ -86,6 +86,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="GameUI.cpp" />
     <ClCompile Include="map.cpp" />
+    <ClCompile Include="Settings.cpp" />
     <ClCompile Include="survival.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -98,6 +99,7 @@
     <ClInclude Include="GameUI.h" />
     <ClInclude Include="infection.h" />
     <ClInclude Include="map.h" />
+    <ClInclude Include="Settings.h" />
     <ClInclude Include="survival.h" />
   </ItemGroup>
   <ItemGroup>
