@@ -244,10 +244,10 @@ void coopWinCon()
 //Done By Victor
 void renderCoopCharacter()
 {
-	console.writeToBuffer(charLocation, (char)g_iMod, 0x0C+g_iCol);
-    console.writeToBuffer(ghost1,232,0x0B);
-    console.writeToBuffer(ghost2,232,0x0B);
-    console.writeToBuffer(ghost3,232,0x0B);
+	console.writeToBuffer(charLocation, (char)g_iMod, 0x06+g_iCol);
+    console.writeToBuffer(ghost1,232,0x0D);
+    console.writeToBuffer(ghost2,232,0x0D);
+    console.writeToBuffer(ghost3,232,0x0D);
     if(g_iMod > 6)
 	{
 		g_iMod = 1;
@@ -265,7 +265,7 @@ void renderCoopCharacter()
 	coopP1xP2(charLocation, charLocation2);
 	p1Xcoin(charLocation);
 	p1Xcoin(charLocation2);
-	console.writeToBuffer(charLocation2, 148, 0x0C);
+	console.writeToBuffer(charLocation2, 148, 0x0F);
 	renderHelp();
 }
 
