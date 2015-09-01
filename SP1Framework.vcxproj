@@ -88,6 +88,7 @@
     <ClCompile Include="map.cpp" />
     <ClCompile Include="Settings.cpp" />
     <ClCompile Include="survival.cpp" />
+    <ClCompile Include="tutorial.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ai.h" />
@@ -101,6 +102,7 @@
     <ClInclude Include="map.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="survival.h" />
+    <ClInclude Include="tutorial.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="map.txt" />

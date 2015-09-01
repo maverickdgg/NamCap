@@ -20,6 +20,7 @@ enum Keys
 	K_D,
 	K_M,
 	K_N,
+	K_T,
 	K_BACKSPACE,
 	K_ENTER,
     K_ESCAPE,
@@ -51,6 +52,7 @@ enum stage
 	COOP_stage,
 	COOP_end,
     infection,
+	TUTORIAL,
     //init states
     INIT_intro,
 	INIT_menu,
@@ -70,7 +72,11 @@ enum stage
 	INIT_COOP_stage,
 	INIT_COOP_end,
     INIT_infection,
-    INIT_statecount
+    INIT_statecount,
+	INIT_TUTORIAL,
+
+	MAX_STATE
+	
 };
 
 

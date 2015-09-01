@@ -1,0 +1,54 @@
+4 13 43
+PVP MODE:COLLECT AS MANY COIN AS POSSIBLE  
+STAGE 1:                                   
+PLAYER 1:NAMCAP           PLAYER 2:SHADOW  
+                                           
+UP,DOWN,LEFT,RIGHT        W,A,S,D          
+MANUAL MOVEMENT           AUTO MOVEMENT    
+                                           
+SWITCH OVER                                
+                                           
+STAGE 2:                                   
+PLAYER 1:SHADOW          PLAYER 2:NAMCAP   
+W,A,S,D                  UP,DOWN,LEFT,RIGHT
+AUTO MOVEMENT            MANUAL MOVEMENT   
+SURVIVAL MODE:STAY ALIVE AS LONG AS        
+POSSIBLE                                   
+PLAYER 1:NAMCAP                            
+UP,DOWN,LEFT,RIGHT                         
+MANUAL MOVEMENT                            
+                                           
+                                           
+                                           
+                                           
+                                           
+                                           
+                                           
+                                           
+PVP MODE:COLLECT AS MANY COIN AS POSSIBLE  
+AND PLAYER ARE ABLE TO REVIVAL EACH OTHER  
+WITHIN A LIMTED TIME                       
+                                           
+PLAYER 1:NAMCAP           PLAYER 2:NAMCAP  
+UP,DOWN,LEFT,RIGHT  W,A,S,D                
+MANUAL MOVEMENT     MANUAL MOVEMENT        
+                                           
+                                           
+                                           
+                                           
+                                           
+                                           
+                                           
+                                           
+INFECTION MODE:DO NOT GET INFECTED         
+PLAYER 1:           PLAYER 2:              
+UP,DOWN,LEFT,RIGHT  W,A,S,D                
+MANUAL MOVEMENT     MANUAL MOVEMENT        
+                                           
+                                           
+                                           
+                                           
+                                           
+                                           
+                                           
+                                           

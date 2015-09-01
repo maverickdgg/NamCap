@@ -15,6 +15,7 @@
 #include "map.h"
 #include "animation.h"
 #include "Settings.h"
+#include "tutorial.h"
 
 // Console object
 Console console(90, 50, "NamCap");
@@ -229,6 +230,7 @@ void getInput()
     keyPressed[K_M] = isKeyPressed(0x4D);
 	keyPressed[K_N] = isKeyPressed(0x4E);
 	keyPressed[K_BACKSPACE] = isKeyPressed(0x08);
+	keyPressed[K_T] = isKeyPressed(0x54);
 
 	keyPressed[K_W] = isKeyPressed(0x57);
     keyPressed[K_S] = isKeyPressed(0x53);
@@ -283,7 +285,6 @@ void render(stage state)
 			renderIntro(INIT_menu);
 			break;
         case menu:
-			
             renderMainMenu();
             break;
 		case settings:
@@ -355,6 +356,8 @@ void render(stage state)
 		case end_infectants:
 			render_end_infectants();
 			break;
+		case TUTORIAL:
+			renderTutorial();
     }
     renderFramerate();  // renders debug information, frame rate, elapsed time, etc
     renderToScreen();   // dump the contents of the buffer to the screen, one frame worth of game
@@ -368,6 +371,7 @@ void renderMainMenu()
 	console.writeToBuffer(25,18,"Press DOWN to play Survival",0x0F);
 	console.writeToBuffer(25,19,"Press RIGHT to play COOP",0x0F);
     console.writeToBuffer(25,20,"Press UP to play Infection",0x0F);
+	console.writeToBuffer(25,21,"Press T to TUTORIAL",0x0F);
 	renderMenuAnime();
 }
 
@@ -422,6 +426,9 @@ void moveCharacter_menu(){
 	    }
         if(keyPressed[K_UP]){
             state = INIT_countInfection;
+        }
+		if(keyPressed[K_T]){
+            state = INIT_TUTORIAL;
         }
 }
 
@@ -669,6 +676,9 @@ void moveCharacter(stage state)
 		case INIT_end_infectants:
 			init_infection_end(end_infectants);
 			break;
+		case INIT_TUTORIAL:
+			init_tutorial(TUTORIAL);
+			break;
         // actual controls
 		case intro:
 			break;
@@ -722,6 +732,9 @@ void moveCharacter(stage state)
 			break;
 		case end_infectants:
 			moveCharacter_end();
+			break;
+		case TUTORIAL:
+			page_change();
 			break;
     }
 }
