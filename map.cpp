@@ -13,9 +13,10 @@ extern char* maps[];
 //Tips from Mr Alex Toh
 PMAP load_map(int x)
 {
+	//using pointers to generate the map
 	MAP* map; 
 	
-	char* filename=maps[x];
+	char* filename = maps[x];
 	ifstream infile; 
 	int nrow, ncol, i; 
 

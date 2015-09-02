@@ -4,17 +4,17 @@
 // This is the main file for the game logic and function
 //
 //
+
+#include <iostream>
 #include "game.h"
 #include "Framework\console.h"
 #include "GameUI.h"
 #include "ai.h"
 #include "survival.h"
 #include "infection.h"
-#include <iostream>
 #include "coop.h"
 #include "map.h"
 #include "animation.h"
-#include "Settings.h"
 #include "tutorial.h"
 
 // Console object
@@ -22,33 +22,16 @@ Console console(90, 50, "NamCap");
 
 double elapsedTime;
 double deltaTime;
-bool keyPressed[K_COUNTbv];
-PMAP pacMap;
-PMAP pacMap2;
-PMAP pacMap3;
-PMAP introMap;
-PMAP introMap2;
-PMAP introMap3;
 const int ciOffsetX=20;
 const int ciOffsetY=5;
 
-int		g_iChangeMod = 1;
-int		g_iChangeCol = 1;
-int		g_iauto = 2;
-bool	g_bOrigin = false;
-bool	g_bCoin = false;
+bool g_bOrigin = false;
+bool g_bCoin = false;
+bool keyPressed[K_COUNTbv];
 
-COORD ghost1;
-COORD ghost2;
-COORD ghost3;
-
-COORD ghost4;
-COORD ghost5;
-COORD ghost6;
-COORD ghost7;
-COORD ghost8;
-COORD ghost9;
-//COORD ghost10;
+int	g_iauto = 2;
+int	g_iChangeMod = 1;
+int	g_iChangeCol = 1;
 int g_idirection;
 int g_idirection2;
 int g_idirection3;
@@ -58,147 +41,163 @@ int g_idirection6;
 int g_idirection7;
 int g_idirection8;
 int g_idirection9;
-//int g_idirection10;
-
-
-extern stage state;
-extern Console console;
-char menu_animation[]="menu_anime.txt";
-PCSPRITE menuAnimation;
-
-extern unsigned char coin;
 int score = 0;
-int score2=0;
-
-// Game specific variables here
-COORD tp1;
-COORD tp2;
-COORD charLocation;
-COORD charLocation2;
-char* maps[]={"map.txt\0","map2.txt\0","map3.txt\0","3.txt\0","2.txt\0","1.txt\0","GAMEOVER.txt\0","PD1.txt\0","PD2.txt\0","PD3.txt\0","map5.txt\0"};
+int score2 = 0;
 int Lives = 1;
 int RespawnRate = 0;
 int RespawnTF = 5;
 int SpawnRate = 10;
 int MaxGhostCount = 10;
 int GhostSpeed = 1;
-int LivesStore = Lives;
-int LivesStore2 = Lives;
+
+extern unsigned char coin;
+extern stage state;
+extern Console console; 
+
+char menu_animation[]="menu_anime.txt";
+char* maps[]={"map.txt\0","map2.txt\0","map3.txt\0","3.txt\0","2.txt\0","1.txt\0","GAMEOVER.txt\0","PD1.txt\0","PD2.txt\0","PD3.txt\0","map5.txt\0"};
+
+PCSPRITE menuAnimation;
+PMAP pacMap;
+PMAP pacMap2;
+PMAP pacMap3;
+
+COORD ghost1;
+COORD ghost2;
+COORD ghost3;
+COORD ghost4;
+COORD ghost5;
+COORD ghost6;
+COORD ghost7;
+COORD ghost8;
+COORD ghost9;
+COORD portal1;
+COORD portal2;
+COORD player_1;
+COORD player_2;
+
+// Game specific variables here
+
+
 
 // Initialize variables, allocate memory, load data from file, etc. 
 // This is called once before entering into your main loop
 
-//Done By Daniel(Leader)
 void init()
 {   
-		PlaySound(NULL,0,0);
-		PlaySound(TEXT("pacman_beginning"),NULL,SND_LOOP|SND_ASYNC);
-		elapsedTime=0.0;
+	PlaySound(NULL,0,0);
+	PlaySound(TEXT("pacman_beginning"),NULL,SND_LOOP|SND_ASYNC);
+	elapsedTime = 0.0;
 		
-        charLocation.X = 38;
-        charLocation.Y = 20;
+    player_1.X = 38;
+    player_1.Y = 20;
 
-	    charLocation2.X = 38;
-        charLocation2.Y = 13;
+	player_2.X = 38;
+    player_2.Y = 13;
 
-        ghost1.X=39;
-        ghost1.Y=13;
+    ghost1.X = 39;
+    ghost1.Y = 13;
 
-        ghost2.X=2+ciOffsetX;
-        ghost2.Y=2+ciOffsetY;
+    ghost2.X = 2 + ciOffsetX;
+    ghost2.Y = 2 + ciOffsetY;
 
-        ghost3.X=36+ciOffsetX;
-        ghost3.Y=19+ciOffsetY;
+    ghost3.X = 36 + ciOffsetX;
+    ghost3.Y = 19 + ciOffsetY;
 
-        srand(time(NULL));
-        g_idirection=rand()%4;
-        g_idirection2=rand()%4;
-        g_idirection3=rand()%4;
-    // sets the width, height and the font name to use in the console
-    console.setConsoleFont(10, 20, L"Raster Fonts");
+    srand(time(NULL));
+    g_idirection=rand()%4;
+    g_idirection2=rand()%4;
+    g_idirection3=rand()%4;
+	// sets the width, height and the font name to use in the console
+	console.setConsoleFont(10, 20, L"Raster Fonts");
 }
 
-//Done By Daniel(Leader)
-void init_menu(stage changeState){
-	elapsedTime=0.0;
+void init_MainMenu(stage changeState)
+{
+	elapsedTime = 0.0;
     PlaySound(NULL,0,0);
 	PlaySound(TEXT("pacman_beginning"),NULL,SND_LOOP|SND_ASYNC);
-	
- 	menuAnimation=load_animation(menu_animation);
-    state=changeState;
+	menuAnimation = load_animation(menu_animation);
+    state = changeState;
 }
 
-//Done By Daniel(Leader)
-void init_PVP_stage1(stage changeState){
-     elapsedTime = 0.0;
-        pacMap=load_map(1);
-		PlaySound(NULL,0,0);
-		PlaySound(TEXT("Super Mario Bros. Original Theme by Nintendo.wav"),NULL,SND_LOOP|SND_ASYNC);
-        charLocation.X = 38;
-        charLocation.Y = 20;
-
-	    charLocation2.X = 39;
-        charLocation2.Y = 13;
-
-        ghost1.X=39;
-        ghost1.Y=13;
-
-        ghost2.X=2+ciOffsetX;
-        ghost2.Y=2+ciOffsetY;
-
-        ghost3.X=36+ciOffsetX;
-        ghost3.Y=19+ciOffsetY;
-
-        srand(time(NULL));
-        g_idirection=rand()%4;
-        g_idirection2=rand()%4;
-        g_idirection3=rand()%4;
-        state=changeState;
+void init_PVP_stage1(stage changeState)
+{
+	elapsedTime = 0.0;
+	pacMap=load_map(1);
+	PlaySound(NULL,0,0);
+	PlaySound(TEXT("Super Mario Bros. Original Theme by Nintendo.wav"),NULL,SND_LOOP|SND_ASYNC);
+	player_1.X = 38;
+    player_1.Y = 20;
+	player_2.X = 39;
+	player_2.Y = 13;
+	ghost1.X = 39;
+	ghost1.Y = 13;
+	ghost2.X = 2 + ciOffsetX;
+	ghost2.Y = 2 + ciOffsetY;
+	ghost3.X = 36 + ciOffsetX;
+	ghost3.Y = 19 + ciOffsetY;
+    srand(time(NULL));
+    g_idirection = rand()%4;
+    g_idirection2 = rand()%4;
+    g_idirection3 = rand()%4;
+    state = changeState;
 }
 
-//Done By Daniel(Leader)
-void init_PVP_stage2(stage changeState){
-        elapsedTime = 0.0;
-        pacMap=load_map(0);
-		PlaySound(NULL,0,0);
-		PlaySound(TEXT("Super Mario Bros. Original Theme by Nintendo.wav"),NULL,SND_LOOP|SND_ASYNC);
-        charLocation.X = 38;
-        charLocation.Y = 20;
-
-	    charLocation2.X = 39;
-        charLocation2.Y = 13;
-
-        ghost1.X=39;
-        ghost1.Y=13;
-
-        ghost2.X=2+ciOffsetX;
-        ghost2.Y=2+ciOffsetY;
-
-        ghost3.X=36+ciOffsetX;
-        ghost3.Y=19+ciOffsetY;
-
-        srand(time(NULL));
-        g_idirection=rand()%4;
-        g_idirection2=rand()%4;
-        g_idirection3=rand()%4;
-
-        tp1.X=0+ciOffsetX;
-        tp1.Y=9+ciOffsetY;
-        tp2.X=37+ciOffsetX;
-        tp2.Y=9+ciOffsetY;
-        state=changeState;
+void init_PVP_stage2(stage changeState)
+{
+	elapsedTime = 0.0;
+	pacMap=load_map(0);
+	PlaySound(NULL,0,0);
+	PlaySound(TEXT("Super Mario Bros. Original Theme by Nintendo.wav"),NULL,SND_LOOP|SND_ASYNC);
+	player_1.X = 38;
+	player_1.Y = 20;
+	player_2.X = 39;
+	player_2.Y = 13;
+	ghost1.X = 39;
+	ghost1.Y = 13;
+	ghost2.X = 2 + ciOffsetX;
+	ghost2.Y = 2 + ciOffsetY;
+	ghost3.X = 36 + ciOffsetX;
+	ghost3.Y = 19 + ciOffsetY;
+	srand(time(NULL));
+	g_idirection = rand()%4;
+	g_idirection2 = rand()%4;
+	g_idirection3 = rand()%4;
+	portal1.X = 0 + ciOffsetX;
+	portal1.Y = 9 + ciOffsetY;
+	portal2.X = 37 + ciOffsetX;
+	portal2.Y = 9 + ciOffsetY;
+	state = changeState;
 }
 
-//Done By Amirul
 void init_countdown321(stage changeState)
 {
 	 elapsedTime = 0.0;
 	 PlaySound(NULL,0,0);
 	 PlaySound(TEXT("Mario Kart Race Start.wav"),NULL,SND_ASYNC);
-	 pacMap= load_map(3);
-	 pacMap2= load_map(4);
-	 pacMap3= load_map(5);
-     state=changeState;
+	 pacMap = load_map(3);
+	 pacMap2 = load_map(4);
+	 pacMap3 = load_map(5);
+     state = changeState;
+}
+
+void init_Credit()
+{
+	elapsedTime = 0.0;
+	if(keyPressed[K_BACKSPACE])
+	{
+		state = menu;
+	}
+}
+
+void renderCreditPage()
+{
+	 console.writeToBuffer(20,15,"Leader: Daniel Chua",0x0F);
+	 console.writeToBuffer(20,16,"Member: Seetoo Victor",0x0F);
+	 console.writeToBuffer(20,17,"Member: Amirul",0x0F);
+	 console.writeToBuffer(20,18,"Member: Jacob",0x0F);
+	 console.writeToBuffer(20,19,"Supervisor: MR ALEX TOH",0x0F);
 }
 
 // Do your clean up of memory here
@@ -207,8 +206,7 @@ void shutdown()
 {
     // Reset to white text on black background
 	colour(FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
-
-    console.clearBuffer();
+	console.clearBuffer();
 }
 /*
 	This function checks if any key had been pressed since the last time we checked
@@ -219,7 +217,7 @@ void shutdown()
 	For Alphanumeric keys, the values are their ascii values (uppercase).
 */
 
-//Done By TEACHER (framework)
+//Done By TEACHER with some modification(framework)
 void getInput()
 {    
     keyPressed[K_UP] = isKeyPressed(VK_UP);
@@ -231,12 +229,11 @@ void getInput()
 	keyPressed[K_N] = isKeyPressed(0x4E);
 	keyPressed[K_BACKSPACE] = isKeyPressed(0x08);
 	keyPressed[K_T] = isKeyPressed(0x54);
-
 	keyPressed[K_W] = isKeyPressed(0x57);
     keyPressed[K_S] = isKeyPressed(0x53);
     keyPressed[K_A] = isKeyPressed(0x41);
     keyPressed[K_D] = isKeyPressed(0x44);
-	keyPressed[K_ENTER]=isKeyPressed(0x0D);
+	keyPressed[K_ENTER] = isKeyPressed(0x0D);
     keyPressed[K_ESCAPE] = isKeyPressed(VK_ESCAPE);
 }
 
@@ -255,8 +252,7 @@ void update(double dt, stage state)
     // get the delta time
     elapsedTime += dt;
     deltaTime = dt;
-
-    processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
+	processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
     moveCharacter(state);// moves the character, collision detection, physics, etc
 
     // sound can be played here too.
@@ -265,6 +261,7 @@ void update(double dt, stage state)
 //Done By Daniel(Leader)
 double timer(double& seconds)
 {
+	//countdown timer using deltaTime deduct the time set
     seconds -= deltaTime;
     return seconds;
 }
@@ -280,28 +277,14 @@ double timer(double& seconds)
 void render(stage state)
 {
     clearScreen();      // clears the current screen and draw from scratch
-    switch(state){
+    switch(state)
+	{
 		case intro:
-			renderIntro(INIT_menu);
+			renderIntro(INIT_MainMenu);
 			break;
         case menu:
             renderMainMenu();
             break;
-		case settings:
-			renderSettings();
-			break;
-		case settings_PVP:
-			renderSettings_PVP();
-			break;
-		case settings_COOP:
-			renderSettings_COOP();
-			break;
-		case settings_Survival:
-			renderSettings_Survival();
-			break;
-		case settings_Infection:
-			renderSettings_Infection();
-			break;
 		case countPVP1:
 			rendercountdown321(INIT_PVP_stage1);
 			break;
@@ -335,7 +318,7 @@ void render(stage state)
 		case COOP_stage:
 			renderMap();
 			renderCoopCharacter();
-			coopWinCon();
+			coopWinCondition();
 			break;
 		case COOP_end:
 			renderEndCondition();
@@ -358,20 +341,24 @@ void render(stage state)
 			break;
 		case TUTORIAL:
 			renderTutorial();
+			break;
+		case credit:
+			renderCreditPage();
+			break;
     }
     renderFramerate();  // renders debug information, frame rate, elapsed time, etc
     renderToScreen();   // dump the contents of the buffer to the screen, one frame worth of game
 }
 
-//Done By Daniel(Leader), Victor, Amirul, Jacob
+//Done By Daniel(Leader), Victor and Amirul
 void renderMainMenu()
 {   
-	console.writeToBuffer(25,15,"Press Enter to go to Settings",0x0F);
 	console.writeToBuffer(25,17,"Press LEFT to play PVP",0x0F);
 	console.writeToBuffer(25,18,"Press DOWN to play Survival",0x0F);
 	console.writeToBuffer(25,19,"Press RIGHT to play COOP",0x0F);
     console.writeToBuffer(25,20,"Press UP to play Infection",0x0F);
 	console.writeToBuffer(25,21,"Press T to TUTORIAL",0x0F);
+	console.writeToBuffer(25,22,"Press Enter to credit",0x0F);
 	renderMenuAnime();
 }
 
@@ -379,18 +366,19 @@ void renderMainMenu()
 //Done By Amirul
 void rendercountdown321(stage changeState)
 {
+	//count down animation logic
 	colour(0x0F);
-	if(elapsedTime <=1)
+	if(elapsedTime <= 1)
 	{
 		insertmap(pacMap);
 	}
 
-	if(elapsedTime <=2 && elapsedTime >1)
+	if(elapsedTime <= 2 && elapsedTime > 1)
 	{
 		insertmap(pacMap2);
 	}
 	
-	if(elapsedTime <=3 && elapsedTime >2)
+	if(elapsedTime <= 3 && elapsedTime > 2)
 	{
 		insertmap(pacMap3);
 	}
@@ -407,226 +395,208 @@ void render_transition()
 }
 
 //Done by Daniel(Leader), Victor & Amirul
-void moveCharacter_menu(){
-		if (keyPressed[K_ENTER])
-		{
-			state = settings;
-		}
-        if (keyPressed[K_LEFT])
-	    {
-		    state = INIT_countPVP1;
-	    }
-		if (keyPressed[K_DOWN])
-	    {
-		    state = INIT_countSurvival;
-	    }
-		if (keyPressed[K_RIGHT])
-	    {
-		    state = INIT_countCOOP;
-	    }
-        if(keyPressed[K_UP]){
-            state = INIT_countInfection;
-        }
-		if(keyPressed[K_T]){
-            state = INIT_TUTORIAL;
-        }
+void menu_keys()
+{
+	//check what stage the player choose to play
+	if (keyPressed[K_LEFT])
+	{
+		state = INIT_countPVP1;
+	}
+	if (keyPressed[K_DOWN])
+	{
+		state = INIT_countSurvival;
+	}
+	if (keyPressed[K_RIGHT])
+	{
+		state = INIT_countCOOP;
+	}
+	if(keyPressed[K_UP])
+	{
+		state = INIT_countInfection;
+	}
+	if(keyPressed[K_T])
+	{
+		state = INIT_TUTORIAL;
+	}
+	if(keyPressed[K_ENTER])
+	{
+		state = credit;
+	}
 }
 
 
 //Done By Daniel(Leader), Victor & Amirul
-void moveCharacter_transition(){
-    	if(keyPressed[K_ENTER]){
-			state=INIT_countPVP2;
-		}
+void transition_key()
+{
+	if(keyPressed[K_ENTER])
+	{
+		state = INIT_countPVP2;
+	}
 }
 
-//Done By Daniel(Leader)
-void moveCharacter_PVP_stage1(){
-    if (keyPressed[K_UP] && charLocation.Y > 0 && wall_up(charLocation)==false)
-        {
-            //Beep(1440, 30);
-            charLocation.Y--;
-        }
-        if (keyPressed[K_LEFT] && charLocation.X > 0 && wall_left(charLocation)==false)
-        {
-            //Beep(1440, 30);
-            charLocation.X--;
-        }
-        if (keyPressed[K_DOWN] && charLocation.Y < console.getConsoleSize().Y - 1 && wall_down(charLocation)==false)
-        {
-            //Beep(1440, 30);
-            charLocation.Y++;
-        }
-        if (keyPressed[K_RIGHT] && charLocation.X < console.getConsoleSize().X - 1 && wall_right(charLocation)==false)
-        {
-            //Beep(1440, 30);
-            charLocation.X++;
-        }
-    
-	    if(keyPressed[K_M])
-	    {
-		    g_iChangeMod += 1;
-	    }
-	    if(keyPressed[K_N])
-	    {
-		    g_iChangeCol += 1;
-	    }
+//Done By victor
+void moveCharacter_PVP_stage1()
+{
+	//check what keys the player pressed 
+	if (keyPressed[K_UP] && player_1.Y > 0 && wall_up(player_1) == false)
+	{
+		player_1.Y--;
+	}
+	if (keyPressed[K_LEFT] && player_1.X > 0 && wall_left(player_1) == false)
+	{
+		player_1.X--;
+	}
+	if (keyPressed[K_DOWN] && player_1.Y < console.getConsoleSize().Y - 1 && wall_down(player_1) == false)
+    {
+        player_1.Y++;
+    }
+    if (keyPressed[K_RIGHT] && player_1.X < console.getConsoleSize().X - 1 && wall_right(player_1) == false)
+    {
+        player_1.X++;
+    }
+	if(keyPressed[K_M])
+	{
+		g_iChangeMod += 1;
+	}
+	if(keyPressed[K_N])
+	{
+		g_iChangeCol += 1;
+	}
+	if(keyPressed[K_W])
+	{
+		g_iauto = 1;
+	}
+	if (g_iauto == 1 && player_2.Y > 0 && wall_up(player_2) == false)
+	{
+		Beep(1440, 30);
+		player_2.Y--;
+	}
+	if (keyPressed[K_A])
+	{
+		g_iauto = 2;
+	}
+	if (g_iauto == 2 && player_2.X > 0 && wall_left(player_2) == false)
+	{
+		Beep(1440, 30);
+		player_2.X--;
+	}
+	if (keyPressed[K_S])
+	{
+		g_iauto = 3;
+	}
+	if (g_iauto == 3 && player_2.Y < console.getConsoleSize().X - 1 && wall_down(player_2) == false)
+	{
+		Beep(1440, 30);
+		player_2.Y++; 
+	}
+	if (keyPressed[K_D])
+	{
+		g_iauto = 4;
+	}
+	if (g_iauto == 4 && player_2.X < console.getConsoleSize().X  - 1 && wall_right(player_2) == false)
+	{
+		Beep(1440, 30);
+		player_2.X++; 
+	}
+	monster(ghost1,g_idirection);
+	monster(ghost2,g_idirection2);
+	monster(ghost3,g_idirection3);
+}
 
-
-
-	    if (keyPressed[K_W])
-	    {
+//Done By victor
+void moveCharacter_PVP_stage2()
+{
+	//check what keys the player pressed 
+	if (keyPressed[K_W] && player_1.Y > 0 && wall_up(player_1) == false)
+    {
+		player_1.Y--;
+	}
+	if (keyPressed[K_A] && player_1.X > 0 && wall_left(player_1) == false)
+	{
+		player_1.X--;
+	}
+	if (keyPressed[K_S] && player_1.Y < console.getConsoleSize().Y - 1 && wall_down(player_1) == false)
+	{
+		player_1.Y++;
+	}
+	if (keyPressed[K_D] && player_1.X < console.getConsoleSize().X - 1 && wall_right(player_1) == false)
+	{
+		player_1.X++;
+	}
+	if(keyPressed[K_M])
+	{
+		g_iChangeMod += 1;
+	}
+	if(keyPressed[K_N])
+	{
+		g_iChangeCol += 1;
+	}
+	if (keyPressed[K_UP])
+	{
 		    g_iauto = 1;
-	    }
-	    if (g_iauto == 1 && charLocation2.Y > 0 && wall_up(charLocation2)==false)
-        {
-            Beep(1440, 30);
-            charLocation2.Y--;
-
-        }
-
-	    if (keyPressed[K_A])
-	    {
-		    g_iauto = 2;
-	    }
-	    if (g_iauto == 2 && charLocation2.X > 0 && wall_left(charLocation2)==false)
-        {
-            Beep(1440, 30);
-            charLocation2.X--; 
-
-        }
-
-	    if (keyPressed[K_S])
-	    {
-		    g_iauto = 3;
-	    }
-
-        if (g_iauto == 3 && charLocation2.Y < console.getConsoleSize().X - 1 && wall_down(charLocation2)==false)
-        {
-            Beep(1440, 30);
-            charLocation2.Y++; 
-        }
-
-	    if (keyPressed[K_D])
-	    {
-		    g_iauto = 4;
-	    }
-
-        if (g_iauto == 4 && charLocation2.X < console.getConsoleSize().X  - 1 && wall_right(charLocation2)==false)
-        {
-            Beep(1440, 30);
-            charLocation2.X++; 
-        }
-        
-        monster(ghost1,g_idirection);
-        monster(ghost2,g_idirection2);
-        monster(ghost3,g_idirection3);
+	}
+	if (g_iauto == 1 && player_2.Y > 0 && wall_up(player_2) == false)
+	{
+		Beep(1440, 30);
+		player_2.Y--;
+	}
+	if (keyPressed[K_LEFT])
+	{
+		g_iauto = 2;
+	}
+	if (g_iauto == 2 && player_2.X > 0 && wall_left(player_2) == false)
+	{
+		Beep(1440, 30);
+		player_2.X--; 
+	}
+	if (keyPressed[K_DOWN])
+	{
+		g_iauto = 3;
+	}
+	if (g_iauto == 3 && player_2.Y < console.getConsoleSize().X - 1 && wall_down(player_2) == false)
+	{
+		Beep(1440, 30);
+		player_2.Y++; 
+	}
+	if (keyPressed[K_RIGHT])
+	{
+		g_iauto = 4;
+	}
+	if (g_iauto == 4 && player_2.X < console.getConsoleSize().X  - 1 && wall_right(player_2) == false)
+	{
+		Beep(1440, 30);
+		player_2.X++; 
+	}
+	teleport(ghost1,portal1,portal2);
+    teleport(ghost2,portal1,portal2);
+    teleport(ghost3,portal1,portal2);
+    teleport(player_1,portal1,portal2);
+    teleport(player_2,portal1,portal2);
+    monster(ghost1,g_idirection);
+    monster(ghost2,g_idirection2);
+	monster(ghost3,g_idirection3);
 }
 
 //Done By Daniel(Leader)
-void moveCharacter_PVP_stage2(){
-    if (keyPressed[K_W] && charLocation.Y > 0 && wall_up(charLocation)==false)
-        {
-            //Beep(1440, 30);
-            charLocation.Y--;
-        }
-        if (keyPressed[K_A] && charLocation.X > 0 && wall_left(charLocation)==false)
-        {
-            //Beep(1440, 30);
-            charLocation.X--;
-        }
-        if (keyPressed[K_S] && charLocation.Y < console.getConsoleSize().Y - 1 && wall_down(charLocation)==false)
-        {
-            //Beep(1440, 30);
-            charLocation.Y++;
-        }
-        if (keyPressed[K_D] && charLocation.X < console.getConsoleSize().X - 1 && wall_right(charLocation)==false)
-        {
-            //Beep(1440, 30);
-            charLocation.X++;
-        }
-    
-	    if(keyPressed[K_M])
-	    {
-		    g_iChangeMod += 1;
-	    }
-	    if(keyPressed[K_N])
-	    {
-		    g_iChangeCol += 1;
-	    }
-
-
-
-	    if (keyPressed[K_UP])
-	    {
-		    g_iauto = 1;
-	    }
-	    if (g_iauto == 1 && charLocation2.Y > 0 && wall_up(charLocation2)==false)
-        {
-            Beep(1440, 30);
-            charLocation2.Y--;
-
-        }
-
-	    if (keyPressed[K_LEFT])
-	    {
-		    g_iauto = 2;
-	    }
-	    if (g_iauto == 2 && charLocation2.X > 0 && wall_left(charLocation2)==false)
-        {
-            Beep(1440, 30);
-            charLocation2.X--; 
-
-        }
-
-	    if (keyPressed[K_DOWN])
-	    {
-		    g_iauto = 3;
-	    }
-
-        if (g_iauto == 3 && charLocation2.Y < console.getConsoleSize().X - 1 && wall_down(charLocation2)==false)
-        {
-            Beep(1440, 30);
-            charLocation2.Y++; 
-        }
-
-	    if (keyPressed[K_RIGHT])
-	    {
-		    g_iauto = 4;
-	    }
-
-        if (g_iauto == 4 && charLocation2.X < console.getConsoleSize().X  - 1 && wall_right(charLocation2)==false)
-        {
-            Beep(1440, 30);
-            charLocation2.X++; 
-        }
-        teleport(ghost1,tp1,tp2);
-        teleport(ghost2,tp1,tp2);
-        teleport(ghost3,tp1,tp2);
-        teleport(charLocation,tp1,tp2);
-        teleport(charLocation2,tp1,tp2);
-        monster(ghost1,g_idirection);
-        monster(ghost2,g_idirection2);
-        monster(ghost3,g_idirection3);
-}
-
-//Done By Daniel(Leader)
-void moveCharacter_end(){
-    if(keyPressed[K_ENTER]){
-        state=INIT_menu;
+void end_page_key()
+{
+    if(keyPressed[K_ENTER])
+	{
+        state = INIT_MainMenu;
     }
 }
 
 //Done By Daniel(Leader), Victor & Amirul
 void moveCharacter(stage state)
 {
-    switch(state){
+    switch(state)
+	{
         //init states
         case INIT_intro:
 			init_intro(intro);
 			break;
-        case INIT_menu:
-            init_menu(menu);
+        case INIT_MainMenu:
+            init_MainMenu(menu);
             break;
         case INIT_stage_survival:
             init_survival(stage_survival);
@@ -650,16 +620,16 @@ void moveCharacter(stage state)
             init_PVP_stage1(PVP_stage1);
             break;
         case INIT_transition:
-            init_menu(transition);
+            init_MainMenu(transition);
             break;
         case INIT_PVP_stage2:
             init_PVP_stage2(PVP_stage2);
             break;
         case INIT_end:
-            init_menu(end);
+            init_MainMenu(end);
             break;
         case INIT_end2:
-            init_menu(end2);
+            init_MainMenu(end2);
             break;
         case INIT_COOP_stage:
             init_COOP(COOP_stage);
@@ -683,23 +653,8 @@ void moveCharacter(stage state)
 		case intro:
 			break;
         case menu:
-            moveCharacter_menu();
+            menu_keys();
             break;
-		case settings:
-			moveCharacter_settings();
-			break;
-		case settings_PVP:
-			moveCharacter_settings_PVP();
-			break;
-		case settings_COOP:
-			moveCharacter_settings_COOP();
-			break;
-		case settings_Survival:
-			moveCharacter_settings_Survival();
-			break;
-		case settings_Infection:
-			moveCharacter_settings_Infection();
-			break;
         case stage_survival:
             moveCharacter_survival();
             break;
@@ -707,74 +662,69 @@ void moveCharacter(stage state)
             moveCharacter_PVP_stage1();
             break;
         case transition:
-            moveCharacter_transition();
+            transition_key();
             break;
         case PVP_stage2:
             moveCharacter_PVP_stage2();
             break;
         case end:
-            moveCharacter_end();
+            end_page_key();
             break;
         case end2:
-            moveCharacter_end();
+            end_page_key();
             break;
         case COOP_stage:
             moveCharacter_COOP();
             break;
         case COOP_end:
-            moveCharacter_end();
+            end_page_key();
 			break;
         case infection:
             moveCharacter_infection();
             break;
 		case end_survivors:
-			moveCharacter_end();
+			end_page_key();
 			break;
 		case end_infectants:
-			moveCharacter_end();
+			end_page_key();
 			break;
 		case TUTORIAL:
 			page_change();
 			break;
+		case credit:
+			init_Credit();
+			break;
     }
 }
 
-//Done By Daniel(Leader), Victor, Jacob
-void eneXp1(COORD &ene , COORD &p1)
+//Done By Victor
+void ghostAndPlayerCollision(COORD &ene , COORD &p1)
 {
-	SHORT x = 38;
-	SHORT y = 20;
-	SHORT * k = &x;
-	SHORT * t = &y;
-
+	//check whether the enemy is on the same loction as the player
 	if(ene.Y == p1.Y && ene.X == p1.X)
 	{
 		g_bOrigin = true;
+		//check whether they collide
 		if(g_bOrigin == true)
 		{
-			if(state==stage_survival){
-				state=INIT_end2;
+			//check which stage they collide in
+			if(state == stage_survival)
+			{
+				state = INIT_end2;
 				PlaySound(NULL,0,0);
 				PlaySound(TEXT("Super Mario Bros. - Game Over Sound Effect.wav"),NULL,SND_LOOP|SND_ASYNC);
 			}
-            if(state==PVP_stage1 && LivesStore>0){
-				LivesStore -= 1;
-				g_bOrigin = false;
-			}
-			else if (state == PVP_stage1)
+			//check which stage they collide in
+			else if(state == PVP_stage1)
 			{
-				LivesStore=Lives;
                 state=INIT_transition;
 				PlaySound(NULL,0,0);
 				PlaySound(TEXT("Super Mario Bros. - Game Over Sound Effect.wav"),NULL,SND_LOOP|SND_ASYNC);
             }
-            if(state==PVP_stage2 && LivesStore2>0){
-				LivesStore2 -=1;
-				g_bOrigin = false;
-			}
-			else if (state == PVP_stage2){
-				LivesStore2=Lives;
-                state=INIT_end;
+			//check which stage they collide in
+			else if (state == PVP_stage2)
+			{
+                state = INIT_end;
 				PlaySound(NULL,0,0);
 				PlaySound(TEXT("Super Mario Bros. - Game Over Sound Effect.wav"),NULL,SND_LOOP|SND_ASYNC);
             }
@@ -786,19 +736,27 @@ void eneXp1(COORD &ene , COORD &p1)
 	}
 }
 
-//Done By Daniel(Leader) & Victor
-bool p1Xcoin(COORD location)
+//Done By Victor
+bool PlayerAndCoinCollision(COORD location)
 {
-	if(pacMap->data[location.Y-ciOffsetY][location.X-ciOffsetX] == '0')
+	//check whether the coin and the player is in same location
+	if(pacMap -> data[location.Y - ciOffsetY][location.X - ciOffsetX] == '0')
 	{
-		pacMap->data[location.Y-ciOffsetY][location.X-ciOffsetX] = ' ';
-        if(state==PVP_stage1){
+		//if their are in same location replace the coin with space and update score
+		pacMap -> data[location.Y - ciOffsetY][location.X - ciOffsetX] = ' ';
+		//check which stage they collide in
+        if(state == PVP_stage1)
+		{
 		    score++;
         }
-        if(state==PVP_stage2){
+		//check which stage they collide in
+        if(state == PVP_stage2)
+		{
             score2++;
         }
-		if(state==COOP_stage){
+		//check which stage they collide in
+		if(state == COOP_stage)
+		{
             score++;
         }
         return true;
@@ -810,13 +768,18 @@ bool p1Xcoin(COORD location)
 }
 
 //Done By Daniel(Leader)
-void teleport(COORD& a,COORD b, COORD c){
-    
-    if (a.X == b.X && a.Y==b.Y){
+void teleport(COORD& a,COORD b, COORD c)
+{
+	//check whether player or ghost is in the same location as the portal 
+	if (a.X == b.X && a.Y == b.Y)
+	{
+		//when it collide change location 
         a.X = c.X-1;
         a.Y = c.Y;
     }
-    if (a.X == c.X && a.Y==c.Y){
+    if (a.X == c.X && a.Y == c.Y)
+	{
+		//when it collide change location 
         a.X = b.X+1;
         a.Y = b.Y;
     }
@@ -851,13 +814,16 @@ void renderTransition()
 }
 
 //Done By Daniel(Leader) & Amirul
-void render_end(){
-       if(score>score2){
-            console.writeToBuffer(30,15,"Player one wins",0x0F);
-        }
-        else if(score < score2){
-            console.writeToBuffer(30,15,"Player two wins",0x0F);
-        }
+void render_end()
+{
+	if(score > score2)
+	{
+		console.writeToBuffer(30,15,"Player one wins",0x0F);
+	}
+	else if(score < score2)
+	{
+		console.writeToBuffer(30,15,"Player two wins",0x0F);
+	}
 }
 
 //Done By Daniel(Leader)
@@ -870,14 +836,15 @@ void renderCharacter()
 	console.writeToBuffer(68,3,"Score: ",0x46);
     console.writeToBuffer(76,3,score2,0x46);
 
-	if(state==stage_survival)
+	//check which stage
+	if(state == stage_survival)
 	{
 		renderCharacterSurvival();
 	}
-	if(state==PVP_stage1 || state==PVP_stage2)
+	if(state == PVP_stage1 || state == PVP_stage2)
 	{
 		// Draw the location of the character
-		console.writeToBuffer(charLocation, (char)g_iChangeMod, 0x0C+g_iChangeCol);
+		console.writeToBuffer(player_1, (char)g_iChangeMod, 0x0C+g_iChangeCol);
 		console.writeToBuffer(ghost1,232,0x0B);
 		console.writeToBuffer(ghost2,232,0x0B);
 		console.writeToBuffer(ghost3,232,0x0B);
@@ -889,21 +856,21 @@ void renderCharacter()
 		{
 			g_iChangeCol = 1;
 		}
-		eneXp1(charLocation2,charLocation);
-		eneXp1(ghost1,charLocation);
-		eneXp1(ghost2,charLocation);
-		eneXp1(ghost3,charLocation);
-		p1Xcoin(charLocation);
-		teleport(charLocation,tp1,tp2);
-		console.writeToBuffer(charLocation2, 148, 0x0C);
+		ghostAndPlayerCollision(player_2,player_1);
+		ghostAndPlayerCollision(ghost1,player_1);
+		ghostAndPlayerCollision(ghost2,player_1);
+		ghostAndPlayerCollision(ghost3,player_1);
+		PlayerAndCoinCollision(player_1);
+		teleport(player_1,portal1,portal2);
+		console.writeToBuffer(player_2, 148, 0x0C);
 	}
 
-	eneXp1(charLocation2,charLocation);
-	eneXp1(ghost1,charLocation);
-    eneXp1(ghost2,charLocation);
-    eneXp1(ghost3,charLocation);
-	p1Xcoin(charLocation);
-	console.writeToBuffer(charLocation2, 148, 0x0C);
+	ghostAndPlayerCollision(player_2,player_1);
+	ghostAndPlayerCollision(ghost1,player_1);
+    ghostAndPlayerCollision(ghost2,player_1);
+    ghostAndPlayerCollision(ghost3,player_1);
+	PlayerAndCoinCollision(player_1);
+	console.writeToBuffer(player_2, 148, 0x0C);
 
 }
 
@@ -930,3 +897,4 @@ void renderToScreen()
     // Writes the buffer to the console, hence you will see what you have written
     console.flushBufferToConsole();
 }
+

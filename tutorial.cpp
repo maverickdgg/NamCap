@@ -20,14 +20,15 @@ extern double elapsedTime;
 extern double deltaTime;
 extern stage state;
 PCSPRITE tutorialText;
-
 char tutorialTextFile[]="tutorial.txt";
 extern char tutorialPage[];
-
 int page = 1;
 
+
+//done by victor 
 void page_change()
 {
+	//check what keys the player pressed 
 	if(keyPressed[K_LEFT]&& page >1)
 	{
 		page--;
@@ -53,24 +54,29 @@ void init_tutorial(stage changeState)
 	state=changeState;
 }
 
-//Done By Daniel(Leader)
+//Done By victor
 void renderTutorial()
 {
 	colour(0x0F);
+	//check what page they are in
 	if(page == 1)
 	{
         render_animation(tutorialText,0,10,10,0x0F);
+		console.writeToBuffer(10,24,"PRESS BACK SPACE TO MENU",0x0F);
 	}
 	if(page == 2)
 	{
         render_animation(tutorialText,1,10,10,0x0F);
+		console.writeToBuffer(10,24,"PRESS BACK SPACE TO MENU",0x0F);
 	}
 	if(page == 3)
 	{
         render_animation(tutorialText,2,10,10,0x0F);
+		console.writeToBuffer(10,24,"PRESS BACK SPACE TO MENU",0x0F);
 	}
 	if(page == 4)
 	{
 		render_animation(tutorialText,3,10,10,0x0F);
+		console.writeToBuffer(10,24,"PRESS BACK SPACE TO MENU",0x0F);
 	}
 }

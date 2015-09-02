@@ -31,11 +31,6 @@ enum stage
 {
 	intro,
 	menu,
-	settings,
-	settings_PVP,
-	settings_Survival,
-	settings_COOP,
-	settings_Infection,
 	stage_survival,
 	PVP_stage1,
 	transition,
@@ -55,7 +50,7 @@ enum stage
 	TUTORIAL,
     //init states
     INIT_intro,
-	INIT_menu,
+	INIT_MainMenu,
 	INIT_stage_survival,
 	INIT_PVP_stage1,
 	INIT_transition,
@@ -74,6 +69,7 @@ enum stage
     INIT_infection,
     INIT_statecount,
 	INIT_TUTORIAL,
+	credit,
 
 	MAX_STATE
 	
@@ -82,7 +78,7 @@ enum stage
 
 void init();                // initialize your variables, allocate memory, etc
 // init function for different states
-void init_menu(stage changeState);
+void init_MainMenu(stage changeState);
 void init_PVP_stage1(stage changeState);
 void init_PVP_stage2(stage changeState);
 void init_countdown321(stage changeState);
@@ -95,16 +91,11 @@ void shutdown();   // do clean up, free memory
 double timer(double& seconds);
 
 void moveCharacter(stage state);       // moves the character, collision detection, physics, etc
-void moveCharacter_menu();
-void moveCharacter_settings();
-void moveCharacter_settings_PVP();
-void moveCharacter_settings_COOP();
-void moveCharacter_settings_Survival();
-void moveCharacter_settings_Infection();
+void menu_keys();
 void moveCharacter_PVP_stage1();
-void moveCharacter_transition();
+void transition_key();
 void moveCharacter_PVP_stage2();
-void moveCharacter_end();
+void end_page_key();
 
 void processUserInput();    // checks if you should change states or do something else with the game, e.g. pause, exit
 void clearScreen();         // clears the current screen and draw from scratch 
@@ -116,18 +107,14 @@ void render_end_survivors();
 void render_end_infectants();
 void render_transition();
 void renderMainMenu();
-void renderSettings();
-void renderSettings_Survival();
-void renderSettings_PVP();
-void renderSettings_Infection();
-void renderSettings_COOP();
+void renderCreditPage();
 void renderCharacter();		// renders the character into the buffer
 void rendercountdown321(stage changeState);
 void renderFramerate();     // renders debug information, frame rate, elapsed time, etc
 void renderToScreen();      // dump the contents of the buffer to the screen, one frame worth of game
 
-void eneXp1(COORD &ene , COORD &p1);
-bool p1Xcoin(COORD location);
+void ghostAndPlayerCollision(COORD &ene , COORD &p1);
+bool PlayerAndCoinCollision(COORD location);
 void teleport(COORD& a, COORD b, COORD c);
 
 #endif // _GAME_H
