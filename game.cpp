@@ -198,6 +198,7 @@ void renderCreditPage()
 	 console.writeToBuffer(20,17,"Member: Amirul",0x0F);
 	 console.writeToBuffer(20,18,"Member: Jacob",0x0F);
 	 console.writeToBuffer(20,19,"Supervisor: MR ALEX TOH",0x0F);
+	 console.writeToBuffer(20,20,"PRESS BACKSPACE TO MENU",0x0F);
 }
 
 // Do your clean up of memory here
