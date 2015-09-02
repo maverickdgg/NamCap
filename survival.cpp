@@ -38,6 +38,7 @@ int g_idirection19;
 int g_idirection20;
 //extern int g_idirection10;
 
+int timelast;
 extern int		g_iChangeMod;
 extern int		g_iChangeCol;
 extern double elapsedTime;
@@ -45,7 +46,7 @@ extern double deltaTime;
 extern short sPacMap[21][38];
 extern Console console;
 extern void getInput();
-bool survival = true;
+
 
 SurvivalAI ghost1;
 SurvivalAI ghost2;
@@ -154,6 +155,12 @@ void init_survival(stage changeState)
 	g_idirection9=rand()%4;
 	/*g_idirection10=rand()%4;*/
     state=changeState;	
+	
+}
+
+void survivalWinCondition()
+{
+	timelast = elapsedTime;
 }
 
 //Done By Amirul
@@ -409,6 +416,8 @@ void render_end2()
 {
 	pacMap=load_map(6);
 	insertmap(pacMap);
+	console.writeToBuffer(30,31,"Time Lasted:",0x0C);
+	console.writeToBuffer(47,31,timelast,0x0C);
 	console.writeToBuffer(30,27,"GAME OVER NOOB!!!!!!",0x0C);
 	console.writeToBuffer(25,28,"HAHAHAHAHAHAHAHAHA!!!!!!!!!!",0x0C);
 	console.writeToBuffer(17,29,"You Died, Press Enter To Play Another Mode!!!!!!",0x0C);

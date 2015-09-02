@@ -20,5 +20,6 @@ void moveCharacter_survival();
 void renderMapSurvival();
 void renderCharacterSurvival();
 void render_end2();
+void survivalWinCondition();
 
 #endif

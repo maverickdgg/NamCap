@@ -304,6 +304,7 @@ void render(stage state)
 		case stage_survival:
 			renderMapSurvival();
 			renderCharacterSurvival();
+			survivalWinCondition();
 			break;
         case PVP_stage1:
             renderMap();
