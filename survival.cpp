@@ -153,7 +153,6 @@ void init_survival(stage changeState)
     g_idirection7=rand()%4;
     g_idirection8=rand()%4;
 	g_idirection9=rand()%4;
-	/*g_idirection10=rand()%4;*/
     state=changeState;	
 	
 }

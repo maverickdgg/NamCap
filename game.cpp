@@ -198,7 +198,9 @@ void renderCreditPage()
 	 console.writeToBuffer(20,17,"Member: Amirul",0x0F);
 	 console.writeToBuffer(20,18,"Member: Jacob",0x0F);
 	 console.writeToBuffer(20,19,"Supervisor: MR ALEX TOH",0x0F);
-	 console.writeToBuffer(20,20,"PRESS BACKSPACE TO MENU",0x0F);
+	 console.writeToBuffer(20,21,"In game Music by NINTENDO: Mario,Zelda,Dongkey kong and Star fox",0x0F);
+	 console.writeToBuffer(20,22,"Intro Music by NIVIDIA",0x0F);
+	 console.writeToBuffer(20,24,"PRESS BACKSPACE TO MENU",0x0F);
 }
 
 // Do your clean up of memory here
